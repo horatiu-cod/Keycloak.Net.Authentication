@@ -1,4 +1,4 @@
-@baseUrl = https://localhost:8843
+@baseUrl = {{$dotenv [%]KEYCLOAK_URL}}
 @KeycloakNetAuthenticationApiHostAddress = https://localhost:7194
 @realm = Test
 @client_secret = mTBNlt3IxbtOfmzY3F0m6MxL27GTYmCa
