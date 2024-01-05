@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keycloak.Net.Authentication", "src\Keycloak.Net.Authentication\Keycloak.Net.Authentication.csproj", "{BD389518-C4C3-4668-BB6E-6780BC5825D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keycloak.Net.Authentication", "src\Keycloak.Net.Authentication\Keycloak.Net.Authentication.csproj", "{BD389518-C4C3-4668-BB6E-6780BC5825D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keycloak.Net.Authentication.Api", "samples\Keycloak.Net.Authentication.Api\Keycloak.Net.Authentication.Api.csproj", "{0A9282DC-4DE7-4F3C-A98B-639DFA615FD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BD389518-C4C3-4668-BB6E-6780BC5825D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD389518-C4C3-4668-BB6E-6780BC5825D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD389518-C4C3-4668-BB6E-6780BC5825D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A9282DC-4DE7-4F3C-A98B-639DFA615FD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A9282DC-4DE7-4F3C-A98B-639DFA615FD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A9282DC-4DE7-4F3C-A98B-639DFA615FD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A9282DC-4DE7-4F3C-A98B-639DFA615FD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
