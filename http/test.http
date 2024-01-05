@@ -1,0 +1,25 @@
+@baseUrl = https://localhost:8843
+@KeycloakNetAuthenticationApiHostAddress = https://localhost:7194
+@realm = Test
+@client_secret = mTBNlt3IxbtOfmzY3F0m6MxL27GTYmCa
+@client_name = maui-client
+@username = hg@g.com
+@password = s3cr3te
+
+
+
+### Login user
+# @name user_token_request
+POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id={{client_name}}&client_secret={{client_secret}}&username={{username}}&password={{password}}
+
+#### response
+@access_token = {{user_token_request.response.body.access_token}}
+@refresh_token = {{user_token_request.response.body.refresh_token}}
+
+### Check Api access
+GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/test
+Content-Type: application/json
+Authorization: Bearer {{access_token}}

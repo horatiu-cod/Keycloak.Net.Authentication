@@ -1,4 +1,5 @@
 @Keycloak.Net.Authentication.Api_HostAddress = http://localhost:5118
+@Keycloak.Net.Authentication.Api_HostAddress = https://localhost:7194
 
 GET {{Keycloak.Net.Authentication.Api_HostAddress}}/weatherforecast/
 Accept: application/json
