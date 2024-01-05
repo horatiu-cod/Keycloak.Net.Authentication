@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 
 
-namespace Keycloak.Net.Authentication;
+namespace Keycloak.Net.Authentication.Configuration;
 
 internal class ConfigureAuthenticateSchemeOptions : IConfigureOptions<AuthenticationOptions>
 {

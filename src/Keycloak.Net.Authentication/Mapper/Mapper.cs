@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Diagnostics;
 
-namespace Keycloak.Net.Authentication;
+namespace Keycloak.Net.Authentication.Mapper;
 
 internal static class Mapper
 {
@@ -40,7 +39,7 @@ internal static class Mapper
             UseSecurityTokenValidators = values.UseSecurityTokenValidators,
         };
     }
-    public static TokenValidationParameters MapFromTokenValidationParametersOptions(this JwtBearerValidationOptions values)
+    internal static TokenValidationParameters MapFromTokenValidationParametersOptions(this JwtBearerValidationOptions values)
     {
         return new TokenValidationParameters
         {
@@ -100,5 +99,5 @@ internal static class Mapper
             ValidIssuers = values.TokenValidationParameters.ValidIssuers,
             ValidTypes = values.TokenValidationParameters.ValidTypes,
         };
-}
+    }
 }

@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Keycloak.Net.Authentication.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
-namespace Keycloak.Net.Authentication;
+namespace Keycloak.Net.Authentication.Utils;
 
 internal class KeycloakClaimsTransformation : IClaimsTransformation
 {
-    private IOptions<JwtBearerValidationOptions>? JwtOptions {  get; }
+    private IOptions<JwtBearerValidationOptions>? JwtOptions { get; }
 
     public KeycloakClaimsTransformation(IOptions<JwtBearerValidationOptions>? jwtOptions)
     {
@@ -15,7 +16,7 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
 
     public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
     {
-       var claimsIdentity = (ClaimsIdentity?)principal.Identity;
+        var claimsIdentity = (ClaimsIdentity?)principal.Identity;
         if (claimsIdentity == null && ShouldTransform(claimsIdentity))
         {
             //TransformAndAddClaim(claimsIdentity);
@@ -50,7 +51,7 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
             {
                 claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
             }
-        }   
+        }
     }
     private void MapNameClaim(ClaimsIdentity? claimsIdentity)
     {

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Keycloak.Net.Authentication;
+namespace Keycloak.Net.Authentication.Extensions;
 
 internal static class ClaimsIdentityExtensions
 {
@@ -11,7 +11,7 @@ internal static class ClaimsIdentityExtensions
             returnClaim = claimsIdentity.FindFirst(claim);
             return true;
         }
-        returnClaim =null;
+        returnClaim = null;
         return false;
     }
 }

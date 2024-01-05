@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
+using Keycloak.Net.Authentication.Extensions;
 
-namespace Keycloak.Net.Authentication;
+namespace Keycloak.Net.Authentication.Utils;
 
 internal static class TokenRoleMapper
 {
@@ -12,7 +13,7 @@ internal static class TokenRoleMapper
     {
         var returnRoles = Array.Empty<string>();
 
-        if (identity.TryGetClaim(ResourceAccessAdapter, out var resourseAccessClaim)) 
+        if (identity.TryGetClaim(ResourceAccessAdapter, out var resourseAccessClaim))
         {
             if (resourseAccessClaim is not null)
             {

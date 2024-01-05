@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Keycloak.Net.Authentication.Mapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
-namespace Keycloak.Net.Authentication;
+
+namespace Keycloak.Net.Authentication.Configuration;
 
 internal class ConfigureJwtBearerValidationOptions : IConfigureNamedOptions<JwtBearerOptions>
 {
@@ -21,8 +23,8 @@ internal class ConfigureJwtBearerValidationOptions : IConfigureNamedOptions<JwtB
 
     public void Configure(JwtBearerOptions options)
     {
-        options = Mapper.MapFromJwtBearerValidationOptions(JwtBearerValidationOptions.Value);
+        options = JwtBearerValidationOptions.Value.MapFromJwtBearerValidationOptions();
 
-        options.TokenValidationParameters = Mapper.MapFromTokenValidationParametersOptions(JwtBearerValidationOptions.Value);
+        options.TokenValidationParameters = JwtBearerValidationOptions.Value.MapFromTokenValidationParametersOptions();
     }
 }
