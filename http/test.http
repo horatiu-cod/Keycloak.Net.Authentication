@@ -34,7 +34,12 @@ grant_type=password&client_id={{client_name}}&client_secret={{fakeclientsecret}}
 
 
 ### Check Api access
-GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/Sample/check
+GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/authenticate
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+### Check Api access
+GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/authorize
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
