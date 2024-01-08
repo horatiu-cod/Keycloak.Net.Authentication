@@ -6,11 +6,11 @@ namespace Keycloak.Net.Authentication.Configuration;
 
 internal class ConfigureJwtBearerValidationOptions : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private IOptions<JwtBearerValidationOptions> JwtBearerValidationOptions { get; }
+    private JwtBearerValidationOptions JwtBearerValidationOptions { get; }
 
     public ConfigureJwtBearerValidationOptions(IOptions<JwtBearerValidationOptions> jwtBearerValidationOptions)
     {
-        JwtBearerValidationOptions = jwtBearerValidationOptions;
+        JwtBearerValidationOptions = jwtBearerValidationOptions.Value;
     }
 
     public void Configure(string? name, JwtBearerOptions options)
@@ -23,8 +23,6 @@ internal class ConfigureJwtBearerValidationOptions : IConfigureNamedOptions<JwtB
 
     public void Configure(JwtBearerOptions options)
     {
-        options = JwtBearerValidationOptions.Value.MapFromJwtBearerValidationOptions();
-
-        options.TokenValidationParameters = JwtBearerValidationOptions.Value.MapFromTokenValidationParametersOptions();
+        JwtBearerOptionsMapper.MapFromJwtBearerValidationOptions(JwtBearerValidationOptions, options);
     }
 }
