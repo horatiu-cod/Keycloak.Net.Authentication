@@ -32,7 +32,9 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
         }
         if (claimsIdentity is not null && claimsIdentity.TryGetClaim(c => c.Type == "iss", out var issClaim) && issClaim is not null && JwtOptions is not null)
         {
-            return string.Equals(issClaim.Value, JwtOptions.Value.TokenValidationParameters.ValidIssuer, StringComparison.OrdinalIgnoreCase);
+            if (string.IsNullOrEmpty(JwtOptions.Value.Authority))
+                return string.Equals(issClaim.Value, JwtOptions.Value.TokenValidationParameters.ValidIssuer, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(issClaim.Value, JwtOptions.Value.Authority, StringComparison.OrdinalIgnoreCase);
         }
         return false;
     }
