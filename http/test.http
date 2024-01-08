@@ -1,10 +1,13 @@
-@baseUrl = {{$dotenv [%]KEYCLOAK_URL}}
+@baseUrl = {{$dotenv KEYCLOAK_URL}}
 @KeycloakNetAuthenticationApiHostAddress = https://localhost:7194
 @realm = Test
-@client_secret = mTBNlt3IxbtOfmzY3F0m6MxL27GTYmCa
+@fakerealm = dev
+@client_secret = {{$dotenv CLIENT_SECRET}}
+@fakeclientsecret = {{$dotenv FAKE_CLIENT_SECRET}}
 @client_name = maui-client
 @username = hg@g.com
 @password = s3cr3te
+@fake_password = s3cr3t
 
 
 
@@ -19,7 +22,24 @@ grant_type=password&client_id={{client_name}}&client_secret={{client_secret}}&us
 @access_token = {{user_token_request.response.body.access_token}}
 @refresh_token = {{user_token_request.response.body.refresh_token}}
 
+# @name user_token_request_fake_client
+POST {{baseUrl}}/realms/{{fakerealm}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id={{client_name}}&client_secret={{fakeclientsecret}}&username={{username}}&password={{fake_password}}
+
+#### response
+@fake_access_token = {{user_token_request_fake_client.response.body.access_token}}
+@fake_refresh_token = {{user_token_request_fake_client.response.body.refresh_token}}
+
+
 ### Check Api access
-GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/test
+GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/Sample/check
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
+
+
+### 
+GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/Sample/check
+Content-Type: application/json
+Authorization: Bearer {{fake_access_token}}
