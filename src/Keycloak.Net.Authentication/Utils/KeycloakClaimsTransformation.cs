@@ -17,11 +17,10 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
     public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
     {
         var claimsIdentity = (ClaimsIdentity?)principal.Identity;
-        if (claimsIdentity == null && ShouldTransform(claimsIdentity))
+        if (claimsIdentity is not null && ShouldTransform(claimsIdentity))
         {
-            //TransformAndAddClaim(claimsIdentity);
             MapRoleClaim(claimsIdentity);
-            //MapNameClaim(claimsIdentity);
+            MapNameClaim(claimsIdentity);
         }
         return Task.FromResult(principal);
     }
@@ -36,11 +35,6 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
             return string.Equals(issClaim.Value, JwtOptions.Value.TokenValidationParameters.ValidIssuer, StringComparison.OrdinalIgnoreCase);
         }
         return false;
-    }
-    private void TransformAndAddClaim(ClaimsIdentity? claimsIdentity)
-    {
-        throw new NotImplementedException();
-        //claimsIdentity.AddClaim(new Claim(nameof(KeycloakClaimsTransformation), "true"));
     }
     private void MapRoleClaim(ClaimsIdentity? claimsIdentity)
     {
