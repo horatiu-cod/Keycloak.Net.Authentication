@@ -45,6 +45,6 @@ Authorization: Bearer {{access_token}}
 
 
 ### 
-GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/Sample/check
+GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/authenticate
 Content-Type: application/json
 Authorization: Bearer {{fake_access_token}}
