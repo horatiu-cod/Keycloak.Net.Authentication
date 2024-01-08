@@ -13,7 +13,7 @@ public static class AuthenticationBuilderExtensions
 {
     public static AuthenticationBuilder AddKeyCloakAuthentication(this IServiceCollection services)
     {
-        services.AddTransient<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticateSchemeOptions>();
+        services.AddSingleton<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticateSchemeOptions>();
         return services.AddAuthentication();
     }
 
@@ -51,7 +51,7 @@ public static class AuthenticationBuilderExtensions
     private static void AddJwtBearerOptions(this AuthenticationBuilder builder)
     {
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
-        builder.Services.AddTransient<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
+        builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
         builder.AddJwtBearer();
     }
 }
