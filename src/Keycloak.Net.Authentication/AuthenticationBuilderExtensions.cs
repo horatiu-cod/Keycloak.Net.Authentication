@@ -2,7 +2,6 @@
 using Keycloak.Net.Authentication.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
@@ -26,32 +25,29 @@ public static class AuthenticationBuilderExtensions
 
         return builder.Services;
     }
-    public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, string? sectionName = null)
+    public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, string sectionName, Action<JwtBearerOptions>? options = default)
     {
         IdentityModelEventSource.ShowPII = true;
 
-        var section = sectionName is null ? "JwtBearerOptions" : sectionName;
         builder.Services.AddOptionsWithValidateOnStart<JwtBearerValidationOptions>()
-            .BindConfiguration(section).ValidateDataAnnotations();
-        builder.AddJwtBearerOptions();
+            .BindConfiguration(sectionName).ValidateDataAnnotations();
+#pragma warning disable CS8604 // Possible null reference argument.
+        builder.AddJwtBearerOptions(options);
+#pragma warning restore CS8604 // Possible null reference argument.
         return builder.Services;
     }
-    public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, IConfiguration configuration, string? sectionName = null)
+
+    private static void AddJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
     {
-        IdentityModelEventSource.ShowPII = true;
-
-        var section = sectionName is null ? "JwtBearerOptions" : sectionName;
-        builder.Services.AddOptionsWithValidateOnStart<JwtBearerValidationOptions>()
-            .Bind(configuration.GetSection(section)).ValidateDataAnnotations();
-        builder.AddJwtBearerOptions();
-
-        return builder.Services;
+        builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
+        builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
+        builder.AddJwtBearer(options);
     }
-
     private static void AddJwtBearerOptions(this AuthenticationBuilder builder)
     {
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
         builder.AddJwtBearer();
     }
+
 }
