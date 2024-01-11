@@ -36,6 +36,32 @@ public static class AuthenticationBuilderExtensions
 #pragma warning restore CS8604 // Possible null reference argument.
         return builder.Services;
     }
+    /// <summary>
+    /// Register service <see cref="AddJwtBearerOptions"/> 
+    /// <code>
+    /// Example of implementation
+    ///  builder.Services
+    ///     .AddKeyCloakJwtBearerOptions((JwtBearerOptions)options =>
+    ///       {
+    ///         options.Audience = "audience";
+    ///         .....
+    ///         options.TokenValidationParameters = new TokenValidationParameters
+    ///         { 
+    ///         ValidAudience = "valid_audience";
+    ///         .....
+    ///       })
+    /// </code>
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="options"></param>
+    /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained.</returns>
+    public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
+    {
+        IdentityModelEventSource.ShowPII = true;
+
+        builder.AddJwtBearerOptions(options);
+        return builder.Services;
+    }
 
     private static void AddJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
     {
