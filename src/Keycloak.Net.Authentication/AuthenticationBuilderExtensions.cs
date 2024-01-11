@@ -30,10 +30,11 @@ public static class AuthenticationBuilderExtensions
     /// Register the <see cref="AddJwtBearerOptions"/> 
     /// <code>
     /// builder.Services
+    ///     .AddKeyCloakAuthentication()
     ///     .AddKeyCloakJwtBearerOptions(c =>
     ///      {
-    ///         c.Authority = "authority_service_url";
-    ///         c.Audience = "account";
+    ///         c.Authority = "KeycloakRealmUrl";
+    ///         c.Audience = "audience";
     ///      })
     /// </code>
     /// </summary>
@@ -57,11 +58,13 @@ public static class AuthenticationBuilderExtensions
     /// <code>
     /// Example of implementation
     ///  builder.Services
+    ///     .AddKeyCloakAuthentication()
     ///     .AddKeyCloakJwtBearerOptions("appsettings_section_name")
     /// </code>
     /// Optional: configure <see cref="JwtBearerOptions"/>
     /// <code>
     ///  builder.Services
+    ///     .AddKeyCloakAuthentication()
     ///     .AddKeyCloakJwtBearerOptions("appsettings_section_name", (JwtBearerOptions)options =>
     ///       {
     ///         // if set will override the settings values
@@ -77,7 +80,7 @@ public static class AuthenticationBuilderExtensions
     /// 
     ///  "appsettings_section_name": {
     ///      "Authority": "{KeycloakUrl}{RealmName}",
-    ///      "Audience": "maui-client"
+    ///      "Audience": "audience"
     ///   }
     /// }
     /// Or
@@ -87,7 +90,7 @@ public static class AuthenticationBuilderExtensions
     /// 
     ///  "appsettings_section_name": {
     ///      "Authority": "{KeycloakUrl}{RealmName}",
-    ///      "ValidAudience": "maui-client"
+    ///      "ValidAudience": "audience"
     ///   }
     /// }
     /// Or
@@ -97,7 +100,7 @@ public static class AuthenticationBuilderExtensions
     /// 
     ///  "appsettings_section_name": {
     ///      "Authority": "{KeycloakUrl}{RealmName}",
-    ///      "ValidAudiences": ["maui-client"]
+    ///      "ValidAudiences": ["audience"]
     ///   }
     /// }
     /// </code>
@@ -122,9 +125,10 @@ public static class AuthenticationBuilderExtensions
     /// <code>
     /// Example of implementation
     ///  builder.Services
+    ///     .AddKeyCloakAuthentication()
     ///     .AddKeyCloakJwtBearerOptions((JwtBearerOptions)options =>
     ///       {
-    ///         options.Audience = "audience";
+    ///         options.Authority = "KeycloakRealmUrl";
     ///         .....
     ///         options.TokenValidationParameters = new TokenValidationParameters
     ///         { 
