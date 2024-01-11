@@ -1,4 +1,6 @@
 # Keycloak .Net Authentication
+[![Build](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/build.yml)
+
 Authentication with Keycloak in .NET and ASP.NET Core
 
 Secure your api with Keycloak JWT bearer authentication
