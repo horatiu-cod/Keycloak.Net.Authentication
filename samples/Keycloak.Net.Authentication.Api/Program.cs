@@ -8,15 +8,17 @@ builder.Configuration.EnableSubstitutions();
 
 builder.Services
     .AddKeyCloakAuthentication()
-    .AddKeyCloakJwtBearerOptions("appsettings_section_name")
+    //.AddKeyCloakJwtBearerOptions("appsettings_section_name")
 
-    /*
+    
     .AddKeyCloakJwtBearerOptions("appsettings_section_name", o =>
     {
-        //o.Audience = "account";
-        o.TokenValidationParameters.ValidAudience = "maui-client";
+        o.Audience = "account";
+        o.SaveToken = true;
+
+        o.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(30);
     })
-    */
+    
 
     /*
     .AddKeyCloakJwtBearerOptions(c =>
