@@ -23,7 +23,6 @@ builder.Services
     {
         c.Authority = "https://localhost:8843/realms/Test";
         c.ValidAudience = "account";
-        c.ClientId = "maui-client";
     })
     */
     ;
