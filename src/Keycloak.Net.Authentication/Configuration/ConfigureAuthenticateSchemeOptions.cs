@@ -11,5 +11,6 @@ internal class ConfigureAuthenticateSchemeOptions : IConfigureOptions<Authentica
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     }
 }
