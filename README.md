@@ -1,5 +1,6 @@
 # Keycloak .Net Authentication
 [![Build](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/build.yml)
+[![Build](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/codeql-analysis.yml)
 
 Authentication with Keycloak in .NET and ASP.NET Core
 
