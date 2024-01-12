@@ -24,4 +24,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Keycloak.Net.Authentication\Keycloak.Net.Authentication.csproj" />
+  </ItemGroup>
+
 </Project>
