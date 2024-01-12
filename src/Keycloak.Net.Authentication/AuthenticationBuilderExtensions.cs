@@ -1,5 +1,5 @@
 ﻿using Keycloak.Net.Authentication.Configuration;
-using Keycloak.Net.Authentication.Utils;
+using Keycloak.Net.Authentication.JWT;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;

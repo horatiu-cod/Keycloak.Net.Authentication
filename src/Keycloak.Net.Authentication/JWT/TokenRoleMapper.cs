@@ -3,7 +3,7 @@ using System.Text.Json;
 using Keycloak.Net.Authentication.Common;
 using Keycloak.Net.Authentication.Extensions;
 
-namespace Keycloak.Net.Authentication.Utils;
+namespace Keycloak.Net.Authentication.JWT;
 
 internal static class TokenRoleMapper
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
-namespace Keycloak.Net.Authentication.Utils;
+namespace Keycloak.Net.Authentication.JWT;
 
 internal class KeycloakClaimsTransformation : IClaimsTransformation
 {
@@ -39,7 +39,9 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
         if (claimsIdentity is not null && claimsIdentity.TryGetClaim(c => c.Type == Constants.IssuerClaimType, out var issClaim) && issClaim is not null && JwtOptions is not null)
         {
             if (string.IsNullOrEmpty(JwtOptions.Value.Authority))
+#pragma warning disable CS8604 // Possible null reference argument.
                 return (string.Equals(issClaim.Value, JwtOptions.Value.ValidIssuer, StringComparison.OrdinalIgnoreCase) || string.Equals(issClaim.Value, JwtOptions.Value.ValidIssuers.Where(c => c == issClaim.Value).FirstOrDefault(), StringComparison.OrdinalIgnoreCase));
+#pragma warning restore CS8604 // Possible null reference argument.
             return string.Equals(issClaim.Value, JwtOptions.Value.Authority, StringComparison.OrdinalIgnoreCase);
         }
         return false;
@@ -83,8 +85,10 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
             return JwtOptions.Value.Audience!;
         if (!string.IsNullOrEmpty(JwtOptions.Value.ValidAudience))
             return JwtOptions.Value.ValidAudience!;
+#pragma warning disable CS8604 // Possible null reference argument.
         if (JwtOptions.Value.ValidAudiences.Any())
             return JwtOptions.Value.ValidAudiences.FirstOrDefault()!;
+#pragma warning restore CS8604 // Possible null reference argument.
         return string.Empty;
     }
 }
