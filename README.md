@@ -90,7 +90,7 @@ builder.Services
 ### JWT transformation
 - Under the hood the Keyclaok JWT is mapped and transformed to Identity JWT
 - The Keycloak Realm and Client "roles" claims are mapped and tranformed to ClaimType.Role
-- By default the Keycloak "preferred_username" claim is transformed to ClaimType.Name. Yuo can change it by just adding the following:
+- By default the Keycloak "preferred_username" claim is transformed to ClaimType.Name. You can change it by just adding the following:
 ```js
 {
     "KeycloakUrl": "<<FROM_USER_SECRET>>",
