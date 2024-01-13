@@ -1,13 +1,11 @@
 ﻿using Keycloak.Net.Authentication.Common;
 using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel.DataAnnotations;
 
 namespace Keycloak.Net.Authentication;
 
 public record JwtBearerValidationOptions()
 {
     #region JwtBearerOptions
-    [Required]
     public string? Authority { get; set; }
     public string? Audience { get; set; }
     public string NameClaim { get; set; } = Constants.NameClaimType;

@@ -44,8 +44,14 @@ public static class AuthenticationBuilderExtensions
     public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerValidationOptions> authConfiguration)
     {
         IdentityModelEventSource.ShowPII = true;
+        var message = $"Validation failed for {nameof(JwtBearerValidationOptions)} members";
 
-        builder.Services.AddOptionsWithValidateOnStart<JwtBearerValidationOptions>().ValidateDataAnnotations().Configure(authConfiguration);
+        builder.Services.AddOptionsWithValidateOnStart<JwtBearerValidationOptions>().Validate(jwtBearerValidationOptions =>
+        {
+            if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority))
+                return false;
+            return ValidateAudience(jwtBearerValidationOptions);
+        }, message).Configure(authConfiguration);
         builder.AddJwtBearerOptions();
 
         return builder.Services;
@@ -112,9 +118,14 @@ public static class AuthenticationBuilderExtensions
     public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, string sectionName, Action<JwtBearerOptions>? options = default)
     {
         IdentityModelEventSource.ShowPII = true;
-
+        var message = $"Validation failed for {sectionName} members";
         builder.Services.AddOptionsWithValidateOnStart<JwtBearerValidationOptions>()
-            .BindConfiguration(sectionName).ValidateDataAnnotations();
+            .BindConfiguration(sectionName).Validate(jwtBearerValidationOptions =>
+            {
+                if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority))
+                    return false;
+                return ValidateAudience(jwtBearerValidationOptions);
+            },message);
 #pragma warning disable CS8604 // Possible null reference argument.
         builder.AddJwtBearerOptions(options);
 #pragma warning restore CS8604 // Possible null reference argument.
@@ -159,6 +170,18 @@ public static class AuthenticationBuilderExtensions
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
         builder.AddJwtBearer();
+    }
+    private static bool ValidateAudience(JwtBearerValidationOptions JwtOptions)
+    {
+        if (!string.IsNullOrEmpty(JwtOptions.Audience))
+            return true;
+        if (!string.IsNullOrEmpty(JwtOptions.ValidAudience))
+            return true;
+        if (JwtOptions.ValidAudiences is null)
+            return false;
+        if (JwtOptions.ValidAudiences.Any())
+            return true;
+        return false;
     }
 
 }

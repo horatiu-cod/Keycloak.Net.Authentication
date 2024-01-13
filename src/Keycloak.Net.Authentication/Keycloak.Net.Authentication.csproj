@@ -13,7 +13,9 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/horatiu-cod/Keycloak.Net.Authentication</PackageProjectUrl>
     <RepositoryUrl>https://github.com/horatiu-cod/Keycloak.Net.Authentication</RepositoryUrl>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0-rc01</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

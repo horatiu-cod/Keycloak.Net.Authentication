@@ -25,8 +25,8 @@ app.UseAuthorization();
 
 ```
 Add section to the appsettings.{Environment}.json
-- Authority is required. If not set will throw exception during app startup
-- Set the audience as "Audience", "ValidAudience" or "ValidAudiences"
+- Authority is required. If not set will throw exception during app startup.
+- Set the audience as "Audience", "ValidAudience" or "ValidAudiences". If not set will throw exception during app startup.
 ```json
  {
     "KeycloakUrl": "<<FROM_USER_SECRET>>",
@@ -64,8 +64,8 @@ builder.Services
 ```
 #### Option no.3
 - If you want to get auth options from other source, not from appsettings.{Environment}.json, you can pass Action\<JwtBearerValidationOptions\> instead.
-- Authority is required. If not set will throw exception during app startup
-- Set the audience as "Audience", "ValidAudience" or "ValidAudiences"
+- Authority is required. If not set will throw exception during app startup.
+- Set the audience as "Audience", "ValidAudience" or "ValidAudiences".If not set will throw exception during app startup.
 ```csharp
 builder.Services
   .AddKeyCloakAuthentication()
@@ -90,7 +90,7 @@ builder.Services
 ### JWT transformation
 - Under the hood the Keyclaok JWT is mapped and transformed to Identity JWT
 - The Keycloak Realm and Client "roles" claims are mapped and tranformed to ClaimType.Role
-- By default the Keycloak "preferred_username" claim is transformed to ClaimType.Name. Yuo can change it by just adding the following:
+- By default the Keycloak "preferred_username" claim is transformed to ClaimType.Name. You can change it by just adding the following:
 ```js
 {
     "KeycloakUrl": "<<FROM_USER_SECRET>>",
