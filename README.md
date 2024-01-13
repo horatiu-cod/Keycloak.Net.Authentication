@@ -2,9 +2,10 @@
 [![Build](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/build.yml)
 [![Build](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/horatiu-cod/Keycloak.Net.Authentication/actions/workflows/codeql-analysis.yml)
 
-Authentication with Keycloak in .NET and ASP.NET Core
+Authentication with Keycloak in .NET and ASP.NET Core. Secure your api with Keycloak JWT bearer authentication
 
-Secure your api with Keycloak JWT bearer authentication
+Add the [ Keycloak.Net.Authentification ](https://www.nuget.org/packages/Keycloak.Net.Authentication)  nuget package to your project.
+
 
 Api calls requires auhorization header with an JWT token from Keycloak.
 ```curl
