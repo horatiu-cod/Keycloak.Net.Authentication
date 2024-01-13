@@ -86,7 +86,13 @@ builder.Services
     {
         options.Authority = "https://{host}/realms/{realm}";
         options.Audience = "<<Audience>>";
-    })
+        ......
+        options.TokenValidationParameters = new TokenValidationParameters( options =>
+        {
+          options.ClockSkew = TimeSpan.FromSeconds(30);
+          .......
+        });
+    });
 ```
 ### JWT transformation
 - Under the hood the Keyclaok JWT is mapped and transformed to Identity JWT
