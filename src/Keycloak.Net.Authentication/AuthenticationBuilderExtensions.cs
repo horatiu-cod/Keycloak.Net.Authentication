@@ -151,19 +151,42 @@ public static class AuthenticationBuilderExtensions
     /// <param name="builder"></param>
     /// <param name="options"></param>
     /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained.</returns>
-    public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
+    private static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
     {
         IdentityModelEventSource.ShowPII = true;
 
         builder.AddJwtBearerOptions(options);
         return builder.Services;
     }
-
-    private static void AddJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
+    /// <summary>
+    /// Register <see cref="KeycloakClaimsTransformation"/> and <see cref="ConfigureJwtBearerValidationOptions"/>.
+    /// <para></para>
+    /// Pass the <paramref name="options"/> to AddJwtBearer(<paramref name="options"/>)
+    /// <code>
+    /// Example of implementation
+    ///  builder.Services
+    ///     .AddKeyCloakAuthentication()
+    ///     .AddJwtBearerOptions((JwtBearerOptions)options =>
+    ///       {
+    ///         options.Authority = "KeycloakRealmUrl";
+    ///         .....
+    ///         options.TokenValidationParameters = new TokenValidationParameters
+    ///         { 
+    ///         ValidAudience = "valid_audience";
+    ///         .....
+    ///       })
+    /// </code>
+    /// </summary>
+    /// <param name="builder">AuthenticationBuilder</param>
+    /// <param name="options"></param>
+    /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained.</returns>
+    public static IServiceCollection AddJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
     {
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
         builder.AddJwtBearer(options);
+
+        return builder.Services;
     }
     private static void AddJwtBearerOptions(this AuthenticationBuilder builder)
     {

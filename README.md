@@ -72,8 +72,8 @@ builder.Services
   .AddKeyCloakAuthentication()
   .AddKeyCloakJwtBearerOptions(options =>
     {
-        options.Authority = "https://{host}/realms/{realm}";
-        options.Audience = "<<Audience>>";
+        options.KeycloakAuthority = "https://{host}/realms/{realm}";
+        options.KeycloakAudience = "<<Audience>>";
     })
 
 ```
@@ -82,7 +82,7 @@ builder.Services
 ```csharp
 builder.Services
   .AddKeyCloakAuthentication()
-  .AddKeyCloakJwtBearerOptions(options =>
+  .AddJwtBearerOptions(options =>
     {
         options.Authority = "https://{host}/realms/{realm}";
         options.Audience = "<<Audience>>";
@@ -96,7 +96,7 @@ builder.Services
 ```
 ### JWT transformation
 - Under the hood the Keyclaok JWT is mapped and transformed to Identity JWT
-- The Keycloak Realm and Client "roles" claims are mapped and tranformed to ClaimType.Role
+- The Keycloak Realm and Client "roles" claims are mapped and transformed to ClaimType.Role
 - By default the Keycloak "preferred_username" claim is transformed to ClaimType.Name. You can change it by just adding the following:
 ```js
 {
