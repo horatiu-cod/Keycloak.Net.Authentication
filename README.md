@@ -78,7 +78,7 @@ builder.Services
 
 ```
 #### Option no.4
-- You have to manually configure the JwtBearerOtions
+- You have to manually configure the JwtBearerOtions.
 ```csharp
 builder.Services
   .AddKeyCloakAuthentication()
