@@ -14,25 +14,27 @@ builder.Services
 
     //.AddKeyCloakJwtBearerOptions("appsettings_section_name", o =>
     //{
-    //    o.Audience = "account";
+    //    o.Authority = "https://localhost:8843/realms/Test";
+    //    //o.Audience = "maui-client";
     //    o.SaveToken = true;
 
     //    o.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(30);
     //})
-    //.AddKeyCloakJwtBearerOptions(c =>
-    //{
-    //    c.Authority = "https://localhost:8843/realms/Test";
-    //    c.ValidAudiences = ["account"];
-    //})
-    .AddJwtBearerOptions(options =>
+    .AddKeyCloakJwtBearerOptions(c =>
     {
-        options.Authority = "https://localhost:8843/realms/Test";
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-        {
-
-        };
-    });
-;
+        c.Authority = "https://localhost:8843/realms/Test";
+        c.ValidAudience = "maui-client";
+    })
+    //.AddJwtBearerOptions(options =>
+    //{
+    //    options.Authority = "https://localhost:8843/realms/Test";
+    //    //options.Audience = "maui-client";
+    //    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    //    {
+    //        ValidAudiences = ["maui-client"]
+    //    };
+    //})
+    ;
 
 var app = builder.Build();
 

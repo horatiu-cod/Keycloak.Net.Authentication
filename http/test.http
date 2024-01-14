@@ -8,20 +8,20 @@
 @username = hg@g.com
 @password = s3cr3te
 @_username = hor
-@_password = s3cr3t
+@_password = s3cr3te
 
 @fake_password = s3cr3t
 
-### Login user
-# @name user_token_request
+### Get token for user without role
+# @name user_without_role_token_request
 POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=password&client_id={{client_name}}&client_secret={{client_secret}}&username={{_username}}&password={{_password}}
 
+@access_token_without_user_role = {{user_without_role_token_request.response.body.access_token}}
 
-
-### Login user
+### Get token for user with role
 # @name user_token_request
 POST {{baseUrl}}/realms/{{realm}}/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
@@ -53,8 +53,17 @@ GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/authorize
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
+### Check Api access with token without user_role
+GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/authenticate
+Content-Type: application/json
+Authorization: Bearer {{access_token_without_user_role}}
 
-### 
+### Check Api access with token without user_role
+GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/authorize
+Content-Type: application/json
+Authorization: Bearer {{access_token_without_user_role}}
+
+### Check Api access with bad token
 GET  {{KeycloakNetAuthenticationApiHostAddress}}/api/authenticate
 Content-Type: application/json
 Authorization: Bearer {{fake_access_token}}

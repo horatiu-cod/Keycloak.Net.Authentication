@@ -52,7 +52,7 @@ public static class AuthenticationBuilderExtensions
                 return false;
             return ValidateAudience(jwtBearerValidationOptions);
         }, message).Configure(authConfiguration);
-        builder.AddJwtBearerOptions();
+        builder.AddOptions();
 
         return builder.Services;
     }
@@ -127,35 +127,8 @@ public static class AuthenticationBuilderExtensions
                 return ValidateAudience(jwtBearerValidationOptions);
             },message);
 #pragma warning disable CS8604 // Possible null reference argument.
-        builder.AddJwtBearerOptions(options);
+        builder.AddOptions(options);
 #pragma warning restore CS8604 // Possible null reference argument.
-        return builder.Services;
-    }
-    /// <summary>
-    /// Register service <see cref="AddJwtBearerOptions"/> 
-    /// <code>
-    /// Example of implementation
-    ///  builder.Services
-    ///     .AddKeyCloakAuthentication()
-    ///     .AddKeyCloakJwtBearerOptions((JwtBearerOptions)options =>
-    ///       {
-    ///         options.Authority = "KeycloakRealmUrl";
-    ///         .....
-    ///         options.TokenValidationParameters = new TokenValidationParameters
-    ///         { 
-    ///         ValidAudience = "valid_audience";
-    ///         .....
-    ///       })
-    /// </code>
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <param name="options"></param>
-    /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained.</returns>
-    private static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
-    {
-        IdentityModelEventSource.ShowPII = true;
-
-        builder.AddJwtBearerOptions(options);
         return builder.Services;
     }
     /// <summary>
@@ -182,13 +155,20 @@ public static class AuthenticationBuilderExtensions
     /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained.</returns>
     public static IServiceCollection AddJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
     {
-        builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
-        builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
+        builder.Services.AddTransient<IClaimsTransformation>(sp => new JwtClaimsTransformation(options));
         builder.AddJwtBearer(options);
 
         return builder.Services;
     }
-    private static void AddJwtBearerOptions(this AuthenticationBuilder builder)
+    public static void AddOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
+    {
+        builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
+        builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
+        builder.AddJwtBearer(options);
+
+    }
+
+    private static void AddOptions(this AuthenticationBuilder builder)
     {
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
