@@ -4,7 +4,7 @@
 
 Authentication with Keycloak in .NET and ASP.NET Core. Secure your api with Keycloak JWT bearer authentication
 
-Add the [ Keycloak.Net.Authentification ](https://www.nuget.org/packages/Keycloak.Net.Authentication)  Nuget package to your project.
+Add the [ Keycloak.Net.Authentification ](https://www.nuget.org/packages/Keycloak.Net.Authentication)  nuget package to your project.
 
 
 Api calls requires auhorization header with an JWT token from Keycloak.
