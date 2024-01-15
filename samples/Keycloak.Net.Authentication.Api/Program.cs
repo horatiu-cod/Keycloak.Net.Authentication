@@ -34,6 +34,13 @@ builder.Services
     //        ValidAudiences = ["maui-client"]
     //    };
     //})
+    .AddAuthorization(configure =>
+    {
+        configure.AddPolicy("email_verified", configure =>
+        {
+            configure.RequireClaim("email_verified", "true");
+        });
+    })
     ;
 
 var app = builder.Build();

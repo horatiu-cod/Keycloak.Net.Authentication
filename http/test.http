@@ -7,7 +7,7 @@
 @client_name = maui-client
 @username = hg@g.com
 @password = s3cr3te
-@_username = hor
+@_username = hor@g.com
 @_password = s3cr3te
 
 @fake_password = s3cr3t
