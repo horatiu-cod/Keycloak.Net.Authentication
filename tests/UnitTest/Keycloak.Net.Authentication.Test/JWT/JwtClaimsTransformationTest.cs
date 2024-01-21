@@ -5,7 +5,7 @@ using System.Security.Claims;
 using Keycloak.Net.Authentication.Extensions;
 
 namespace Keycloak.Net.Authentication.Test.JWT;
-
+#pragma warning disable
 public class JwtClaimsTransformationTest
 {
     [Fact]
