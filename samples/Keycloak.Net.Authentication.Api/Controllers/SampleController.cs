@@ -9,13 +9,6 @@ namespace Keycloak.Net.Authentication.Api.Controllers
     [ApiController]
     public class SampleController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-
-        public SampleController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         [HttpGet("authenticate")]
         [Authorize]
         public IActionResult CheckAuthorization()
