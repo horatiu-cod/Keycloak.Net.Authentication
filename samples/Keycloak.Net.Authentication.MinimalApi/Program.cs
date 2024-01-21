@@ -1,5 +1,6 @@
 using ConfigurationSubstitution;
 using Keycloak.Net.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +45,10 @@ builder.Services
         {
             configure.RequireClaim("email_verified", "true");
         });
+        configure.AddPolicy("role", policy =>
+        {
+            policy.RequireClaim("role", "user_role");
+        });
     })
     ;
 var app = builder.Build();
@@ -67,6 +72,12 @@ app.MapGet("api/authenticate", () =>
 app.MapGet("api/authorize", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireAuthorization("email_verified");
+app.MapGet("api/attribute",[Authorize(Roles = "user_role")] () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized"));
+
+app.MapGet("api/role", () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized"))
+    .RequireAuthorization("role");
 
 app.Run();
 public partial class Program { }
