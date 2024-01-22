@@ -23,7 +23,7 @@ public class PermissionAttribute : AuthorizeAttribute
     {
         get 
         {
-            if (!string.IsNullOrEmpty(Resource))
+            if (!string.IsNullOrEmpty(Resource) && !string.IsNullOrEmpty(Policy))
             {
                 var rsx = Policy.Substring(POLICY_PREFIX.Length).Split(",")[0];
                 return rsx;
@@ -36,7 +36,7 @@ public class PermissionAttribute : AuthorizeAttribute
     {
         get
         {
-            if (!string.IsNullOrEmpty(Resource))
+            if (!string.IsNullOrEmpty(Resource) && !string.IsNullOrEmpty(Policy))
             {
                 var rsx = Policy.Substring(POLICY_PREFIX.Length).Split(",")[1];
                 return rsx;
@@ -48,6 +48,6 @@ public class PermissionAttribute : AuthorizeAttribute
 
     public override string ToString()
     {
-        return DebuggerHelpers.GetDebugText(Resource, nameof(Resource), Scope, nameof(Scope), includeNullValues: false, prefix: POLICY_PREFIX);
+        return DebuggerHelpers.GetDebugText(Resource!, nameof(Resource), Scope!, nameof(Scope), includeNullValues: false, prefix: POLICY_PREFIX);
     }
 }
