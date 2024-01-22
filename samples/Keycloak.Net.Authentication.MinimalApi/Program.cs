@@ -1,7 +1,6 @@
 using ConfigurationSubstitution;
 using Keycloak.Net.Authentication;
 using Keycloak.Net.Authorization;
-using Keycloak.Net.Authorization.PermissionAccess;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
 

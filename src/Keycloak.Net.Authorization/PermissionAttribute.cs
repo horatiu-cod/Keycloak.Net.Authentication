@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 
-namespace Keycloak.Net.Authorization.PermissionAccess;
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method , AllowMultiple = true, Inherited = true)]
+namespace Keycloak.Net.Authorization;
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 [DebuggerDisplay("{ToString(),nq}")]
 public class PermissionAttribute : AuthorizeAttribute
 {
     const string POLICY_PREFIX = "Permission";
     public PermissionAttribute()
     {
-        
+
     }
     public PermissionAttribute(string resource, string scope)
     {
@@ -19,16 +19,16 @@ public class PermissionAttribute : AuthorizeAttribute
         Policy = $"{POLICY_PREFIX}:{resource},{scope}";
     }
 
-    public string? Resource 
+    public string? Resource
     {
-        get 
+        get
         {
             if (!string.IsNullOrEmpty(Resource) && !string.IsNullOrEmpty(Policy))
             {
                 var rsx = Policy.Substring(POLICY_PREFIX.Length).Split(",")[0];
                 return rsx;
             }
-            return default(string);
+            return default;
         }
         set { }
     }

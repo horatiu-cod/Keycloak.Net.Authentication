@@ -1,5 +1,4 @@
-﻿using Keycloak.Net.Authorization.PermissionAccess;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
 namespace Keycloak.Net.Authorization;
 
