@@ -16,13 +16,13 @@ builder.Configuration.EnableSubstitutions();
 
 builder.Services
     .AddKeyCloakAuthentication()
-    .AddKeyCloakJwtBearerOptions("appsettings_section_name")
+    .AddKeyCloakJwtBearerOptions("Appsettings_section_name")
 
 
-    //.AddKeyCloakJwtBearerOptions("appsettings_section_name", o =>
+    //.AddKeyCloakJwtBearerOptions("Appsettings_section_name", o =>
     //{
     //    o.Authority = "https://localhost:8843/realms/Test";
-    //    //o.Audience = "maui-client";
+    //    //o.Audience = "client-role";
     //    o.SaveToken = true;
 
     //    o.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(30);
@@ -30,15 +30,15 @@ builder.Services
     //.AddKeyCloakJwtBearerOptions(c =>
     //{
     //    c.Authority = "https://localhost:8843/realms/Test";
-    //    c.ValidAudience = "maui-client";
+    //    c.ValidAudience = "client-role";
     //})
     //.AddJwtBearerOptions(options =>
     //{
     //    options.Authority = "https://localhost:8843/realms/Test";
-    //    //options.Audience = "maui-client";
+    //    //options.Audience = "client-role";
     //    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     //    {
-    //        ValidAudiences = ["maui-client"]
+    //        ValidAudiences = ["client-role"]
     //    };
     //})
     .AddAuthorization(configure =>
@@ -52,9 +52,13 @@ builder.Services
             policy.RequireClaim("role", "user");
         });
     })
+    //.AddUma(client =>
+    //{
+    //    client.ClientId = "client-role";
+    //})
+    .AddUma("Client")
     ;
 
-builder.Services.AddUma();
 
 var app = builder.Build();
 
