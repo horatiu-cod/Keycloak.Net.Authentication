@@ -1,6 +1,6 @@
 ﻿namespace Keycloak.Net.Authorization.Configuration;
 
-internal class ClientConfiguration
+public sealed class ClientConfiguration
 {
-    public string ClientId { get; set; } = "client-role";
+    public string ClientId { get; set; } = string.Empty;
 }
