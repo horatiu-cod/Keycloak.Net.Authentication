@@ -1,5 +1,4 @@
-﻿using Keycloak.Net.Authentication;
-using Keycloak.Net.Authorization.AudienceAccess;
+﻿using Keycloak.Net.Authorization.AudienceAccess;
 using Keycloak.Net.Authorization.Configuration;
 using Keycloak.Net.Authorization.PermissionAccess;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +16,7 @@ public static class UmaBuilderExtension
 
         services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
         services.AddSingleton<IPermissionRequest, PermissionRequest>();
+        services.AddAuthorization();
 
         var message = $"Validation failed for {nameof(ClientConfiguration)} members";
 
