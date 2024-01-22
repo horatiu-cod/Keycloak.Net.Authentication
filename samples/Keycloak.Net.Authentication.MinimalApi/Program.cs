@@ -1,5 +1,7 @@
 using ConfigurationSubstitution;
 using Keycloak.Net.Authentication;
+using Keycloak.Net.Authorization;
+using Keycloak.Net.Authorization.PermissionAccess;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
 
@@ -47,10 +49,13 @@ builder.Services
         });
         configure.AddPolicy("role", policy =>
         {
-            policy.RequireClaim("role", "user_role");
+            policy.RequireClaim("role", "user");
         });
     })
     ;
+
+builder.Services.AddUma();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -61,6 +66,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseUma();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -72,12 +78,24 @@ app.MapGet("api/authenticate", () =>
 app.MapGet("api/authorize", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireAuthorization("email_verified");
-app.MapGet("api/attribute",[Authorize(Roles = "user_role")] () =>
+app.MapGet("api/attribute",[Authorize(Roles = "user")] () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"));
 
 app.MapGet("api/role", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireAuthorization("role");
+
+app.MapGet("api/uma", () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized"))
+    .RequireUmaAuthorization(resource: "user-resource", scope: "user-scope");
+
+app.MapGet("api/umaa", [Permission(Resource = "user-resource", Scope = "user-scope", Roles = "user")] () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized"));
+
+app.MapGet("api/simple", () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized"))
+    .RequireAuthorization("Permission:user-resource,user-scope");
+
 
 app.Run();
 public partial class Program { }
