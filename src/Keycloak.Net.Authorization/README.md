@@ -13,7 +13,7 @@ Auhorization: Bearer JwtTokenContent
 ```
 ## How to use
 ### Add to program.cs of your api
-Add and configure Keycloak.Net.Authentication services - see [README.md](https://github.com/horatiu-cod/Keycloak.Net.Authentication/blob/main/README.md)
+Add and configure Keycloak.Net.Authentication services - see [README.md](https://github.com/horatiu-cod/Keycloak.Net.Authentication/blob/main/src/Keycloak.Net.Authentication/README.md)
 
 ```csharp
 using Keycloak.Net.Authentication;
