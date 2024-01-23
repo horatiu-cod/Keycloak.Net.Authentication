@@ -46,16 +46,25 @@ builder.Services
         {
             configure.RequireClaim("email_verified", "true");
         });
+        configure.AddPolicy("name", policy =>
+        {
+            policy.RequireUserName("h@g.com");
+        });
+        configure.AddPolicy("auth", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+        });
         configure.AddPolicy("role", policy =>
         {
-            policy.RequireClaim("role", "user");
+            policy.RequireRole("user");
         });
+
     })
-    //.AddUma(client =>
-    //{
-    //    client.ClientId = "client-role";
-    //})
-    .AddUma("Client")
+    .AddUma(client =>
+    {
+        client.ClientId = "client-role";
+    })
+    //.AddUma("Client")
     ;
 
 
@@ -81,6 +90,7 @@ app.MapGet("api/authenticate", () =>
 app.MapGet("api/authorize", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireAuthorization("email_verified");
+
 app.MapGet("api/attribute",[Authorize(Roles = "user")] () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"));
 
@@ -88,14 +98,22 @@ app.MapGet("api/role", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireAuthorization("role");
 
-app.MapGet("api/uma", () =>
+app.MapGet("api/auth", () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized"))
+    .RequireAuthorization("auth");
+
+app.MapGet("api/name", () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized"))
+    .RequireAuthorization("name");
+
+app.MapGet("api/uma1", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireUmaAuthorization(resource: "user-resource", scope: "user-scope");
 
-app.MapGet("api/umaa", [Permission(Resource = "user-resource", Scope = "user-scope", Roles = "user")] () =>
+app.MapGet("api/uma2", [Permission(Resource = "user-resource", Scope = "user-scope", Roles = "user")] () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"));
 
-app.MapGet("api/simple", () =>
+app.MapGet("api/uma3", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireAuthorization("Permission:user-resource,user-scope");
 
