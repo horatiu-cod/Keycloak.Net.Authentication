@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <Title>Keycloak .Net Authentication</Title>
     <Authors>Horatiu Cod</Authors>
-    <Company>52Plus</Company>
+    <Company>52plus</Company>
     <Description>Authentication with Keycloak in .NET and ASP.NET Core</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -18,6 +18,8 @@
     <AssemblyVersion>1.0.2.0</AssemblyVersion>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>keycloak;authentication</PackageTags>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,6 +4,18 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>1.0.2-rc0.1</Version>
+    <Title>Keycloak.Net.Authorization</Title>
+    <Authors>Horatiu Cod</Authors>
+    <Company>52plus</Company>
+    <Description>Authorization with Keycloak in .NET and ASP.NET Core</Description>
+    <RepositoryUrl>https://github.com/horatiu-cod/Keycloak.Net.Authentication</RepositoryUrl>
+    <PackageTags>keycloak;authorization</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
