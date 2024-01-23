@@ -1,22 +1,17 @@
-﻿using Keycloak.Net.Authorization.AudienceAccess;
-using Keycloak.Net.Authorization.Configuration;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 
 namespace Keycloak.Net.Authorization.PermissionAccess;
 
 internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {
     private readonly IPermissionRequest _permissionRequest;
-    private readonly IOptions<ClientConfiguration> _clientConfiguration;
 
-    public PermissionAuthorizationHandler(IPermissionRequest permissionRequest, IOptions<ClientConfiguration> clientConfiguration)
+    public PermissionAuthorizationHandler(IPermissionRequest permissionRequest)
     {
         _permissionRequest = permissionRequest;
-        _clientConfiguration = clientConfiguration;
     }
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
