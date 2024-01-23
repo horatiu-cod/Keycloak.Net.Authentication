@@ -11,12 +11,12 @@ public static class UmaBuilderExtension
     public static IServiceCollection AddUma (this IServiceCollection services, Action<ClientConfiguration> options)
     {
         services.AddHttpClient("uma");
-        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddTransient<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
-        services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
-        services.AddSingleton<IPermissionRequest, PermissionRequest>();
-        services.AddAuthorization();
+        services.AddTransient<IAudienceAccessRequest, AudienceAccessRequest>();
+        services.AddTransient<IPermissionRequest, PermissionRequest>();
+        //services.AddAuthorization();
 
         var message = $"Validation failed for {nameof(ClientConfiguration)} members";
 
