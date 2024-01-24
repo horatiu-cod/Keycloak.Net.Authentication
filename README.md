@@ -185,6 +185,30 @@ Add to your `appsettings.{Environment}.json`
 
 ```
 
+Extra AuthorizationOptions configuration can be added
+
+```csharp
+.AddUma("Client", configure =>
+{
+    configure.AddPolicy("<<policy_name>>", configure =>
+    {
+        configure.RequireClaim("<<claim_name>>", "<<claim_value>>");
+    });
+    configure.AddPolicy("<<policy_name>>", policy =>
+    {
+        policy.RequireUserName("<<username>>");
+    });
+    configure.AddPolicy("<<policy_name>>", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+    configure.AddPolicy("<<policy_name>>", policy =>
+    {
+        policy.RequireRole("<<role_name>>");
+    });
+})
+```
+
 ### Add to your endpoints
 #### MinimalAPI
 
@@ -209,14 +233,8 @@ app.MapGet("api/example", () =>
 
 ```
 
+## How it works
 
-
-
-
-
-
-
-
-
-
+The `UseUMA` middleware exchange the JWT of the request with a RPT received from Keycloak auth server after validating the realm access permission.
+The RPT contains the permission granted by the auth server, and is used to autorize access of the resources.
 
