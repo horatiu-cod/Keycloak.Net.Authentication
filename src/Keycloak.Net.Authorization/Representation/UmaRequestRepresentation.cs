@@ -1,6 +1,6 @@
 ﻿namespace Keycloak.Net.Authorization.Representation;
 
-internal class UmaRequestRepresentation
+internal record struct UmaRequestRepresentation()
 {
     public string ClientId { get; set; } = string.Empty;
     public string Resource { get; set; } = string.Empty;

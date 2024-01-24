@@ -5,7 +5,7 @@ namespace Keycloak.Net.Authorization;
 public static class AuthorizationEndpointConventionBuilderExtensions
 {
     /// <summary>
-    /// Adds the default authorization policy to the endpoint(s).
+    /// Adds the custom authorization policy to the endpoint(s).
     /// </summary>
     /// <param name="builder">The endpoint convention builder.</param>
     /// <returns>The original convention builder parameter.</returns>

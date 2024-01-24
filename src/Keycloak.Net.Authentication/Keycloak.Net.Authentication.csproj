@@ -13,8 +13,8 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://horatiu-cod.github.io/Keycloak.Net.Authentication/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/horatiu-cod/Keycloak.Net.Authentication</RepositoryUrl>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>1.0.2-rc0.1</Version>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.2-rc0.2</Version>
     <AssemblyVersion>1.0.2.0</AssemblyVersion>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>keycloak;authentication</PackageTags>
@@ -25,11 +25,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
   </ItemGroup>
+  
   <ItemGroup>
     <InternalsVisibleTo Include="$(AssemblyName).Test" />
   </ItemGroup>
+  
   <ItemGroup>
-    <None Include="..\..\README.md">
+    <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

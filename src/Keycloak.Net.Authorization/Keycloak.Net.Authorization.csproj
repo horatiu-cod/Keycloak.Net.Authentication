@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>1.0.2-rc0.1</Version>
+    <Version>1.0.2-rc0.2</Version>
     <Title>Keycloak.Net.Authorization</Title>
     <Authors>Horatiu Cod</Authors>
     <Company>52plus</Company>
@@ -13,9 +13,11 @@
     <PackageTags>keycloak;authorization</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageProjectUrl>https://horatiu-cod.github.io/Keycloak.Net.Authentication/</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,5 +27,13 @@
   <ItemGroup>
     <InternalsVisibleTo Include="$(AssemblyName).Test" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
 
 </Project>
