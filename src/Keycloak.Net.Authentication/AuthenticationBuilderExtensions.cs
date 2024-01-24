@@ -49,7 +49,10 @@ public static class AuthenticationBuilderExtensions
         builder.Services.AddOptionsWithValidateOnStart<JwtBearerValidationOptions>().Validate(jwtBearerValidationOptions =>
         {
             if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority))
+            {
+                message = $"Validation failed for {nameof(jwtBearerValidationOptions.Authority)}";
                 return false;
+            }
             return ValidateAudience(jwtBearerValidationOptions);
         }, message).Configure(authConfiguration);
         builder.AddOptions();
@@ -123,7 +126,10 @@ public static class AuthenticationBuilderExtensions
             .BindConfiguration(sectionName).Validate(jwtBearerValidationOptions =>
             {
                 if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority))
+                {
+                    message = $"Validation failed for {nameof(jwtBearerValidationOptions.Authority)}";
                     return false;
+                }
                 return ValidateAudience(jwtBearerValidationOptions);
             },message);
 #pragma warning disable CS8604 // Possible null reference argument.

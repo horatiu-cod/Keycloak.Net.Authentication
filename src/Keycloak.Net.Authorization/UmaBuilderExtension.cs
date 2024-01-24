@@ -38,12 +38,15 @@ public static class UmaBuilderExtension
         services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
         services.AddSingleton<IPermissionRequest, PermissionRequest>();
 
-        var message = $"Validation failed for {sectionName} members";
+        string message = string.Empty;
 
         services.AddOptionsWithValidateOnStart<ClientConfiguration>().BindConfiguration(sectionName).Validate(options =>
         {
             if (string.IsNullOrEmpty(options.ClientId))
+            {
+                message = $"Validation failed for {nameof(options.ClientId)} member";
                 return false;
+            }
             return true;
         }, message);
 
