@@ -3,12 +3,13 @@ using Keycloak.Net.Authorization.Configuration;
 using Keycloak.Net.Authorization.PermissionAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Keycloak.Net.Authorization;
 
 public static class UmaBuilderExtension
 {
-    public static IServiceCollection AddUma (this IServiceCollection services, Action<ClientConfiguration> options)
+    public static IServiceCollection AddUma (this IServiceCollection services, Action<ClientConfiguration> options, Action<AuthorizationOptions>? configure = default)
     {
         services.AddHttpClient("uma");
         services.AddTransient<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
@@ -16,20 +17,25 @@ public static class UmaBuilderExtension
 
         services.AddTransient<IAudienceAccessRequest, AudienceAccessRequest>();
         services.AddTransient<IPermissionRequest, PermissionRequest>();
-        //services.AddAuthorization();
 
-        var message = $"Validation failed for {nameof(ClientConfiguration)} members";
+        var message = $"Validation failed for {nameof(ClientConfiguration.ClientId)}";
 
         services.AddOptionsWithValidateOnStart<ClientConfiguration>().Validate(options =>
         {
             if (string.IsNullOrEmpty(options.ClientId))
+            {
                 return false;
+            }
             return true;
         }, message).Configure(options);
+        if (configure != null)
+        {
+            return services.AddAuthorization(configure);
 
-        return services;
+        }
+        return services.AddAuthorization();
     }
-    public static IServiceCollection AddUma(this IServiceCollection services, string sectionName)
+    public static IServiceCollection AddUma(this IServiceCollection services, string sectionName, Action<AuthorizationOptions>? configure = default)
     {
         services.AddHttpClient("uma");
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
@@ -38,18 +44,21 @@ public static class UmaBuilderExtension
         services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
         services.AddSingleton<IPermissionRequest, PermissionRequest>();
 
-        string message = string.Empty;
+        string message = $"Validation failed for {nameof(ClientConfiguration.ClientId)}";
 
         services.AddOptionsWithValidateOnStart<ClientConfiguration>().BindConfiguration(sectionName).Validate(options =>
         {
             if (string.IsNullOrEmpty(options.ClientId))
             {
-                message = $"Validation failed for {nameof(options.ClientId)} member";
                 return false;
             }
             return true;
         }, message);
+        if (configure != null)
+        {
+            return services.AddAuthorization(configure);
 
-        return services;
+        }
+        return services.AddAuthorization();
     }
 }
