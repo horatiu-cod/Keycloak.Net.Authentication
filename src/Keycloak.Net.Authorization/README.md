@@ -5,6 +5,7 @@
 Authentication and Authorization with Keycloak in .NET and ASP.NET Core. Secure your api with Keycloak UMA authorization and JWT bearer authentication.
 
 Add the [ Keycloak.Net.Authorization ](https://www.nuget.org/packages/Keycloak.Net.Authorization)  nuget package to your project. 
+It will add also the [ Keycloak.Net.Authentication ](https://www.nuget.org/packages/Keycloak.Net.Authentication) package used for token validation and authentication.
 
 Api calls requires auhorization header with an JWT token from Keycloak.
 ```curl
