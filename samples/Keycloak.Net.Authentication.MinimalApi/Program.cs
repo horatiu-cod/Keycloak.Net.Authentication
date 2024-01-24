@@ -40,7 +40,11 @@ builder.Services
     //        ValidAudiences = ["client-role"]
     //    };
     //})
-    .AddAuthorization(configure =>
+    //.AddUma(client =>
+    //{
+    //    client.ClientId = "client-role";
+    //})
+    .AddUma("Client", configure =>
     {
         configure.AddPolicy("email_verified", configure =>
         {
@@ -60,11 +64,25 @@ builder.Services
         });
 
     })
-    .AddUma(client =>
-    {
-        client.ClientId = "client-role";
-    })
-    //.AddUma("Client")
+    //.AddAuthorization(configure =>
+    //{
+    //    configure.AddPolicy("email_verified", configure =>
+    //    {
+    //        configure.RequireClaim("email_verified", "true");
+    //    });
+    //    configure.AddPolicy("name", policy =>
+    //    {
+    //        policy.RequireUserName("h@g.com");
+    //    });
+    //    configure.AddPolicy("auth", policy =>
+    //    {
+    //        policy.RequireAuthenticatedUser();
+    //    });
+    //    configure.AddPolicy("role", policy =>
+    //    {
+    //        policy.RequireRole("user");
+    //    });
+    //})
     ;
 
 
