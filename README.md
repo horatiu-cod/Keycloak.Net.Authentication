@@ -116,7 +116,7 @@ builder.Services
        }
 }
 ```
-### Authorization {#authorization}
+### Authorization
 
 #### Add to program.cs of your api
 
