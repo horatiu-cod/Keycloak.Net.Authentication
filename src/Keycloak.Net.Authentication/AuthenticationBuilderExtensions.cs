@@ -50,7 +50,6 @@ public static class AuthenticationBuilderExtensions
         {
             if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority))
             {
-                message = $"Validation failed for {nameof(jwtBearerValidationOptions.Authority)}";
                 return false;
             }
             return ValidateAudience(jwtBearerValidationOptions);
@@ -127,7 +126,6 @@ public static class AuthenticationBuilderExtensions
             {
                 if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority))
                 {
-                    message = $"Validation failed for {nameof(jwtBearerValidationOptions.Authority)}";
                     return false;
                 }
                 return ValidateAudience(jwtBearerValidationOptions);
@@ -188,7 +186,7 @@ public static class AuthenticationBuilderExtensions
             return true;
         if (JwtOptions.ValidAudiences is null)
             return false;
-        if (JwtOptions.ValidAudiences.Any())
+        if (JwtOptions.ValidAudiences.Length != 0)
             return true;
         return false;
     }
