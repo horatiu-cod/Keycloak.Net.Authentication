@@ -1,6 +1,4 @@
-﻿using Keycloak.Net.Authorization.Common;
-using Microsoft.AspNetCore.Authorization;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace Keycloak.Net.Authorization.PermissionAccess;
 
