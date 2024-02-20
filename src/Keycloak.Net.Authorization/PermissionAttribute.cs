@@ -16,7 +16,7 @@ public class PermissionAttribute : AuthorizeAttribute
     {
         Resource = resource;
         Scope = scope;
-        Policy = $"{POLICY_PREFIX}:{resource},{scope}";
+        Policy = $"{POLICY_PREFIX}={resource}:{scope}";
     }
 
     public string? Resource
@@ -25,7 +25,7 @@ public class PermissionAttribute : AuthorizeAttribute
         {
             if (!string.IsNullOrEmpty(Resource) && !string.IsNullOrEmpty(Policy))
             {
-                var rsx = Policy.Substring(POLICY_PREFIX.Length).Split(",")[0];
+                var rsx = Policy.Substring(POLICY_PREFIX.Length).Split(":")[0];
                 return rsx;
             }
             return default;
@@ -38,7 +38,7 @@ public class PermissionAttribute : AuthorizeAttribute
         {
             if (!string.IsNullOrEmpty(Resource) && !string.IsNullOrEmpty(Policy))
             {
-                var rsx = Policy.Substring(POLICY_PREFIX.Length).Split(",")[1];
+                var rsx = Policy.Substring(POLICY_PREFIX.Length+1).Split(":")[1];
                 return rsx;
             }
             return default;

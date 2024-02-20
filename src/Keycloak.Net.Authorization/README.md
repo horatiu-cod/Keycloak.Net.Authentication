@@ -105,34 +105,63 @@ Extra AuthorizationOptions configuration can be added
 })
 ```
 
+### Multitenant client support
+```csharp
+builder.Services
+  // Keycloak.Net.Authentication services 
+  .AddKeyCloakAuthentication()
+  .AddKeyCloakJwtBearerOptions("Appsettings_Section_Name")
+  .AddUma();
+new code 👆
+.....
+
+👇new code 
+app.UseUma();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+```
+
+
 ### Add to your endpoints
 #### MinimalAPI
 
-Via custom extenxion method
+Via custom extension method
 ```csharp
 app.MapGet("api/example", () =>
-    Results.Ok()
+    Results.Ok())
     .RequireUmaAuthorization(resource: "<<resource>>", scope: "<<scope>>");
 
 ```
 Via Attribute
 ```csharp
 app.MapGet("api/example", [Permission(Resource = "<<resource>>", Scope = "<<scope>>")] () =>
-    Results.Ok();
+    Results.Ok());
 
 ```
-Via ASP.NET extension method. The policy string format is: Permission:<<resource>>,<<scope>>
+## changings from previous version
+Via ASP.NET extension method. The policy string format is: Permission:<<resource>>:<<scope>>
 ```csharp
 app.MapGet("api/example", () =>
-    Results.Ok()
-    .RequireAuthorization("Permission:<<resource>>,<<scope>>");
+    Results.Ok())
+    .RequireAuthorization("Permission:<<resource>>:<<scope>>");
 
 ```
+Multitenant implementation
+```csharp
+app.MapGet("api/example", () =>
+    Results.Ok())
+    .RequireAuthorization("Permission:<<resource>>:<<scope>>")
+    .WithClient("<<client name>>);
+
+```
+
 
 ## How it works
 
 The `UseUMA` middleware exchange the JWT of the request with a RPT received from Keycloak auth server after validating the realm access permission.
-The RPT contains the permission granted by the auth server, and is used to autorize access of the resources.
+The RPT contains the permission granted by the auth server, and is used to authorize access of the resources.
 
 
 

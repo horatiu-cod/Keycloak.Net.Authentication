@@ -18,7 +18,7 @@ internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionR
     {
         if (context.Resource is HttpContext httpContext)
         {
-
+            var client =httpContext.GetEndpoint().Metadata.GetMetadata<ClientNameAttribute>()!.ClientName;
 
             if (context.User.Identity?.IsAuthenticated ?? false)
             {
@@ -28,7 +28,7 @@ internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionR
                 var token = await httpContext.GetTokenAsync("access_token");
                 if (token is null)
                     context.Fail();
-                var response = await _permissionRequest.VerifyPermissionAccessAsync(token!, requirement.Resource, requirement.Scope);
+                var response = await _permissionRequest.VerifyPermissionAccessAsync(token!, requirement.Resource, requirement.Scope, client);
                 if (response.IsSuccess)
                 {
                     context.Succeed(requirement);

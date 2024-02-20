@@ -21,11 +21,12 @@ internal class PermissionRequest : IPermissionRequest
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<Result<string>> VerifyPermissionAccessAsync(string accessToken, string resource, string scope, CancellationToken cancellationToken = default)
+    public async Task<Result<string>> VerifyPermissionAccessAsync(string accessToken, string resource, string scope, string? clientName = default, CancellationToken cancellationToken = default)
     {
+        var clientId = clientName ?? _options.Value.ClientId;  
         var client = _httpClientFactory.CreateClient("uma");
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        var requestbody = FormUrlEncodedContentBuilder.PermissionRequestBody(_options.Value.ClientId, resource, scope);
+        var requestbody = FormUrlEncodedContentBuilder.PermissionRequestBody(clientId, resource, scope);
         var url = $"{_jwtOptions.Value.Authority}/protocol/openid-connect/token";
 
         var response = await client.PostAsync(url, requestbody, cancellationToken);

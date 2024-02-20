@@ -3,7 +3,6 @@ using Keycloak.Net.Authorization.Configuration;
 using Keycloak.Net.Authorization.PermissionAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Keycloak.Net.Authorization;
 
@@ -54,6 +53,22 @@ public static class UmaBuilderExtension
             }
             return true;
         }, message);
+        if (configure != null)
+        {
+            return services.AddAuthorization(configure);
+
+        }
+        return services.AddAuthorization();
+    }
+    public static IServiceCollection AddUma(this IServiceCollection services, Action<AuthorizationOptions>? configure = default)
+    {
+        services.AddHttpClient("uma");
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+        services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
+        services.AddSingleton<IPermissionRequest, PermissionRequest>();
+
         if (configure != null)
         {
             return services.AddAuthorization(configure);

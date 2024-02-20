@@ -23,7 +23,7 @@ internal class PermissionPolicyProvider : IAuthorizationPolicyProvider
         if (policyName.StartsWith(POLICY_PREFIX) && !string.IsNullOrEmpty(policyName.Substring(POLICY_PREFIX.Length)))
         {
             var permission = policyName.Substring(POLICY_PREFIX.Length+1);
-            var parts = permission.Split(',');
+            var parts = permission.Split(':');
             var resource = parts[0];
             var scope = parts[1];
             var policy = new AuthorizationPolicyBuilder();

@@ -3,6 +3,7 @@ using Keycloak.Net.Authentication;
 using Keycloak.Net.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
+using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,7 +45,7 @@ builder.Services
     //{
     //    client.ClientId = "client-role";
     //})
-    .AddUma("Client", configure =>
+    .AddUma(configure =>
     {
         configure.AddPolicy("email_verified", configure =>
         {
@@ -62,7 +63,6 @@ builder.Services
         {
             policy.RequireRole("user");
         });
-
     })
     //.AddAuthorization(configure =>
     //{
@@ -101,40 +101,47 @@ app.UseUma();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("api/authenticate", () =>
+
+app.MapGet("api/authenticate", [ClientName("client-role")] () =>
     Results.Ok($"{HttpStatusCode.OK} authenticated"))
-    .RequireAuthorization();
+    .RequireAuthorization().ForClient("client-role");
 
 app.MapGet("api/authorize", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("email_verified");
+    .RequireAuthorization("email_verified").ForClient("client-role");
 
 app.MapGet("api/attribute",[Authorize(Roles = "user")] () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized"));
+    Results.Ok($"{HttpStatusCode.OK} authorized")).ForClient("client-role");
 
 app.MapGet("api/role", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("role");
+    .RequireAuthorization("role").ForClient(clientName: "client-role");
 
 app.MapGet("api/auth", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("auth");
+    .RequireAuthorization("auth").ForClient("client-role");
 
 app.MapGet("api/name", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("name");
+    .RequireAuthorization("name").ForClient("client-role");
 
 app.MapGet("api/uma1", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireUmaAuthorization(resource: "user-resource", scope: "user-scope");
+    .RequireUmaAuthorization(resource: "user-resource", scope: "user-scope").ForClient("client-role");
 
 app.MapGet("api/uma2", [Permission(Resource = "user-resource", Scope = "user-scope", Roles = "user")] () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized"));
+    Results.Ok($"{HttpStatusCode.OK} authorized")).ForClient("client-role");
 
 app.MapGet("api/uma3", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("Permission:user-resource,user-scope");
+    .RequireAuthorization("Permission:user-resource:user-scope").ForClient("client-role");
 
+app.MapGet("redirect", (string session_state, string code) =>
+{
+    Results.Ok($"{code} {session_state}");
+});
 
 app.Run();
 public partial class Program { }
+
+

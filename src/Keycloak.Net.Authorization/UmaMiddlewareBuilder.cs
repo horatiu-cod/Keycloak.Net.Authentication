@@ -25,10 +25,21 @@ internal class UmaMiddleware
     }
     public async Task InvokeAsync(HttpContext context, IAudienceAccessRequest _audienceAccessRequest)
     {
+        string client;
+        EndpointMetadataCollection metadata = context.GetEndpoint()!.Metadata;
+        if (metadata.GetMetadata<ClientNameAttribute>()  != null) 
+        { 
+        var clientName = metadata.GetMetadata<ClientNameAttribute>()!.ClientName;
+            client = clientName;
+        }
+        else
+        {
+            client = _options.Value.ClientId;
+        }
         if (context.Request.Headers.ContainsKey("Authorization") && !string.IsNullOrEmpty(context.Request.Headers.Authorization[0]) && context.Request.Headers.Authorization[0]!.StartsWith("Bearer"))
         {
             var token = context.Request.Headers.Authorization[0]!.Substring("Bearer ".Length);
-            var rpt = await _audienceAccessRequest.VerifyRealmAccess(_options.Value.ClientId, token);
+            var rpt = await _audienceAccessRequest.VerifyRealmAccess(client, token);
             if (rpt.IsSuccess)
             {
                 context.Request.Headers.Remove("Authorization");
