@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keycloak.Net.Authentication
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keycloak.Net.Authentication.MinimalApi", "samples\Keycloak.Net.Authentication.MinimalApi\Keycloak.Net.Authentication.MinimalApi.csproj", "{D3E1F51E-E471-4B21-82B8-754A87FCE480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keycloak.Net.Authorization", "src\Keycloak.Net.Authorization\Keycloak.Net.Authorization.csproj", "{42DCCD28-AEC9-41B4-84AC-7C71F97F28E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keycloak.Net.Authorization", "src\Keycloak.Net.Authorization\Keycloak.Net.Authorization.csproj", "{42DCCD28-AEC9-41B4-84AC-7C71F97F28E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keycloak.Net.User.Apis", "src\Keycloak.Net.User.Apis\Keycloak.Net.User.Apis.csproj", "{7BBFAA80-48BF-4D7B-9F7B-CEBFA9ABADE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{42DCCD28-AEC9-41B4-84AC-7C71F97F28E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42DCCD28-AEC9-41B4-84AC-7C71F97F28E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42DCCD28-AEC9-41B4-84AC-7C71F97F28E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BBFAA80-48BF-4D7B-9F7B-CEBFA9ABADE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BBFAA80-48BF-4D7B-9F7B-CEBFA9ABADE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BBFAA80-48BF-4D7B-9F7B-CEBFA9ABADE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BBFAA80-48BF-4D7B-9F7B-CEBFA9ABADE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
