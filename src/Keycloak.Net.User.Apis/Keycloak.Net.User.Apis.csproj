@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\User\" />
-    <Folder Include="Features\Role\" />
-    <Folder Include="Features\Token\" />
+    <ProjectReference Include="..\Keycloak.Net.Authentication\Keycloak.Net.Authentication.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\User\UpdateUser\" />
   </ItemGroup>
 
 </Project>
