@@ -3,7 +3,6 @@ using Keycloak.Net.Authentication;
 using Keycloak.Net.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
-using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -139,6 +138,10 @@ app.MapGet("api/uma3", () =>
 app.MapGet("redirect", (string session_state, string code) =>
 {
     Results.Ok($"{code} {session_state}");
+});
+
+app.MapPost("api/register", async () =>
+{
 });
 
 app.Run();

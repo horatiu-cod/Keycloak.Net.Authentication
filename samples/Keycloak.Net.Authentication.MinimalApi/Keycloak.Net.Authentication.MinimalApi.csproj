@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Keycloak.Net.Authentication\Keycloak.Net.Authentication.csproj" />
     <ProjectReference Include="..\..\src\Keycloak.Net.Authorization\Keycloak.Net.Authorization.csproj" />
+    <ProjectReference Include="..\..\src\Keycloak.Net.User.Apis\Keycloak.Net.User.Apis.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,15 +11,17 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0-release-23619-01" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="xunit" Version="2.6.5" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+    <PackageReference Include="Testcontainers" Version="3.8.0" />
+    <PackageReference Include="Testcontainers.Keycloak" Version="3.8.0" />
+    <PackageReference Include="xunit" Version="2.7.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -28,6 +30,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\samples\Keycloak.Net.Authentication.MinimalApi\Keycloak.Net.Authentication.MinimalApi.csproj" />
     <ProjectReference Include="..\..\..\src\Keycloak.Net.Authentication\Keycloak.Net.Authentication.csproj" />
+    <ProjectReference Include="..\..\..\src\Keycloak.Net.FluentApi\Keycloak.Net.FluentApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="import\" />
+    <Folder Include="certs\" />
   </ItemGroup>
 
 </Project>
