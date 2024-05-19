@@ -103,7 +103,7 @@ app.UseAuthorization();
 
 app.MapGet("api/authenticate", [ClientName("client-role")] () =>
     Results.Ok($"{HttpStatusCode.OK} authenticated"))
-    .RequireAuthorization().ForClient("client-role");
+    .RequireAuthorization();
 
 app.MapGet("api/authorize", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))

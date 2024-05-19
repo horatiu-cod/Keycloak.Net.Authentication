@@ -1,34 +1,30 @@
 ﻿using FluentAssertions;
-using Keycloak.Net.Authentication.Extensions;
 using Keycloak.Net.Authentication.JWT;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Claims;
+using Keycloak.Net.Authentication.Extensions;
 
-namespace Keycloak.Net.Authentication.Test.JWT;
+namespace Keycloak.Net.Authentication.Test.UnitTests;
 #pragma warning disable
-public class KeycloakClaimsTransformationTest 
+public class JwtClaimsTransformationTest
 {
-    public IOptions<JwtBearerValidationOptions> JwtBearerValidationOptions { get; }
-
-    public KeycloakClaimsTransformationTest()
-    {
-        JwtBearerValidationOptions = Options.Create(new JwtBearerValidationOptions());
-    }
-
     [Fact]
     public async Task KeycloakClaimsTransformation_TransformAsync_ShouldReturnJwtIdentityType()
     {
         //Arrange
         ClaimIdentityFixture _fixture = new ClaimIdentityFixture();
+        Action<JwtBearerOptions> JwtOptions = options =>
+        {
+            options.Authority = "https://keycloak.mydomain.com/realms/realm";
+            options.Audience = "audience";
+        };
 
-        JwtBearerValidationOptions.Value.Authority = "https://keycloak.mydomain.com/realms/realm";
-        JwtBearerValidationOptions.Value.Audience = "audience";
-        var transformation = new KeycloakClaimsTransformation(JwtBearerValidationOptions);
+        var transformation = new JwtClaimsTransformation(JwtOptions);
         var claimsPrincipal = _fixture.SetClaimsIdentity;
 
         //Act
         await transformation.TransformAsync(claimsPrincipal);
-        var claimsIdentity =(ClaimsIdentity?)_fixture.SetClaimsIdentity.Identity;
+        var claimsIdentity = (ClaimsIdentity?)_fixture.SetClaimsIdentity.Identity;
         //Assert
         claimsIdentity.TryGetClaim(c => c.Type == ClaimTypes.Name, out var claim).Should().BeTrue();
         claim.Value.Should().Be("horatiu");
@@ -38,15 +34,17 @@ public class KeycloakClaimsTransformationTest
         claimsIdentity.HasClaim(ClaimTypes.Role, "realm_second_role").Should().BeTrue();
         claimsIdentity.Claims.Count(item => ClaimTypes.Role == item.Type).Should().Be(4);
     }
-    [Fact]
+    [Fact] 
     public async Task KeycloakClaimsTransformation_TransformAsync_ShouldNotTransformIfIssuerIsNotSetCorrectly()
     {
         //Arrange
         ClaimIdentityFixture _fixture = new ClaimIdentityFixture();
-
-        JwtBearerValidationOptions.Value.Authority = "https://keycloak.mydomain.com/realms/wrong_realm";
-        JwtBearerValidationOptions.Value.Audience = "audience";
-        var transformation = new KeycloakClaimsTransformation(JwtBearerValidationOptions);
+        Action<JwtBearerOptions> JwtOptions = options =>
+        {
+            options.Authority = "https://keycloak.mydomain.com/realms/wrong_realm";
+            options.Audience = "audience";
+        };
+        var transformation = new JwtClaimsTransformation(JwtOptions);
         var claimsPrincipal = _fixture.SetClaimsIdentity;
 
         //Act
@@ -66,9 +64,12 @@ public class KeycloakClaimsTransformationTest
     {
         //Arrange
         ClaimIdentityFixture _fixture = new ClaimIdentityFixture();
-        JwtBearerValidationOptions.Value.Authority = "https://keycloak.mydomain.com/realms/realm";
-        JwtBearerValidationOptions.Value.Audience = "";
-        var transformation = new KeycloakClaimsTransformation(JwtBearerValidationOptions);
+        Action<JwtBearerOptions> JwtOptions = options =>
+        {
+            options.Authority = "https://keycloak.mydomain.com/realms/realm";
+            options.Audience = "";
+        };
+        var transformation = new JwtClaimsTransformation(JwtOptions);
         var claimsPrincipal = _fixture.SetClaimsIdentity;
 
         //Act
@@ -83,4 +84,5 @@ public class KeycloakClaimsTransformationTest
         claimsIdentity.HasClaim(ClaimTypes.Role, "realm_second_role").Should().BeTrue();
         claimsIdentity.Claims.Count(item => ClaimTypes.Role == item.Type).Should().Be(2);
     }
+
 }

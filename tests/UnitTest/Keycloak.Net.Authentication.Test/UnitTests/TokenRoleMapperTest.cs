@@ -2,7 +2,7 @@
 using Keycloak.Net.Authentication.JWT;
 using System.Security.Claims;
 
-namespace Keycloak.Net.Authentication.Test.JWT;
+namespace Keycloak.Net.Authentication.Test.UnitTests;
 #pragma warning disable
 public class TokenRoleMapperTest : IClassFixture<ClaimIdentityFixture>
 {

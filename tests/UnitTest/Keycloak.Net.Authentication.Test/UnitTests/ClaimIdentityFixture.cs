@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Keycloak.Net.Authentication.Test.JWT;
+namespace Keycloak.Net.Authentication.Test.UnitTests;
 
 public class ClaimIdentityFixture
 {

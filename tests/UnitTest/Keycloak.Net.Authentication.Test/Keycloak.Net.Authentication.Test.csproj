@@ -34,8 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="import\" />
-    <Folder Include="certs\" />
+    <Folder Include="IntegrationTests\import\" />
   </ItemGroup>
 
 </Project>
