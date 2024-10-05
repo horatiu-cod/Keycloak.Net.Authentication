@@ -2,7 +2,7 @@
 
 namespace Keycloak.Net.FluentApi.Features.Client.ClientAccessToken;
 
-internal class ClientTokenRequestBodyBuilder
+internal static class ClientTokenRequestBodyBuilder
 {
     public static FormUrlEncodedContent ClientTokenRequestBody(ClientTokenRequestDto clientDto)
     {

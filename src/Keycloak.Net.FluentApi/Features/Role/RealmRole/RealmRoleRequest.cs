@@ -19,8 +19,8 @@ internal class RealmRoleRequest : IRealmRoleRequest
                 var content = await result.Content.ReadFromJsonAsync<JsonObject>(cancellationToken);
                 if (content == null)
                     return Result<string>.Fail(result.StatusCode, $"{(int)result.StatusCode} from GetRealmRoleAsync");
-                var role = (string?)content["uuid"];
-                return Result<string?>.Success(role, result.StatusCode);
+                var roleUuid = (string?)content["uuid"];
+                return Result<string?>.Success(roleUuid, result.StatusCode);
             }
         }
         catch (Exception ex)

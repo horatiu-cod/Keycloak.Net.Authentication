@@ -15,6 +15,7 @@ public sealed class RegisterUser : IUserName, IUserPassword, IAuthServerUrl, IAu
     private string[]? _clientRoles;
     private string? _clientId;
     private IRegisterUserRequest _request;
+    private CancellationToken _cancellationToken;
 
     private const string adminApi = "admin/realms";
 
@@ -24,8 +25,9 @@ public sealed class RegisterUser : IUserName, IUserPassword, IAuthServerUrl, IAu
         var sb = new StringBuilder(url);
         _url = sb.Replace("realms", adminApi).ToString();
         _request = new RegisterUserRequest();
+        _cancellationToken = new CancellationToken();
     }
-    public static IAuthServerUrl Authority(string url) => new RegisterUser(url);
+    public static IAuthServerUrl Realm(string url) => new RegisterUser(url);
 
     public IAuthClientId AuthClientId(string authClientId)
     {
@@ -74,17 +76,17 @@ public sealed class RegisterUser : IUserName, IUserPassword, IAuthServerUrl, IAu
         using var httpClient = new HttpClient();
         if (_realmRoles is not null && _realmRoles.Any())
         {
-            var res = _request.RegisterUserWithRealmRole(_url, _uri, _authClientId, _authClientSecret, _username, _password, _realmRoles, httpClient);
+            var res = _request.RegisterUserWithRealmRole(_url, _uri, _authClientId, _authClientSecret, _username, _password, _realmRoles, httpClient, _cancellationToken);
             return res.Result;
         }
         else if (_clientRoles is not null && _clientRoles.Any())
         {
-            var res = _request.RegisterUserWithClientRole(_url, _uri ,_authClientId, _authClientSecret, _username, _password, _realmRoles, _clientId, httpClient);
+            var res = _request.RegisterUserWithClientRole(_url, _uri ,_authClientId, _authClientSecret, _username, _password, _realmRoles, _clientId, httpClient, _cancellationToken);
             return res.Result;
         }
         else
         {
-            var res = _request.RegisterUserWithoutRole(_url, _uri ,_authClientId, _authClientSecret, _username, _password, httpClient);
+            var res = _request.RegisterUserWithoutRole(_url, _uri ,_authClientId, _authClientSecret, _username, _password, httpClient, _cancellationToken);
             return res.Result;
 
         }

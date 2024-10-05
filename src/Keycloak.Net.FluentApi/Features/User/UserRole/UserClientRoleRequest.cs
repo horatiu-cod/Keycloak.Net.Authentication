@@ -2,7 +2,7 @@
 
 namespace Keycloak.Net.FluentApi.Features.User.UserRole;
 
-internal class UserClientRoleRequest
+internal class UserClientRoleRequest : IUserClientRoleRequest
 {
     public async Task<Result> AssignClientRolesToUserAsync(string userId, string clientUuid, string role, string accessToken, string url, HttpClient httpClient, CancellationToken cancellationToken)
     {

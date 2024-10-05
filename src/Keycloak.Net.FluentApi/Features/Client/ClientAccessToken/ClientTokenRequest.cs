@@ -1,21 +1,21 @@
 ﻿using Keycloak.Net.FluentApi.Common;
 
-
 namespace Keycloak.Net.FluentApi.Features.Client.ClientAccessToken;
 
 internal class ClientTokenRequest : IClientTokenRequest
 {
-    public async Task<Result<string?>> GetClientTokenAsync(string uri, string clientId, string clientSecret, HttpClient httpClient, CancellationToken cancellationToken = default)
+    public async Task<Result<string?>> GetClientTokenAsync(string url, string clientId, string clientSecret, HttpClient httpClient, CancellationToken cancellationToken = default)
     {
         var client = new ClientTokenRequestDto { ClientId = clientId, ClientSecret = clientSecret };
         var requestBody = ClientTokenRequestBodyBuilder.ClientTokenRequestBody(client);
-        var url = $"{uri}protocol/openid-connect/token";
+        var tokenUrl = $"{url}protocol/openid-connect/token";
         try
         {
-            var response = await httpClient.PostAsync(url, requestBody);
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            var response = await httpClient.PostAsync(tokenUrl, requestBody, cancellationToken);
+            if (response.StatusCode == HttpStatusCode.Unauthorized && !response.IsSuccessStatusCode)
             {
-                return Result<string>.Fail(response.StatusCode, $"{response.StatusCode} from GetClientTokenAsync");
+                var content = await response.Content.ReadFromJsonAsync<JsonObject>(cancellationToken);
+                return Result<string>.Fail(response.StatusCode, (string?)content!["error_description"]);
             }
             else if (!response.IsSuccessStatusCode)
             {
@@ -34,7 +34,7 @@ internal class ClientTokenRequest : IClientTokenRequest
         }
         catch (Exception ex)
         {
-            return Result<string>.Fail($"{ex.Message} Exception from GetClientTokenAsync");
+            return Result<string>.Fail(HttpStatusCode.InternalServerError,$"{ex.Message}");
         }
     }
 }

@@ -15,9 +15,11 @@ internal class ClientRequest : IClientRequest
         if (response.StatusCode != HttpStatusCode.OK)
             return Result<string?>.Fail(response.StatusCode, $"{(int)response.StatusCode} from GetClientAsync");
         var results = await response.Content.ReadFromJsonAsync<JsonObject[]>(cancellationToken);
-        if (results is null)
-            return Result<string?>.Fail(HttpStatusCode.NotFound, $"{(int)HttpStatusCode.NotFound} {HttpStatusCode.NotFound} from GetClientAsync");
-        var uuid = results.FirstOrDefault()["uuid"].ToString();
-        return Result<string?>.Success(uuid, response.StatusCode);
+        if (results is not null && results.Length != 0)
+        {
+            var uuid = results.FirstOrDefault()?["uuid"]?.ToString();
+            return Result<string?>.Success(uuid, response.StatusCode);
+        }
+        return Result<string?>.Fail(HttpStatusCode.NotFound, $"{(int)HttpStatusCode.NotFound} {HttpStatusCode.NotFound} from GetClientAsync");
     }
 }

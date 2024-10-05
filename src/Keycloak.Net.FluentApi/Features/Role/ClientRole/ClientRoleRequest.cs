@@ -2,9 +2,9 @@
 
 namespace Keycloak.Net.FluentApi.Features.Role.ClientRole;
 
-internal class ClientRoleRequest
+internal class ClientRoleRequest : IClientRoleRequest
 {
-    public async Task<Result<string?>> GetClientRoleAsync(string accessToken, string clientUuid, string roleName, string url, HttpClient httpClient, CancellationToken cancellationToken)
+    public async Task<Result<string?>> GetClientRoleAsync(string url, string accessToken, string clientUuid, string roleName, HttpClient httpClient, CancellationToken cancellationToken)
     {
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         try
@@ -18,7 +18,7 @@ internal class ClientRoleRequest
             else
             {
                 var roleDto = await result.Content.ReadFromJsonAsync<JsonObject>(cancellationToken);
-                var uuid = roleDto["uuid"].ToString();
+                var uuid = roleDto?["uuid"]?.ToString();
                 return Result<string?>.Success(uuid, result.StatusCode);
             }
         }
