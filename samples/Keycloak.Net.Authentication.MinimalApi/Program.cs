@@ -6,8 +6,6 @@ using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -44,7 +42,7 @@ builder.Services
     //{
     //    client.ClientId = "client-role";
     //})
-    .AddUma(configure =>
+    .AddUma("Resource",configure =>
     {
         configure.AddPolicy("email_verified", configure =>
         {
@@ -52,7 +50,7 @@ builder.Services
         });
         configure.AddPolicy("name", policy =>
         {
-            policy.RequireUserName("h@g.com");
+            policy.RequireUserName("hg@g.com");
         });
         configure.AddPolicy("auth", policy =>
         {
@@ -60,7 +58,7 @@ builder.Services
         });
         configure.AddPolicy("role", policy =>
         {
-            policy.RequireRole("user");
+            policy.RequireRole("admin-role");
         });
     })
     //.AddAuthorization(configure =>
@@ -95,53 +93,54 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseUma();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 
-app.MapGet("api/authenticate", [ClientName("client-role")] () =>
+
+app.MapGet("api/authenticate", [ClientName("public-client")] () =>
     Results.Ok($"{HttpStatusCode.OK} authenticated"))
     .RequireAuthorization();
 
 app.MapGet("api/authorize", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("email_verified").ForClient("client-role");
+    .RequireAuthorization("email_verified").ForClient("public-client");
 
-app.MapGet("api/attribute",[Authorize(Roles = "user")] () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized")).ForClient("client-role");
+app.MapGet("api/attribute",[Authorize(Roles = "admin-role")] () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized")).ForClient("public-client");
 
 app.MapGet("api/role", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("role").ForClient(clientName: "client-role");
+    .RequireAuthorization("role").ForClient(clientName: "public-client");
 
 app.MapGet("api/auth", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("auth").ForClient("client-role");
+    .RequireAuthorization("auth").ForClient("public-client");
 
 app.MapGet("api/name", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("name").ForClient("client-role");
+    .RequireAuthorization("name").ForClient("public-client");
 
 app.MapGet("api/uma1", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireUmaAuthorization(resource: "user-resource", scope: "user-scope").ForClient("client-role");
+    .RequireUmaAuthorization(resource: "workspaces", scope: "all");//.ForClient("webapp");
 
-app.MapGet("api/uma2", [Permission(Resource = "user-resource", Scope = "user-scope", Roles = "user")] () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized")).ForClient("client-role");
+app.MapGet("api/uma2", [Permission("workspaces", "alll", Roles = "admin-role")] () =>
+    Results.Ok($"{HttpStatusCode.OK} authorized")).ForClient("webapp");
 
 app.MapGet("api/uma3", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("Permission:user-resource:user-scope").ForClient("client-role");
+    .RequireAuthorization("urn:workspaces:all").ForClient("webapp");
 
 app.MapGet("redirect", (string session_state, string code) =>
 {
     Results.Ok($"{code} {session_state}");
 });
 
-app.MapPost("api/register", async () =>
+app.MapPost("api/register", () =>
 {
+    Results.Ok("Registered");
 });
 
 app.Run();
