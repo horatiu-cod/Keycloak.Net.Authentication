@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Claims;
 using Keycloak.Net.Authentication.Extensions;
 
-namespace Keycloak.Net.Authentication.Test.UnitTests;
+namespace Keycloak.Net.Authentication.Test.Unit;
 #pragma warning disable
 public class JwtClaimsTransformationTest
 {
@@ -34,7 +34,7 @@ public class JwtClaimsTransformationTest
         claimsIdentity.HasClaim(ClaimTypes.Role, "realm_second_role").Should().BeTrue();
         claimsIdentity.Claims.Count(item => ClaimTypes.Role == item.Type).Should().Be(4);
     }
-    [Fact] 
+    [Fact]
     public async Task KeycloakClaimsTransformation_TransformAsync_ShouldNotTransformIfIssuerIsNotSetCorrectly()
     {
         //Arrange

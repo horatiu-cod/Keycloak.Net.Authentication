@@ -1,12 +1,12 @@
 ﻿using System.Security.Claims;
 
-namespace Keycloak.Net.Authentication.Test.UnitTests;
+namespace Keycloak.Net.Authentication.Test.Unit;
 
 public class ClaimIdentityFixture
 {
     public ClaimIdentityFixture()
     {
-        SetClaimsIdentity = new ClaimsPrincipal( new ClaimsIdentity(new[]
+        SetClaimsIdentity = new ClaimsPrincipal(new ClaimsIdentity(new[]
         {
         new Claim(ClientResourceClaimType, ClientResourceClaimValue, MyValueType, MyUrl, MyUrl),
         new Claim(RealmClaimType, RealmClaimValue, MyValueType, MyUrl, MyUrl),
@@ -14,8 +14,8 @@ public class ClaimIdentityFixture
         new Claim(ClaimTypes.Name, "horatiu cod"),
         new Claim(ClaimTypes.Email, "horatiu@52.ro"),
         new Claim("iss", MyUrl)
-        }) );
-    
+        }));
+
     }
     public ClaimsPrincipal? SetClaimsIdentity { get; private set; }
 

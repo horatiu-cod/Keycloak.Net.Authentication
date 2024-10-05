@@ -4,9 +4,9 @@ using Keycloak.Net.Authentication.JWT;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
-namespace Keycloak.Net.Authentication.Test.UnitTests;
+namespace Keycloak.Net.Authentication.Test.Unit;
 #pragma warning disable
-public class KeycloakClaimsTransformationTest 
+public class KeycloakClaimsTransformationTest
 {
     public IOptions<JwtBearerValidationOptions> JwtBearerValidationOptions { get; }
 
@@ -28,7 +28,7 @@ public class KeycloakClaimsTransformationTest
 
         //Act
         await transformation.TransformAsync(claimsPrincipal);
-        var claimsIdentity =(ClaimsIdentity?)_fixture.SetClaimsIdentity.Identity;
+        var claimsIdentity = (ClaimsIdentity?)_fixture.SetClaimsIdentity.Identity;
         //Assert
         claimsIdentity.TryGetClaim(c => c.Type == ClaimTypes.Name, out var claim).Should().BeTrue();
         claim.Value.Should().Be("horatiu");

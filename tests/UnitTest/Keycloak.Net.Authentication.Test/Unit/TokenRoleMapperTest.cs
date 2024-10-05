@@ -2,7 +2,7 @@
 using Keycloak.Net.Authentication.JWT;
 using System.Security.Claims;
 
-namespace Keycloak.Net.Authentication.Test.UnitTests;
+namespace Keycloak.Net.Authentication.Test.Unit;
 #pragma warning disable
 public class TokenRoleMapperTest : IClassFixture<ClaimIdentityFixture>
 {
@@ -17,7 +17,7 @@ public class TokenRoleMapperTest : IClassFixture<ClaimIdentityFixture>
     public void TokenRoleMapper_GetRoles_ShouldReturnListOfRoles()
     {
         //Arrange
-        var claimsIdentity =(ClaimsIdentity?)_fixture.SetClaimsIdentity.Identity;
+        var claimsIdentity = (ClaimsIdentity?)_fixture.SetClaimsIdentity.Identity;
 
         //Act
         var roles = TokenRoleMapper.GetRoles(claimsIdentity, "audience");
