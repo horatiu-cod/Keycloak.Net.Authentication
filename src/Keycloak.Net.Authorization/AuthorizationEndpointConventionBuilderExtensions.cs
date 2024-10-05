@@ -11,7 +11,7 @@ public static class AuthorizationEndpointConventionBuilderExtensions
     /// <returns>The original convention builder parameter.</returns>
     public static TBuilder RequireUmaAuthorization<TBuilder>(this TBuilder builder, string resource, string scope) where TBuilder : IEndpointConventionBuilder
     {
-        if (builder == null)
+        if (object.Equals(builder, default(TBuilder)))
         {
             throw new ArgumentNullException(nameof(builder));
         }

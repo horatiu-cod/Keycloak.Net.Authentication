@@ -1,6 +1,6 @@
 ﻿namespace Keycloak.Net.Authorization.Common;
 
-internal class Constants
+internal static class Constants
 {
     public const string GrantType = "grant_type";
     public const string GrantTypeValue = "urn:ietf:params:oauth:grant-type:uma-ticket";

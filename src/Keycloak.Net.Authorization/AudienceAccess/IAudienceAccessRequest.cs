@@ -4,5 +4,5 @@ namespace Keycloak.Net.Authorization.AudienceAccess;
 
 internal interface IAudienceAccessRequest
 {
-    Task<Result<string>> VerifyRealmAccess(string audience, string accessToken, CancellationToken cancellationToken = default);
+    Task<Result<string>> VerifyRealmAccess(string client, string accessToken, CancellationToken cancellationToken = default);
 }

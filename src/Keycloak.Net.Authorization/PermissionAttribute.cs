@@ -5,49 +5,23 @@ using System.Diagnostics;
 namespace Keycloak.Net.Authorization;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 [DebuggerDisplay("{ToString(),nq}")]
-public class PermissionAttribute : AuthorizeAttribute
+public class PermissionAttribute : AuthorizeAttribute, IAuthorizationRequirement, IAuthorizationRequirementData
 {
-    const string POLICY_PREFIX = "Permission";
-    public PermissionAttribute()
-    {
-
-    }
+    public string Resource { get; }
+    public string Scope { get; }
     public PermissionAttribute(string resource, string scope)
     {
         Resource = resource;
         Scope = scope;
-        Policy = $"{POLICY_PREFIX}={resource}:{scope}";
     }
-
-    public string? Resource
+    public IEnumerable<IAuthorizationRequirement> GetRequirements()
     {
-        get
-        {
-            if (!string.IsNullOrEmpty(Resource) && !string.IsNullOrEmpty(Policy))
-            {
-                var rsx = Policy.Substring(POLICY_PREFIX.Length).Split(":")[0];
-                return rsx;
-            }
-            return default;
-        }
-        set { }
-    }
-    public string? Scope
-    {
-        get
-        {
-            if (!string.IsNullOrEmpty(Resource) && !string.IsNullOrEmpty(Policy))
-            {
-                var rsx = Policy.Substring(POLICY_PREFIX.Length+1).Split(":")[1];
-                return rsx;
-            }
-            return default;
-        }
-        set { }
+        yield return this;
     }
 
     public override string ToString()
     {
-        return DebuggerHelpers.GetDebugText(Resource!, nameof(Resource), Scope!, nameof(Scope), includeNullValues: false, prefix: POLICY_PREFIX);
+        return DebuggerHelpers.GetDebugText(Resource, nameof(Resource), Scope, nameof(Scope), includeNullValues: false);
     }
+
 }

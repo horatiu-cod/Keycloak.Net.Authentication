@@ -11,11 +11,11 @@ public static class UmaBuilderExtension
     public static IServiceCollection AddUma (this IServiceCollection services, Action<ClientConfiguration> options, Action<AuthorizationOptions>? configure = default)
     {
         services.AddHttpClient("uma");
-        services.AddTransient<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-        services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddScoped<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
-        services.AddTransient<IAudienceAccessRequest, AudienceAccessRequest>();
-        services.AddTransient<IPermissionRequest, PermissionRequest>();
+        services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
+        services.AddScoped<IPermissionRequest, PermissionRequest>();
 
         var message = $"Validation failed for {nameof(ClientConfiguration.ClientId)}";
 
@@ -41,7 +41,7 @@ public static class UmaBuilderExtension
         services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
         services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
-        services.AddSingleton<IPermissionRequest, PermissionRequest>();
+        services.AddScoped<IPermissionRequest, PermissionRequest>();
 
         string message = $"Validation failed for {nameof(ClientConfiguration.ClientId)}";
 
@@ -67,7 +67,7 @@ public static class UmaBuilderExtension
         services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
         services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
-        services.AddSingleton<IPermissionRequest, PermissionRequest>();
+        services.AddScoped<IPermissionRequest, PermissionRequest>();
 
         if (configure != null)
         {

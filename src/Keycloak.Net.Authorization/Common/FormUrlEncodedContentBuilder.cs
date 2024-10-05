@@ -1,6 +1,6 @@
 ﻿namespace Keycloak.Net.Authorization.Common;
 
-internal class FormUrlEncodedContentBuilder
+internal static class FormUrlEncodedContentBuilder
 {
     internal static FormUrlEncodedContent AudienceAccessRequestBody(string clientId)
     {
