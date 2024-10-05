@@ -166,7 +166,7 @@ public static class AuthenticationBuilderExtensions
     }
     public static void AddOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
     {
-        builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
+        builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>,ConfigureJwtBearerValidationOptions>();
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
         builder.AddJwtBearer(options);
 

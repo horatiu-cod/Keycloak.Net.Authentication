@@ -24,7 +24,7 @@ internal static class TokenRoleMapper
         if (audience is not null)
         { 
             var clientRoles = GetClientRoles(identity, audience);
-            if (clientRoles.Any())
+            if (clientRoles.Count != 0)
             {
                 foreach (var role in clientRoles) 
                 {
@@ -33,7 +33,7 @@ internal static class TokenRoleMapper
             }
         }
         var realmRoles = GetRealmRoles(identity);
-        if (realmRoles.Any())
+        if (realmRoles.Count != 0)
         {
             foreach(var role in realmRoles)
             {
@@ -69,23 +69,20 @@ internal static class TokenRoleMapper
         var returnRoles = new List<string>();
         if (audience is null)
             return returnRoles;
-        if (identity.TryGetClaim(ClientResourceAccessAdapter, out var resourceAccessClaim))
+        if (identity.TryGetClaim(ClientResourceAccessAdapter, out var resourceAccessClaim) && resourceAccessClaim is not null)
         {
-            if (resourceAccessClaim is not null)
+            var resource = JsonDocument.Parse(resourceAccessClaim.Value);
+            var audienceResourceExist = resource
+                .RootElement
+                .TryGetProperty(audience, out var rolesElement);
+            if (audienceResourceExist)
             {
-                var resource = JsonDocument.Parse(resourceAccessClaim.Value);
-                var audienceResourceExist = resource
-                    .RootElement
-                    .TryGetProperty(audience, out var rolesElement);
-                if (audienceResourceExist)
+                var roles = rolesElement.GetProperty(RoleKeyName).EnumerateArray();
+                foreach (var role in roles)
                 {
-                    var roles = rolesElement.GetProperty(RoleKeyName).EnumerateArray();
-                    foreach ( var role in roles )
-                    {
-                        var value = role.GetString();
-                        if(value is not null)
-                            returnRoles.Add(value);
-                    }
+                    var value = role.GetString();
+                    if (value is not null)
+                        returnRoles.Add(value);
                 }
             }
         }
