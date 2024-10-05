@@ -29,7 +29,7 @@ internal class RequestUrlBuilder : IRequestUrlBuilder
     {
         get
         {
-            var url = authority.EndsWith("/") ? authority.TrimEnd('/') : authority;
+            var url = authority.EndsWith('/') ? authority.TrimEnd('/') : authority;
             var sb = new StringBuilder(url);
             sb.Append("/protocol/openid-connect/token");
             return sb.ToString();
@@ -39,7 +39,7 @@ internal class RequestUrlBuilder : IRequestUrlBuilder
     {
         get
         {
-            var url = authority.EndsWith("/") ? authority.TrimEnd('/') : authority;
+            var url = authority.EndsWith('/') ? authority.TrimEnd('/') : authority;
             var sb = new StringBuilder(url);
             sb.Append("/protocol/openid-connect/logout");
             return sb.ToString();

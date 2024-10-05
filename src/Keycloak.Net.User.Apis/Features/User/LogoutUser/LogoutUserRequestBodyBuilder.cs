@@ -4,7 +4,7 @@ namespace Keycloak.Net.User.Apis.Features.User.LogoutUser;
 
 internal static class LogoutUserRequestBodyBuilder
 {
-    internal static FormUrlEncodedContent LogoutUserTokenRequestBody(LogoutUserRequestDto logoutUserRequestDto)
+    internal static FormUrlEncodedContent LogoutUserTokenRequestBody(LogoutUserRequest logoutUserRequestDto)
     {
         var data = new Dictionary<string, string>
         {
