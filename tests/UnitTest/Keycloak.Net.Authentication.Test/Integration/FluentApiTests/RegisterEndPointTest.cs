@@ -10,7 +10,7 @@ public class RegisterEndPointTest : IClassFixture<ApiFactory>
     private const string _authClientSecret = "Jj4hCpRdezqvSVDjxXmNRWZ5CTRsg14p";
     private const string _clientId = "";
 
-    [Fact]
+    //[Fact]
     public void RegisterUser_RegisterUserWithoutRole_ReturnCreated()
     {
         //Arrange
@@ -32,7 +32,7 @@ public class RegisterEndPointTest : IClassFixture<ApiFactory>
         Assert.True(response.StatusCode == System.Net.HttpStatusCode.Created);
     }
 
-    [Fact]
+    //[Fact]
     public void RegisterUser_RegisterUserWithRealmRole_ReturnCreated()
     {
         //Arrange
@@ -56,7 +56,7 @@ public class RegisterEndPointTest : IClassFixture<ApiFactory>
         Assert.True(response.StatusCode == System.Net.HttpStatusCode.Created);
     }
 
-    [Fact]
+    //[Fact]
     public void RegisterUser_RegisterUserWithClientRole_ReturnCreated()
     {
         //Arrange

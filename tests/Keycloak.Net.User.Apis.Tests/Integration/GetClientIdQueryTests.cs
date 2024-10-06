@@ -9,7 +9,7 @@ public class GetClientIdQueryTests : IClassFixture<TokenRequestFixture>, IClassF
     readonly HttpClient _httpClient;
     readonly string url = "https://localhost:8843/admin/realms/oidc";
 
-    public GetClientIdQueryTests(TokenRequestFixture tokenRequest, KeycloakFixture keycloakFixture)
+    public GetClientIdQueryTests(TokenRequestFixture tokenRequest)
     {
         _httpClient = tokenRequest._httpClient;
         _sut = new GetClientIdQuery();

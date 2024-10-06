@@ -3,7 +3,7 @@ using Testcontainers.Keycloak;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
-public class KeycloakFixture : IAsyncLifetime
+public class KeycloakFixture 
 {
     private readonly KeycloakContainer _container = new KeycloakBuilder()
         .WithImage("quay.io/keycloak/keycloak:25.0")

@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 
 builder.Configuration.EnableSubstitutions();
 
@@ -126,7 +127,7 @@ app.MapGet("api/uma1", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireUmaAuthorization(resource: "workspaces", scope: "all");//.ForClient("webapp");
 
-app.MapGet("api/uma2", [Permission("workspaces", "alll", Roles = "admin-role")] () =>
+app.MapGet("api/uma2", [Permission("workspaces", "all", Roles = "admin-role")] () =>
     Results.Ok($"{HttpStatusCode.OK} authorized")).ForClient("webapp");
 
 app.MapGet("api/uma3", () =>

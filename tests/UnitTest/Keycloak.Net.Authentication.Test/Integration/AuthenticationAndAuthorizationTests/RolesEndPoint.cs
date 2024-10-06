@@ -11,7 +11,7 @@ public class RolesEndPoint : IClassFixture<ApiFactory>
     private readonly HttpClient _httpClient;
     private readonly HttpClient _client;
     const string url = "https://localhost:8843/realms/oidc/protocol/openid-connect/token";
-    const string apiUrl = "api/attribute";
+    const string apiUrl = "api/role";
 
     public RolesEndPoint(ApiFactory apiFactory)
     {
