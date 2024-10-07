@@ -14,6 +14,9 @@ services:
       KEYCLOAK_IMPORT: 
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/certs/localhostcert.pem
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/certs/localhostkey.pem
+      DEBUG: 'true'
+      DEBUG_PORT: '*:8443'
+      KC_LOG_LEVEL: INFO,de.keycloak:debug
     ports:
       - "8080:8080"
       - "8843:8443"
