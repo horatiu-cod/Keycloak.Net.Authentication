@@ -21,10 +21,10 @@ jobs:
         LOCAL_CERT: ${{secrets.LOCAL_CERT}}
         LOCAL_KEY: ${{secrets.LOCAL_KEY}}
       run: |
+        ls
         mkdir certs |
-        ls |
-        echo $LOCAL_CERT base64 --decode > certs/localhostcert.pem |
-        ls |
+        ls 
+        echo $LOCAL_CERT base64 --decode > certs/localhostcert.pem 
         echo $LOCAL_KEY > base64 --decode > certs/localhostkey.pem
 #        base64 --decode > ./certs/localhostcert.pem
 
