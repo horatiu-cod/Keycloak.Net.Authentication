@@ -17,15 +17,23 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Retrieve certs files
-      with:
+      env:
         LOCAL_CERT: ${{secrets.LOCAL_CERT}}
         LOCAL_KEY: ${{secrets.LOCAL_KEY}}
       run: |
-        mkdir -p ./certs
-        echo $LOCAL_CERT | 
-        base64 --decode > ./certs/localhostcert.pem
-        echo $LOCAL_KEY > |
-        base64 --decode > ./certs/localhostkey.pem
+        ls 
+        mkdir certs 
+        ls
+#        chmod +x certs |
+#        cd certs |
+#       ls |
+#        echo $LOCAL_CERT |
+#        base64 --decode > certs/localhostcert.pem 
+#        echo $LOCAL_KEY |
+#        base64 --decode > certs/localhostkey.pem 
+#        base64 --decode > ./certs/localhostcert.pem
+
+#        base64 --decode > ./certs/localhostkey.pem
 #    - name: Install Docker
 #      run: |
 #        curl -fsSL https://get.docker.com -o get-docker.sh
