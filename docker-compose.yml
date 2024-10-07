@@ -20,7 +20,7 @@ services:
       postgres_keycloak:
         condition: service_healthy
     volumes:
-      - ./certs:/opt/keycloak/certs
+      - certs:/opt/keycloak/certs
     networks:
       - keycloak_network
 
@@ -45,6 +45,12 @@ services:
 
 volumes:
   postgres-data:
+  certs:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./certs
 networks:
   keycloak_network:
     driver: bridge
