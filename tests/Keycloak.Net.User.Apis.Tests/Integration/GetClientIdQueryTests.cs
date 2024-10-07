@@ -3,7 +3,7 @@ using Keycloak.Net.User.Apis.Features.Client.ClientRequest;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
-public class GetClientIdQueryTests : IClassFixture<TokenRequestFixture>, IClassFixture<KeycloakFixture>
+public class GetClientIdQueryTests : IClassFixture<TokenRequestFixture>
 {
     private readonly IGetClientIdQuery _sut;
     readonly HttpClient _httpClient;
