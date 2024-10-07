@@ -20,7 +20,7 @@ internal class DeleteUserCommand : IDeleteUserCommand
     }
     public async Task<Result> DeleteUserAsync(string baseAddress, string realmName, string userId, string realmAdminClientId, string realmAdminClientSecret, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient();
+        var httpClient = _httpClientFactory.CreateClient("kapi");
         var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
         var client = new GetClientTokenRequest(realmAdminClientId, realmAdminClientSecret);
         var tokenResponse = await _getClientTokenQuery.GetClientTokenAsync(tokenUrl, client, httpClient);
@@ -29,7 +29,7 @@ internal class DeleteUserCommand : IDeleteUserCommand
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.Content?.AccessToken);
         try
         {
-            var adminUrl = BaseUrl.RealmUrl(baseAddress, realmName);
+            var adminUrl = BaseUrl.AdminUrl(baseAddress, realmName);
             var response = await httpClient.DeleteAsync($"/{adminUrl}/users/{userId}", cancellationToken);
             if (!response.IsSuccessStatusCode)
             {

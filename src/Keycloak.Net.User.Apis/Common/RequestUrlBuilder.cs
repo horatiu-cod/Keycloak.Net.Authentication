@@ -6,21 +6,32 @@ namespace Keycloak.Net.User.Apis.Common;
 
 internal class RequestUrlBuilder : IRequestUrlBuilder
 {
-    private readonly IOptions<JwtBearerValidationOptions> _options;
+    private readonly JwtBearerValidationOptions _options;
 
-    public RequestUrlBuilder(IOptions<JwtBearerValidationOptions> options)
+    public RequestUrlBuilder(IOptionsMonitor<JwtBearerValidationOptions> options)
     {
-        _options = options;
+        _options = options.CurrentValue;
     }
 
-    string authority => _options.Value.Authority!;
-
     private const string adminApi = "admin/realms";
+
+    string BaseUrl
+    {
+        get
+        {
+            if (_options.Authority is not null)
+                return _options.Authority;
+            else if (_options.ValidIssuer is not null)
+                return _options.ValidIssuer;
+            else return string.Empty;
+        }
+    }
+
     public string AdminApi
     {
         get
         {
-            StringBuilder sb = new StringBuilder(authority);
+            StringBuilder sb = new StringBuilder(BaseUrl);
             sb.Replace("realms", adminApi);
             return sb.ToString();
         }
@@ -29,7 +40,7 @@ internal class RequestUrlBuilder : IRequestUrlBuilder
     {
         get
         {
-            var url = authority.EndsWith('/') ? authority.TrimEnd('/') : authority;
+            var url = BaseUrl.EndsWith('/') ? BaseUrl.TrimEnd('/') : BaseUrl;
             var sb = new StringBuilder(url);
             sb.Append("/protocol/openid-connect/token");
             return sb.ToString();
@@ -39,7 +50,7 @@ internal class RequestUrlBuilder : IRequestUrlBuilder
     {
         get
         {
-            var url = authority.EndsWith('/') ? authority.TrimEnd('/') : authority;
+            var url = BaseUrl.EndsWith('/') ? BaseUrl.TrimEnd('/') : BaseUrl;
             var sb = new StringBuilder(url);
             sb.Append("/protocol/openid-connect/logout");
             return sb.ToString();

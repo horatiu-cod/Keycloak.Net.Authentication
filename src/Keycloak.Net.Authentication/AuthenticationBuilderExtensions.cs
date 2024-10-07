@@ -20,8 +20,8 @@ public static class AuthenticationBuilderExtensions
     /// <returns>The <see cref="AuthenticationBuilder"/> so additional calls can be chained.</returns>
     public static AuthenticationBuilder AddKeyCloakAuthentication(this IServiceCollection services)
     {
-        services.AddSingleton<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticateSchemeOptions>();
-        return services.AddAuthentication();
+        //services.AddSingleton<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticateSchemeOptions>()
+        return services.AddAuthentication("keycloak");
     }
     /// <summary>
     /// Adds <see cref="JwtBearerValidationOptions"/> options service.
@@ -130,9 +130,9 @@ public static class AuthenticationBuilderExtensions
                 }
                 return ValidateAudience(jwtBearerValidationOptions);
             },message);
-#pragma warning disable CS8604 // Possible null reference argument.
-        builder.AddOptions(options);
-#pragma warning restore CS8604 // Possible null reference argument.
+        if (options != null)
+            builder.AddOptions(options);
+        else builder.AddOptions();
         return builder.Services;
     }
     /// <summary>
@@ -160,7 +160,7 @@ public static class AuthenticationBuilderExtensions
     public static IServiceCollection AddJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
     {
         builder.Services.AddTransient<IClaimsTransformation>(sp => new JwtClaimsTransformation(options));
-        builder.AddJwtBearer(options);
+        builder.AddJwtBearer("keycloak", options);
 
         return builder.Services;
     }
@@ -168,7 +168,7 @@ public static class AuthenticationBuilderExtensions
     {
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>,ConfigureJwtBearerValidationOptions>();
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
-        builder.AddJwtBearer(options);
+        builder.AddJwtBearer("keycloak", options);
 
     }
 
@@ -176,7 +176,7 @@ public static class AuthenticationBuilderExtensions
     {
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
-        builder.AddJwtBearer();
+        builder.AddJwtBearer("keycloak");
     }
     private static bool ValidateAudience(JwtBearerValidationOptions JwtOptions)
     {

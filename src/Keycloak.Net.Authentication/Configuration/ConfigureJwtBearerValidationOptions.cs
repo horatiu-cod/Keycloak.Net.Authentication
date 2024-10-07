@@ -16,10 +16,15 @@ public class ConfigureJwtBearerValidationOptions : IConfigureNamedOptions<JwtBea
 
     public void Configure(string? name, JwtBearerOptions options)
     {
-        if (string.Equals(name, JwtBearerDefaults.AuthenticationScheme))
+        //if (string.Equals(name, JwtBearerDefaults.AuthenticationScheme))
+        //{
+        //    Configure(options);
+        //}
+        if (string.Equals(name, "keycloak"))
         {
             Configure(options);
         }
+
     }
 
     public void Configure(JwtBearerOptions options)

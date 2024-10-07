@@ -17,8 +17,8 @@ internal class LogoutUserCommand : ILogoutUserCommand
 
     public async Task<Result> LogoutUserAsync(string baseAddress, string realmName, string clientId, string clientSecret, string refreshToken, CancellationToken cancellationToken = default)
     {
-        var httpClient = _httpClientFactory.CreateClient();
-        var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
+        var httpClient = _httpClientFactory.CreateClient("kapi");
+        var tokenUrl = BaseUrl.LogoutUrl(baseAddress, realmName);
 
         var logoutUserRequestDto = new LogoutUserRequest(clientId, clientSecret, refreshToken);
         var requestBody = LogoutUserRequestBodyBuilder.LogoutUserTokenRequestBody(logoutUserRequestDto);

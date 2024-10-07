@@ -20,9 +20,9 @@ internal class ResetPasswordCommand : IResetPasswordCommand
 
     public async Task<Result> ResetPasswordAsync(string baseAddress, string realmName, string clientId, string clientSecret, string userId, string password, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient();
+        var httpClient = _httpClientFactory.CreateClient("kapi");
         var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
-        var adminUrl = BaseUrl.RealmUrl(baseAddress, realmName);
+        var adminUrl = BaseUrl.AdminUrl(baseAddress, realmName);
         var client = new GetClientTokenRequest(clientId, clientSecret);
 
         var tokenResponse = await _getClientTokenQuery.GetClientTokenAsync(tokenUrl, client, httpClient);

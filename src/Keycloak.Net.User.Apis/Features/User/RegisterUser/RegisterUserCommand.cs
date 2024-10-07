@@ -31,9 +31,9 @@ internal class RegisterUserCommand : IRegisterUserCommand
 
     public async Task<Result> RegisterUserWithRealmRole(string baseAddress, string realmName, string clientId, string clientSecret, string username, string password, string[] rolesName)
     {
-        var httpClient = _httpClient.CreateClient();
+        var httpClient = _httpClient.CreateClient("kapi");
         var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
-        var adminUrl = BaseUrl.RealmUrl(baseAddress, realmName);
+        var adminUrl = BaseUrl.AdminUrl(baseAddress, realmName);
         var client = new GetClientTokenRequest(clientId, clientSecret);
         var tokenResponse = await _getClientTokenQuery.GetClientTokenAsync(tokenUrl, client, httpClient);
         if(!tokenResponse.IsSuccess)
@@ -62,9 +62,9 @@ internal class RegisterUserCommand : IRegisterUserCommand
     }
     public async Task<Result> RegisterUserWithClientRole(string baseAddress, string realmName, string clientId, string clientSecret, string clientUuid, string username, string password, string[] rolesName)
     {
-        var httpClient = _httpClient.CreateClient();
+        var httpClient = _httpClient.CreateClient("kapi");
         var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
-        var adminUrl = BaseUrl.RealmUrl(baseAddress, realmName);
+        var adminUrl = BaseUrl.AdminUrl(baseAddress, realmName);
         var client = new GetClientTokenRequest(clientId, clientSecret);
 
         var tokenResponse = await _getClientTokenQuery.GetClientTokenAsync(tokenUrl, client, httpClient);
@@ -96,7 +96,7 @@ internal class RegisterUserCommand : IRegisterUserCommand
     }
     public async Task<Result> RegisterUser(string baseAddress, string realmName, string clientId, string clientSecret, string username, string password)
     {
-        var httpClient = _httpClient.CreateClient();
+        var httpClient = _httpClient.CreateClient("kapi");
         var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
         var adminUrl = BaseUrl.AdminUrl(baseAddress, realmName);
         var client = new GetClientTokenRequest(clientId, clientSecret);

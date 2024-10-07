@@ -22,7 +22,7 @@ internal class UpdateUserCommand : IUpdateUserCommand
 
     public async Task<Result> UpdateUserAsync(string baseAddress, string realmName, string clientId, string clientSecret, string username, string? firstName, string? lastName, string? email, CancellationToken cancellationToken = default)
     {
-        var httpClient = _httpClientFactory.CreateClient();
+        var httpClient = _httpClientFactory.CreateClient("kapi");
         var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
         var adminUrl = BaseUrl.AdminUrl(baseAddress, realmName);
         var client = new GetClientTokenRequest(clientId, clientSecret);

@@ -3,7 +3,6 @@ using Keycloak.Net.User.Apis.Features.Token;
 using System.Net.Http.Json;
 using System.Net;
 using System.Text.Json.Nodes;
-using System.Net.Http;
 
 namespace Keycloak.Net.User.Apis.Features.User.LoginUser;
 
@@ -18,7 +17,7 @@ internal class GetUserTokenQuery : IGetUserTokenQuery
 
     public async Task<Result<TokenRepresentation?>> LoginUserAsync(string baseAddress, string realmName, string clientId, string clientSecret, string userName, string password, CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient();
+        var httpClient = _httpClientFactory.CreateClient("kapi");
         var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
 
         var userRequestDto = new GetUserTokenRequest(clientId, clientSecret, userName, password);

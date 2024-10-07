@@ -17,7 +17,7 @@ internal class UserRefreshTokenQuery : IUserRefreshTokenQuery
 
     public async Task<Result<TokenRepresentation?>> RefreshTokenAsync(string baseAddress, string realmName, string clientId, string clientSecret, string refreshtoken, CancellationToken cancellationToken = default)
     {
-        var httpClient = _httpClientFactory.CreateClient();
+        var httpClient = _httpClientFactory.CreateClient("kapi");
         var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
 
         var userRefreshTokenRequest = new UserRefreshTokenRequest(clientId, clientSecret, refreshtoken);

@@ -21,8 +21,9 @@ internal class GetUserQuery : IGetUserQuery
             }
             else
             {
-                var results = await response.Content.ReadFromJsonAsync<GetUserResponse[]>();
-                var result = results?.FirstOrDefault( results => results.UserName == username);
+                var results = await response.Content.ReadFromJsonAsync<GetUserResponse[]>() ;
+                //var result = results?.FirstOrDefault( results => results.UserName == username);
+                var result = Array.Find(results, element => element.UserName == username);
                 if (result is not null && !string.IsNullOrEmpty(result.Id))
                 {
                     var userId = result.Id;
