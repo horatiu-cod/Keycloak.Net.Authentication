@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Retrieve certs files
-      with:
+      env:
         LOCAL_CERT: ${{secrets.LOCAL_CERT}}
         LOCAL_KEY: ${{secrets.LOCAL_KEY}}
       run: |
