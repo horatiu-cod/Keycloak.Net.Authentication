@@ -50,7 +50,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: ./certs
+      device: /home/certs
 networks:
   keycloak_network:
     driver: bridge
