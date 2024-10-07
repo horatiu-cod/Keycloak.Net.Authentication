@@ -2,15 +2,16 @@ services:
   keycloak_server:
     image:  quay.io/keycloak/keycloak:25.0
     container_name: keycloak
-    command:  "start-dev"
+    command:  start-dev --import-realm
     environment:
-      KC_DB: "postgres"
-      KC_DB_URL_HOST: "postgres_keycloak"
-      KC_DB_URL_DATABASE: "keycloak"
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres_keycloak
+      KC_DB_URL_DATABASE: keycloak
       KC_DB_USERNAME: horatz
       KC_DB_PASSWORD: s3cr3t
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: "s3cr3t"
+      KEYCLOAK_ADMIN_PASSWORD: s3cr3t
+      KEYCLOAK_IMPORT: 
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/certs/localhostcert.pem
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/certs/localhostkey.pem
     ports:
@@ -21,6 +22,7 @@ services:
         condition: service_healthy
     volumes:
       - ./certs:/opt/keycloak/certs
+      - ./import/realm-import.json:/opt/keycloak/data/import/realm-import.json
     networks:
       - keycloak_network
 
