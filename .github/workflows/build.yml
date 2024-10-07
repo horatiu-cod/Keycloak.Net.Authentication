@@ -24,8 +24,8 @@ jobs:
         ls 
         mkdir certs 
         ls
-#        chmod +x certs |
-#        cd certs |
+        chmod +x certs 
+        cd certs 
 #       ls |
 #        echo $LOCAL_CERT |
 #        base64 --decode > certs/localhostcert.pem 
