@@ -26,8 +26,10 @@ jobs:
         chmod +x certs
         cd certs 
         ls 
-        echo $LOCAL_CERT base64 --decode > certs/localhostcert.pem 
-        echo $LOCAL_KEY > base64 --decode > certs/localhostkey.pem 
+        echo $LOCAL_CERT |
+        base64 --decode > certs/localhostcert.pem 
+        echo $LOCAL_KEY |
+        base64 --decode > certs/localhostkey.pem 
 #        base64 --decode > ./certs/localhostcert.pem
 
 #        base64 --decode > ./certs/localhostkey.pem
