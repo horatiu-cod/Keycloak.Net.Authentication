@@ -25,10 +25,11 @@ jobs:
         mkdir certs 
         ls
         chmod +x certs 
-        echo $LOCAL_CERT base64 --decode > certs/localhostcert.pem 
-        
-        echo $LOCAL_KEY base64 --decode > certs/localhostkey.pem 
         cd certs
+        echo $LOCAL_CERT base64 --decode > localhostcert.pem 
+        
+        echo $LOCAL_KEY base64 --decode > localhostkey.pem 
+        
         ls
 #        base64 --decode > ./certs/localhostcert.pem
 
