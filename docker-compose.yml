@@ -2,15 +2,15 @@ services:
   keycloak_server:
     image:  quay.io/keycloak/keycloak:25.0
     container_name: keycloak
-    command:  ${COMMAND}
+    command:  "start-dev"
     environment:
-      KC_DB: ${KC_DB}
-      KC_DB_URL_HOST: ${KC_DB_URL_HOST}
-      KC_DB_URL_DATABASE: ${POSTGRES_DB}
-      KC_DB_USERNAME: ${POSTGRES_USER}
-      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: "postgres"
+      KC_DB_URL_HOST: "postgres_keycloak"
+      KC_DB_URL_DATABASE: "keycloak"
+      KC_DB_USERNAME: horatz
+      KC_DB_PASSWORD: s3cr3t
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: "s3cr3t"
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/certs/localhostcert.pem
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/certs/localhostkey.pem
     ports:
@@ -30,9 +30,9 @@ services:
     command: postgres -c 'max_connections=200'
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: "horatz"
+      POSTGRES_PASSWORD: "s3cr3t"
+      POSTGRES_DB: "keycloak"
     ports:
       - "5432:5432"
     volumes:
