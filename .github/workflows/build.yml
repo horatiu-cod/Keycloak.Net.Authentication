@@ -21,7 +21,7 @@ jobs:
         LOCAL_CERT: ${{secrets.LOCAL_CERT}}
         LOCAL_KEY: ${{secrets.LOCAL_KEY}}
       run: |
-        ls
+        ls |
         mkdir certs 
 #        chmod +x certs |
 #        cd certs |
