@@ -22,7 +22,7 @@ internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionA
             var client = httpContext.GetEndpoint()?.Metadata.GetMetadata<ClientNameAttribute>()?.ClientName ?? null;
             if (context.User.Identity?.IsAuthenticated ?? false)
             {
-                var res = await httpContext.AuthenticateAsync(JwtBearerDefaults.AuthenticationScheme);
+                var res = await httpContext.AuthenticateAsync("keycloak");
                 if (!res.Succeeded)
                 {
                     context.Fail();

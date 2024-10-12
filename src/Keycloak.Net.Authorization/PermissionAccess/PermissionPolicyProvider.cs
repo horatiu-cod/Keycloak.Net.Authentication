@@ -26,7 +26,7 @@ internal class PermissionPolicyProvider : DefaultAuthorizationPolicyProvider//IA
             var resource = parts[0];
             var scope = parts[1];
             var policyBuilder = new AuthorizationPolicyBuilder();
-            policyBuilder.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+            policyBuilder.AddAuthenticationSchemes("keycloak");
             var attr = new PermissionAttribute(resource, scope);
             foreach (var requirement in attr.GetRequirements())
             {

@@ -34,7 +34,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Integration\import\" />
+    <None Update="Integration\Certs\localhostcert.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Integration\Certs\localhostkey.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Integration\import\oidc.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
