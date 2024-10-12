@@ -25,7 +25,7 @@ public class KeycloakFixture : IAsyncLifetime
         //.WithReuse(true)
         //.WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/localhostcert.pem")
         //.WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/localhostkey.pem")
-        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8443))
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8080))
         .Build();
 
     public async  Task InitializeAsync()
