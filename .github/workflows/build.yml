@@ -26,14 +26,9 @@ jobs:
         ls
         chmod +x certs 
         cd certs
-        echo $LOCAL_CERT base64 --decode > localhostcert.pem 
-        
-        echo $LOCAL_KEY base64 --decode > localhostkey.pem 
-        
+        echo $LOCAL_CERT base64 --decode > localhostcert.pem     
+        echo $LOCAL_KEY base64 --decode > localhostkey.pem         
         ls
-#        base64 --decode > ./certs/localhostcert.pem
-
-#        base64 --decode > ./certs/localhostkey.pem
 #    - name: Install Docker
 #      run: |
 #        curl -fsSL https://get.docker.com -o get-docker.sh
@@ -45,18 +40,10 @@ jobs:
         sudo chmod +x /usr/local/bin/docker-compose
         docker-compose --version
       continue-on-error: false
-    - name: start docker 
-      run: |
-        docker-compose -f docker-compose.yml up -d
-#   - name: Install Docker Compose
-#     run: |
-#        sudo curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-$(uname -s)-$(uname -n)" -o /usr/local/bin/docker-compose
-#        sudo chmod +x /usr/local/bin/docker-compose
-#        docker-compose --version
-#      continue-on-error: false
 #    - name: start docker 
 #      run: |
 #        docker-compose -f docker-compose.yml up -d
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
