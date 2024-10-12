@@ -20,11 +20,11 @@ public class KeycloakFixture : IAsyncLifetime
         .WithEnvironment("KC_HTTP_ENABLED", "false")
         .WithResourceMapping("./Integration/oidc.json", "/opt/keycloak/data/import")
         .WithCommand("--import-realm")
-        .WithResourceMapping("./Integration/localhostcert.pem", @"/opt/keycloak/certs")
-        .WithResourceMapping("./Integration/localhostkey.pem", @"/opt/keycloak/certs")
+        //.WithResourceMapping("./Integration/localhostcert.pem", @"/opt/keycloak/certs")
+        //.WithResourceMapping("./Integration/localhostkey.pem", @"/opt/keycloak/certs")
         //.WithReuse(true)
-        .WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/localhostcert.pem")
-        .WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/localhostkey.pem")
+        //.WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/localhostcert.pem")
+        //.WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/localhostkey.pem")
         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8443))
         .Build();
 
