@@ -1,25 +1,22 @@
 ﻿using FluentAssertions;
+using Keycloak.Net.User.Apis.Common;
 using Keycloak.Net.User.Apis.Features.Client.ClientRequest;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
-public class GetClientIdQueryTests : IClassFixture<TokenRequestFixture>
+[Collection(nameof(KeycloakCollection))]
+public class GetClientIdQueryTests(KeycloakFixture keycloakFixture)
 {
-    private readonly IGetClientIdQuery _sut;
-    readonly HttpClient _httpClient;
-    readonly string url = "https://localhost:8843/admin/realms/oidc";
+    private readonly IGetClientIdQuery _sut = new GetClientIdQuery();
+    readonly HttpClient _httpClient = keycloakFixture.HttpClient;
+    readonly string url = BaseUrl.AdminUrl(keycloakFixture.BaseAddress?? string.Empty, "oidc");
 
-    public GetClientIdQueryTests(TokenRequestFixture tokenRequest)
-    {
-        _httpClient = tokenRequest._httpClient;
-        _sut = new GetClientIdQuery();
-    }
     [Fact]
     public async Task GetClientAsync_ShouldReturnClientId_WhenCredentialsAreValid()
     {
         //Arrange
-        var clientId = "public-client";
-        var id = "16de1355-9764-44aa-a3b1-c427ccab4442";
+        var clientId = "frontend";
+        var id = "973ef7f4-419f-4e77-87ae-ebfcfd714381";
         var expectedClientResponse = new GetClientIdResponse(id);
           
         //Act
@@ -34,7 +31,7 @@ public class GetClientIdQueryTests : IClassFixture<TokenRequestFixture>
     public async Task GetClientAsync_ShouldReturnClientNotFound_WhenCredentialsAreNotValid()
     {
         //Arrange
-        var clientId = "public-clientt";
+        var clientId = "frontende";
 
         //Act
         var response = await _sut.GetClientAsync(url, clientId, _httpClient);

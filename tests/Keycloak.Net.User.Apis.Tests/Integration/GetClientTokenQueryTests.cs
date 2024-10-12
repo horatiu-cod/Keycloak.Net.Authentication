@@ -5,33 +5,23 @@ using Keycloak.Net.User.Apis.Common;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
-public class GetClientTokenQueryTests
+[Collection(nameof(KeycloakCollection))]
+public class GetClientTokenQueryTests(KeycloakFixture keycloakFixture)
 {
-    private readonly HttpClient _httpClient;
-    private readonly IGetClientTokenQuery _clientTokenRequest;
-    readonly string realmName = "oidc";
-    readonly string baseAddress = "https://localhost:8843";
-    readonly string url;
-    //const string url = "https://localhost:8843/realms/oidc/protocol/openid-connect/token"
-    //string url = "https://localhost:8843/realms/oidc/protocol/openid-connect/token"
+    private readonly IGetClientTokenQuery _clientTokenRequest = new GetClientTokenQuery();
+    readonly string url = BaseUrl.TokenUrl(keycloakFixture.BaseAddress?? string.Empty, "oidc");
+    readonly HttpClient HttpClient = new();  
 
-    public GetClientTokenQueryTests()
-    {
-        _clientTokenRequest = new GetClientTokenQuery();
-        _httpClient = new HttpClient();
-         url = BaseUrl.TokenUrl(baseAddress, realmName);
-
-    }
     [Fact]
     public async Task GetClientTokenAsync_WhenValidClientCredentials_ShouldReturnResultOK()
     {
         //Arrange
-        var clientId = "auth-client";
-        var clientSecret = "JsCpqGIfQFWWO0dhUSjaNAnZGR4JhEHC";
+        var clientId = "management";
+        var clientSecret = "2bpVgqGkUwUuagkJZ1DLK5Ncb3fkO1ri";
         var client = new GetClientTokenRequest(clientId, clientSecret);
 
         //Act
-        var response = await _clientTokenRequest.GetClientTokenAsync(url, client,_httpClient);
+        var response = await _clientTokenRequest.GetClientTokenAsync(url, client, HttpClient);
 
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -41,12 +31,12 @@ public class GetClientTokenQueryTests
     public async Task GetClientTokenAsync_WhenNotValidClientCredentials_ShouldReturnResultForbidden()
     {
         //Arrange
-        var clientId = "auth-client";
-        var clientSecret = "JsCpqGIfQFWWO0dhUSjaNAnZGR4JhEH";
+        var clientId = "management";
+        var clientSecret = "2bpVgqGkUwUuagkJZ1DLK5Ncb3fkO1r";
         var client = new GetClientTokenRequest(clientId, clientSecret);
 
         //Act
-        var response = await _clientTokenRequest.GetClientTokenAsync(url, client, _httpClient);
+        var response = await _clientTokenRequest.GetClientTokenAsync(url, client, HttpClient);
 
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);

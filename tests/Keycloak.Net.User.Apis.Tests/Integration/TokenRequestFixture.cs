@@ -4,17 +4,18 @@ using System.Net.Http.Headers;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
-public class TokenRequestFixture
+[Collection(nameof(KeycloakCollection))]
+public class TokenRequestFixture 
 {
     private readonly IGetClientTokenQuery _clientTokenRequest;
     public HttpClient _httpClient { get; set; } = new HttpClient();
-    const string clientId = "auth-client";
-    const string clientSecret = "JsCpqGIfQFWWO0dhUSjaNAnZGR4JhEHC";
-    //const string url = "https://localhost:8843/realms/oidc/protocol/openid-connect/token"
+    const string clientId = "management";
+    const string clientSecret = "2bpVgqGkUwUuagkJZ1DLK5Ncb3fkO1ri";
+    //const string url = "https://localhost:8443/realms/oidc/protocol/openid-connect/token"
     readonly string realmName = "oidc";
-    readonly string baseAddress = "https://localhost:8843/";
+    readonly string baseAddress = "https://localhost:8443/";
 
-    public  TokenRequestFixture()
+    public  TokenRequestFixture(KeycloakFixture keycloakFixture)
     {
         _clientTokenRequest = new GetClientTokenQuery();
         _httpClient = GetTokenAsync(_httpClient).Result;

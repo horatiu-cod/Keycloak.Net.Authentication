@@ -4,27 +4,23 @@ using Keycloak.Net.User.Apis.Features.User;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
-public class GetUserQueryTests : IClassFixture<TokenRequestFixture>
+//[Collection(nameof(KeycloakCollection))]
+public class GetUserQueryTests(KeycloakFixture keycloakFixture) : IClassFixture<KeycloakFixture>
 {
-    readonly HttpClient _httpClient;
-    readonly string url = BaseUrl.AdminUrl("https://localhost:8843/", "oidc");
-    private readonly IGetUserQuery _sut;
+    readonly string url = BaseUrl.AdminUrl(keycloakFixture.BaseAddress?? string.Empty, "oidc");
+    readonly HttpClient httpClient = keycloakFixture.HttpClient;
+    private readonly IGetUserQuery _sut = new GetUserQuery();
 
-    public GetUserQueryTests(TokenRequestFixture tokenRequest)
-    {
-        _httpClient = tokenRequest._httpClient; 
-        _sut = new GetUserQuery();
-    }
     [Fact]
     public async Task GetUserAsync_ShouldReturnUserRepresentation_WhenUserExist()
     {
         //Assert
         var userName = "hg@g.com";
-        var expectedUser = new GetUserResponse {UserName = userName, Id = "9105214e-846e-43a1-a6b8-902ed5c74305" , FirstName = "Hori", LastName ="Cod", Email = userName, EmailVerified = true,
-            CreatedTimestamp = new DateTime(2024, 01, 17)
+        var expectedUser = new GetUserResponse {UserName = userName, Id = "325ff607-8fe2-46bf-94fc-e0471a00ec70", FirstName = "hg", LastName ="g", Email = userName, EmailVerified = true,
+            CreatedTimestamp = new DateTime(2024, 10, 09)
         };
         //Act
-        var response = await _sut.GetUserAsync(url, userName, _httpClient);
+        var response = await _sut.GetUserAsync(url, userName, httpClient);
 
         //Assert
         response.Content.Should().BeEquivalentTo(expectedUser);
@@ -35,10 +31,10 @@ public class GetUserQueryTests : IClassFixture<TokenRequestFixture>
     {
         //Assert
         var userName = "hg@g.com";
-        var expectedUserId = "9105214e-846e-43a1-a6b8-902ed5c74305";
+        var expectedUserId = "325ff607-8fe2-46bf-94fc-e0471a00ec70";
 
         //Act
-        var response = await _sut.GetUserIdAsync(url, userName, _httpClient);
+        var response = await _sut.GetUserIdAsync(url, userName, httpClient);
 
         //Assert
         response.Content.Should().Be(expectedUserId);
@@ -52,7 +48,7 @@ public class GetUserQueryTests : IClassFixture<TokenRequestFixture>
         var userName = "hgg@g.com";
 
         //Act
-        var response = await _sut.GetUserIdAsync(url, userName, _httpClient);
+        var response = await _sut.GetUserIdAsync(url, userName, httpClient);
 
         //Assert
         response.Content.Should().BeNullOrEmpty();

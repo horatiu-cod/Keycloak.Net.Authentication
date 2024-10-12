@@ -1,8 +1,8 @@
 services:
   keycloak_server:
     image:  keycloak/keycloak:24.0
-    container_name: keycloaky
-    command:  start-dev 
+    container_name: keycloakly
+    command:  start-dev --import-realm
     environment:
       KC_DB: postgres
       KC_DB_URL_HOST: postgres_keycloak
@@ -25,17 +25,10 @@ services:
     networks:
       - keycloak_network
 
-  start_dependencies:
-    image: dadarek/wait-for-dependencies
-    depends_on:
-      - postgres_keycloak
-    command: postgres_keycloak:5432
-    networks:
-      - keycloak_network
   
   postgres_keycloak:
     image: postgres:16.0
-    container_name: postgres
+    container_name: postgresly
     command: postgres -c 'max_connections=200'
     restart: always
     environment:

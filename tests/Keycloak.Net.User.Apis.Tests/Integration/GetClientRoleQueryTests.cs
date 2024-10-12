@@ -1,32 +1,27 @@
 ﻿using FluentAssertions;
+using Keycloak.Net.User.Apis.Common;
 using Keycloak.Net.User.Apis.Features.Role;
 using Keycloak.Net.User.Apis.Features.Role.ClientRole;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
-public class GetClientRoleQueryTests : IClassFixture<TokenRequestFixture>
+[Collection(nameof(KeycloakCollection))]
+public class GetClientRoleQueryTests(KeycloakFixture keycloakFixture)
 {
-    readonly IGetClientRoleQuery _clientRequest;
-    //readonly string _token;
-    HttpClient _httpClient {  get; set; }
-    const string url = "https://localhost:8843/admin/realms/oidc";
-
-    public GetClientRoleQueryTests(TokenRequestFixture tokenRequest)
-    {
-        _httpClient = tokenRequest._httpClient;
-        _clientRequest = new GetClientRoleQuery();
-    }
+    readonly IGetClientRoleQuery _clientRequest = new GetClientRoleQuery();
+    readonly string url = BaseUrl.AdminUrl(keycloakFixture.BaseAddress?? string.Empty, "oidc");
+    readonly HttpClient HttpClient = keycloakFixture.HttpClient;
 
     [Fact]
     public async Task GetClientRoleAsync_ShouldReturnRoleRepresentation_WhenRoleExists()
     {
         //Arrange
-        var id = "16de1355-9764-44aa-a3b1-c427ccab4442";
-        var roleName = "admin-role";
-        var role = new RoleRepresentation { Id = "79fd75d5-e08c-4054-8030-64509efeecbf", Name = "admin-role" };
+        var id = "973ef7f4-419f-4e77-87ae-ebfcfd714381";
+        var roleName = "test";
+        var role = new RoleRepresentation { Id = "8ea910b6-00b1-4243-9c8e-31ec5f5289bb", Name = "test" };
 
         //Act
-        var response = await _clientRequest.GetClientRoleAsync(url, id, roleName, _httpClient);
+        var response = await _clientRequest.GetClientRoleAsync(url, id, roleName, HttpClient);
 
         //Assert
         response.Content.Should().BeEquivalentTo(role);
@@ -37,12 +32,12 @@ public class GetClientRoleQueryTests : IClassFixture<TokenRequestFixture>
     public async Task GetClientRoleAsync_ShouldReturnNotFound_WhenRoleNotExists()
     {
         //Arrange
-        var id = "16de1355-9764-44aa-a3b1-c427ccab4442";
-        var roleName = "admin-rolel";
-        var role = new RoleRepresentation { Id = "79fd75d5-e08c-4054-8030-64509efeecbf", Name = "admin-role" };
+        var id = "973ef7f4-419f-4e77-87ae-ebfcfd714381";
+        var roleName = "teste";// de schimbat
+        var role = new RoleRepresentation { Id = "8ea910b6-00b1-4243-9c8e-31ec5f5289bb", Name = "test" };
 
         //Act
-        var response = await _clientRequest.GetClientRoleAsync(url, id, roleName, _httpClient);
+        var response = await _clientRequest.GetClientRoleAsync(url, id, roleName, HttpClient);
 
         //Assert
         response.Content.Should().BeNull();

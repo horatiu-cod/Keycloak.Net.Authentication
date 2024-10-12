@@ -9,12 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
-public class RegisterUserCommandTests
+[Collection(nameof(KeycloakCollection))]
+public class RegisterUserCommandTests 
 {
     readonly string realmName = "oidc";
-    readonly string baseAddress = "https://localhost:8843";
-    const string clientId = "auth-client";
-    const string clientSecret = "JsCpqGIfQFWWO0dhUSjaNAnZGR4JhEHC";
+    readonly string baseAddress;
+    const string clientId = "management";
+    const string clientSecret = "2bpVgqGkUwUuagkJZ1DLK5Ncb3fkO1ri";
 
     private readonly IRegisterUserCommand _sut;
     private readonly IHttpClientFactory _httpClientFactory;
@@ -24,7 +25,7 @@ public class RegisterUserCommandTests
     private readonly IGetRealmRoleQuery _realmRoleQuery;
     private readonly IGetClientRoleQuery _clientRoleQuery;
 
-    public RegisterUserCommandTests()
+    public RegisterUserCommandTests(KeycloakFixture keycloakFixture)
     {
         IServiceCollection services = new ServiceCollection();
         services.AddHttpClient();
@@ -34,6 +35,7 @@ public class RegisterUserCommandTests
         _assignUserRoleCommand = new AssignUserRoleCommand();
         _realmRoleQuery = new GetRealmRoleQuery();
         _clientRoleQuery = new GetClientRoleQuery();
+        baseAddress = keycloakFixture.BaseAddress?? string.Empty;
 
         _sut = new RegisterUserCommand(_clientTokenQuery, _realmRoleQuery, _assignUserRoleCommand, _clientRoleQuery, _userQuery, _httpClientFactory);
     }
