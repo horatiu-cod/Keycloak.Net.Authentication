@@ -54,4 +54,4 @@ jobs:
       run: dotnet build --no-restore
   
     - name: Test
-      run: dotnet test ~/Keycloak.Net.User.Apis.Tests.csproj --no-build --verbosity normal
+      run: dotnet test /home/runner/Keycloak.Net.User.Apis.Tests.csproj --no-build --verbosity normal
