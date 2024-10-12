@@ -14,7 +14,6 @@ public class ApiFactory : WebApplicationFactory<IApiMarker> , IAsyncLifetime
     private readonly KeycloakContainer _container = new KeycloakBuilder()
         .WithImage("keycloak/keycloak:24.0")
         .WithPortBinding(8843, 8443)
-        .WithExposedPort(8443)
         .WithEnvironment("KC_HTTP_ENABLED", "false")
         .WithResourceMapping("./Integration/import/oidc.json", "/opt/keycloak/data/import")
         .WithResourceMapping("./Integration/Certs/localhostcert.pem", @"/opt/keycloak/certs")
@@ -22,8 +21,7 @@ public class ApiFactory : WebApplicationFactory<IApiMarker> , IAsyncLifetime
         .WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/localhostcert.pem")
         .WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/localhostkey.pem")
         .WithCommand("--import-realm")
-        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8443))
-        .WithAutoRemove(true)
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8080))
         .Build();
 
     public async Task InitializeAsync()
