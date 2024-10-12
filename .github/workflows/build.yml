@@ -26,7 +26,8 @@ jobs:
         chmod +x Certs 
         cd Certs
         echo $LOCAL_CERT base64 --decode > localhostcert.pem     
-        echo $LOCAL_KEY base64 --decode > localhostkey.pem         
+        echo $LOCAL_KEY base64 --decode > localhostkey.pem  
+        ls
       continue-on-error: false
 #    - name: Install Docker
 #      run: |
