@@ -20,7 +20,7 @@ public class ApiFactory : WebApplicationFactory<IApiMarker> , IAsyncLifetime
         .WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/localhostcert.pem")
         .WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/localhostkey.pem")
         .WithCommand("--import-realm")
-        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8443))
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8080))
         .Build();
 
     //protected override void ConfigureClient(HttpClient client)
