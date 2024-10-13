@@ -7,13 +7,13 @@ namespace Keycloak.Net.Authentication.Test.Integration.Abstraction;
 
 public class ApiFactory : WebApplicationFactory<IApiMarker> , IAsyncLifetime
 {
-    public string? BaseAddress { get; set; } = "https://localhost:8843";
+    public string? BaseAddress { get; set; } = "https://localhost:8181";
 
 
     private readonly KeycloakContainer _container = new KeycloakBuilder()
         .WithImage("keycloak/keycloak:24.0")
-        //.WithPortBinding(8181, 8080)
-        .WithPortBinding(8843, 8443)
+        .WithPortBinding(8181, 8080)
+        //.WithPortBinding(8843, 8443)
         .WithResourceMapping("./Integration/import/oidc.json", "/opt/keycloak/data/import")
         //.WithResourceMapping("./Integration/Certs/localhostcert.pem", @"/opt/keycloak/certs")
         //.WithResourceMapping("./Integration/Certs/localhostkey.pem", @"/opt/keycloak/certs")
