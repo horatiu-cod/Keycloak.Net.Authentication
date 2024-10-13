@@ -32,6 +32,8 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         {
             services.AddOptions<JwtBearerValidationOptions>().Configure(options =>
             {
+                options.Authority = "http://localhost:8181/realms/oidc";
+                options.Audience = "frontend";
                 options.RequireHttpsMetadata = false;
             });
 
