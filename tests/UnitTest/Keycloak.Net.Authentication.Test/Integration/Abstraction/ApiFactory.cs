@@ -7,7 +7,7 @@ namespace Keycloak.Net.Authentication.Test.Integration.Abstraction;
 
 public class ApiFactory : WebApplicationFactory<IApiMarker> , IAsyncLifetime
 {
-    public string? BaseAddress { get; set; } = "https://localhost:8181";
+    public string? BaseAddress { get; set; } = "http://localhost:8181";
 
 
     private readonly KeycloakContainer _container = new KeycloakBuilder()
