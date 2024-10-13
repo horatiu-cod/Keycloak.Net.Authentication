@@ -19,24 +19,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Make dir Certs
-      run: |
-        cd ./tests/UnitTest/Keycloak.Net.Authentication.Test/Integration/
-        mkdir Certs 
-        ls
-      continue-on-error: false
-    - name: List Certs
-      run: |
-        cd ./tests/UnitTest/Keycloak.Net.Authentication.Test/Integration/Certs/
-        ls
-      continue-on-error: false
-    - name: Retrieve certs files
-      run: |
-        cd ./tests/UnitTest/Keycloak.Net.Authentication.Test/Integration/Certs/
-        echo $LOCAL_CERT | base64 --decode > localhostcert.pem     
-        echo $LOCAL_KEY | base64 --decode > localhostkey.pem 
-        ls
-      continue-on-error: false
+#    - name: Make dir Certs
+#      run: |
+#        cd ./tests/UnitTest/Keycloak.Net.Authentication.Test/Integration/
+#        mkdir Certs 
+#        ls
+#      continue-on-error: false
+#    - name: List Certs
+#      run: |
+#        cd ./tests/UnitTest/Keycloak.Net.Authentication.Test/Integration/Certs/
+#        ls
+#      continue-on-error: false
+    # - name: Retrieve certs files
+    #   run: |
+    #     cd ./tests/UnitTest/Keycloak.Net.Authentication.Test/Integration/Certs/
+    #     echo $LOCAL_CERT | base64 --decode > localhostcert.pem     
+    #     echo $LOCAL_KEY | base64 --decode > localhostkey.pem 
+    #     ls
+    #   continue-on-error: false
 #    - name: Install Docker
 #      run: |
 #        curl -fsSL https://get.docker.com -o get-docker.sh

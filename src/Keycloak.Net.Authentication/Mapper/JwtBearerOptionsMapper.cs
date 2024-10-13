@@ -9,15 +9,18 @@ internal static class JwtBearerOptionsMapper
     {
         options.Audience = JwtBearerValidationOptions.Audience;
         options.Authority = JwtBearerValidationOptions.Authority;
+        options.RequireHttpsMetadata = JwtBearerValidationOptions.RequireHttpsMetadata;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = JwtBearerValidationOptions.ValidateIssuerSigningKey,
-            ValidAudience = JwtBearerValidationOptions.ValidAudience,
-            ValidAudiences = JwtBearerValidationOptions.ValidAudiences,
-            ValidIssuer = JwtBearerValidationOptions.ValidIssuer,
-            ValidIssuers = JwtBearerValidationOptions.ValidIssuers,
-            IssuerSigningKey = JwtBearerValidationOptions.IssuerSigningKey,
-            IssuerSigningKeys = JwtBearerValidationOptions.IssuerSigningKeys
+            ValidateIssuer = JwtBearerValidationOptions.ValidateIssuer,
+            ValidateAudience = JwtBearerValidationOptions.ValidateAudience,
+            //ValidAudience = JwtBearerValidationOptions.ValidAudience,
+            //ValidAudiences = JwtBearerValidationOptions.ValidAudiences,
+            //ValidIssuer = JwtBearerValidationOptions.ValidIssuer,
+            //ValidIssuers = JwtBearerValidationOptions.ValidIssuers,
+            //IssuerSigningKey = JwtBearerValidationOptions.IssuerSigningKey,
+            //IssuerSigningKeys = JwtBearerValidationOptions.IssuerSigningKeys
         };
     }
 }

@@ -9,6 +9,7 @@ public record JwtBearerValidationOptions()
     public string? Authority { get; set; }
     public string? Audience { get; set; }
     public string NameClaim { get; set; } = Constants.NameClaimType;
+    public bool RequireHttpsMetadata { get; set; } = true;
     #endregion
 
     #region TokenValidationParameters
@@ -20,5 +21,7 @@ public record JwtBearerValidationOptions()
     public SecurityKey? IssuerSigningKey { get; set; }
     public SecurityKey[]? IssuerSigningKeys { get; set; }
     public bool ValidateIssuerSigningKey { get; set; } = true;
+    public bool ValidateIssuer { get; set; } = true;
+    public bool ValidateAudience { get; set; } = true;
     #endregion
 }

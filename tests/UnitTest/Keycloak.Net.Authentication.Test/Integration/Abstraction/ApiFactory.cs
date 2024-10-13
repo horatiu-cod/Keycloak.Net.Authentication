@@ -1,61 +1,46 @@
 ﻿using DotNet.Testcontainers.Builders;
 using Keycloak.Net.Authentication.MinimalApi;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.Keycloak;
 
 namespace Keycloak.Net.Authentication.Test.Integration.Abstraction;
 
 public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
 {
-    public string? BaseAddress { get; set; } = "https://localhost:8843";
+    public string? BaseAddress { get; set; } = "http://localhost:8181";
 
 
     private readonly KeycloakContainer _container = new KeycloakBuilder()
         .WithImage("keycloak/keycloak:24.0")
-        //.WithPortBinding(8181, 8080)
-        .WithPortBinding(8843, 8443)
+        .WithPortBinding(8181, 8080)
+        //.WithPortBinding(8843, 8443)
         .WithResourceMapping("./Integration/import/oidc.json", "/opt/keycloak/data/import")
-        .WithResourceMapping("./Integration/Certs/localhostcert.pem", @"/opt/keycloak/certs")
-        .WithResourceMapping("./Integration/Certs/localhostkey.pem", @"/opt/keycloak/certs")
-        .WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/localhostcert.pem")
-        .WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/localhostkey.pem")
+        //.WithResourceMapping("./Integration/Certs/localhostcert.pem", @"/opt/keycloak/certs")
+        //.WithResourceMapping("./Integration/Certs/localhostkey.pem", @"/opt/keycloak/certs")
+        //.WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/localhostcert.pem")
+        //.WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/localhostkey.pem")
         .WithCommand("--import-realm")
-        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8443))
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8080))
         .Build();
 
-    //protected override void ConfigureWebHost(IWebHostBuilder builder)
-    //{
-    //    builder.ConfigureTestServices(services =>
-    //    {
-    //        var descriptors = services.Where(s => s.ServiceType == typeof(IConfigureOptions<JwtBearerOptions>));
-    //        if (descriptors.Any())
-    //        {
-    //            foreach (var descriptor in descriptors)
-    //            {
-    //                services.Remove(descriptor);
-    //            }
-    //        }
-    //        //           descriptor = services.
-    //        //FirstOrDefault(s => s.ServiceType == );
-    //        //           if (descriptor != null)
-    //        //           {
-    //        //               services.Remove(descriptor);
-    //        //           }
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureTestServices(services =>
+        {
+            services.AddOptions<JwtBearerValidationOptions>().Configure(options =>
+            {
+                options.RequireHttpsMetadata = false;
+            });
 
-
-    //        services.AddAuthentication().AddKeyCloakJwtBearerOptions("keycloak", options =>
-    //        {
-    //            options.Authority = "http://localhost:8181";
-    //            options.Audience = "frontend";
-    //            options.RequireHttpsMetadata = false;
-    //        });
-    //    });
-    //}
+        });
+    }
 
     public async Task InitializeAsync()
     {
         await _container.StartAsync();
-        //BaseAddress = _container.GetBaseAddress();
     }
 
     async Task IAsyncLifetime.DisposeAsync()
