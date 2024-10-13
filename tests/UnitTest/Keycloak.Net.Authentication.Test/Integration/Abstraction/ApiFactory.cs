@@ -12,6 +12,7 @@ public class ApiFactory : WebApplicationFactory<IApiMarker> , IAsyncLifetime
 
     private readonly KeycloakContainer _container = new KeycloakBuilder()
         .WithImage("keycloak/keycloak:24.0")
+        //.WithPortBinding(8181, 8080)
         .WithPortBinding(8843, 8443)
         .WithResourceMapping("./Integration/import/oidc.json", "/opt/keycloak/data/import")
         .WithResourceMapping("./Integration/Certs/localhostcert.pem", @"/opt/keycloak/certs")
@@ -22,6 +23,10 @@ public class ApiFactory : WebApplicationFactory<IApiMarker> , IAsyncLifetime
         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8443))
         .Build();
 
+    //protected override void ConfigureClient(HttpClient client)
+    //{
+    //    client.BaseAddress = new Uri("https://localhost:7021");
+    //}
     public async Task InitializeAsync()
     {
         await _container.StartAsync();

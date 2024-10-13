@@ -35,7 +35,7 @@ public class AttributeEndPointTests(ApiFactory apiFactory)
         var result = await _httpClient.GetAsync(apiUrl);
 
         //Assert
-        result.IsSuccessStatusCode.Should().BeTrue();
+        //result.IsSuccessStatusCode.Should().BeTrue();
         result.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
     }
     [Fact]
