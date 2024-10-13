@@ -62,4 +62,4 @@ jobs:
       run: dotnet build --no-restore
   
     - name: Test
-      run: dotnet test /home/runner/work/Keycloak.Net.Authentication/Keycloak.Net.Authentication/tests/UnitTest/Keycloak.Net.Authentication.Test/bin/Debug/net8.0/Keycloak.Net.Authentication.Test.dll --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
