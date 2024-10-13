@@ -6,6 +6,7 @@ using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
@@ -13,27 +14,27 @@ builder.Services.AddHttpContextAccessor();
 builder.Configuration.EnableSubstitutions();
 
 builder.Services
-    .AddKeyCloakAuthentication()
-    .AddKeyCloakJwtBearerOptions("Keycloak")
-    .AddUma("ResourceClient", configure =>
-    {
-        configure.AddPolicy("email_verified", configure =>
+        .AddKeyCloakAuthentication()
+        .AddKeyCloakJwtBearerOptions("Keycloak")
+        .AddUma("ResourceClient", configure =>
         {
-            configure.RequireClaim("email_verified", "true");
+            configure.AddPolicy("email_verified", configure =>
+            {
+                configure.RequireClaim("email_verified", "true");
+            });
+            configure.AddPolicy("name", policy =>
+            {
+                policy.RequireUserName("hg@g.com");
+            });
+            configure.AddPolicy("auth", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+            });
+            configure.AddPolicy("role", policy =>
+            {
+                policy.RequireRole("admin-role");
+            });
         });
-        configure.AddPolicy("name", policy =>
-        {
-            policy.RequireUserName("hg@g.com");
-        });
-        configure.AddPolicy("auth", policy =>
-        {
-            policy.RequireAuthenticatedUser();
-        });
-        configure.AddPolicy("role", policy =>
-        {
-            policy.RequireRole("admin-role");
-        });
-    });
 
 
 var app = builder.Build();

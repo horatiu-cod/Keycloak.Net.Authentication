@@ -23,6 +23,7 @@ public static class AuthenticationBuilderExtensions
         //services.AddSingleton<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticateSchemeOptions>()
         return services.AddAuthentication("keycloak");
     }
+
     /// <summary>
     /// Adds <see cref="JwtBearerValidationOptions"/> options service.
     /// Register Action JwtBearerValidationOptions <paramref name="authConfiguration"/> to configure options.
