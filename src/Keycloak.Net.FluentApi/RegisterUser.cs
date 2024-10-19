@@ -2,7 +2,6 @@
 using Keycloak.Net.FluentApi.Features.User.RegisterUser;
 
 namespace Keycloak.Net.FluentApi;
-#pragma warning disable
 public sealed class RegisterUser : IUserName, IUserPassword, IAuthServerUrl, IAuthClientId, IAuthClientSecret, IClientId, IRealmRole, IClientRole
 {
     private string? _url;
@@ -14,7 +13,7 @@ public sealed class RegisterUser : IUserName, IUserPassword, IAuthServerUrl, IAu
     private string[]? _realmRoles;
     private string[]? _clientRoles;
     private string? _clientId;
-    private IRegisterUserRequest _request;
+    private readonly IRegisterUserRequest _request;
     private CancellationToken _cancellationToken;
 
     private const string adminApi = "admin/realms";

@@ -7,10 +7,12 @@ namespace Keycloak.Net.User.Apis.Common;
 internal class RequestUrlBuilder : IRequestUrlBuilder
 {
     private readonly JwtBearerValidationOptions _options;
+    private readonly string? _baseAddress;
 
-    public RequestUrlBuilder(IOptionsMonitor<JwtBearerValidationOptions> options)
+    public RequestUrlBuilder(IOptionsMonitor<JwtBearerValidationOptions> options, string? baseAddress = default)
     {
         _options = options.CurrentValue;
+        _baseAddress = baseAddress;
     }
 
     private const string adminApi = "admin/realms";
@@ -23,7 +25,7 @@ internal class RequestUrlBuilder : IRequestUrlBuilder
                 return _options.Authority;
             else if (_options.ValidIssuer is not null)
                 return _options.ValidIssuer;
-            else return string.Empty;
+            else return _baseAddress ?? string.Empty;
         }
     }
 

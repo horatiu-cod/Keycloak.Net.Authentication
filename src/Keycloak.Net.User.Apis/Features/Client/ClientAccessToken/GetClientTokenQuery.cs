@@ -9,15 +9,14 @@ namespace Keycloak.Net.User.Apis.Features.Client.ClientAccessToken;
 
 internal class GetClientTokenQuery : IGetClientTokenQuery
 {
-
-    public async Task<Result<TokenRepresentation?>> GetClientTokenAsync(string tokenEndpointUrl
+    public async Task<Result<TokenRepresentation?>> GetClientTokenAsync(string url
         , GetClientTokenRequest client, HttpClient httpClient, CancellationToken cancellationToken = default)
     {
         try
         {
             var requestBody = GetClientTokenQueryBodyBuilder.ClientTokenRequestBody(client);
 
-            var response = await httpClient.PostAsync(tokenEndpointUrl, requestBody, cancellationToken);
+            var response = await httpClient.PostAsync(url, requestBody, cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadFromJsonAsync<JsonObject>(cancellationToken);

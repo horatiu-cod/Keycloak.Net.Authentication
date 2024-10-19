@@ -7,8 +7,6 @@ namespace Keycloak.Net.User.Apis.Common;
 internal class UnixEpochDateTimeConverter : JsonConverter<DateTime>
 {
     // Assuming the timestamp is in seconds. For milliseconds, adjust accordingly.
-    //private static readonly DateTime UnixEpoch = DateTime.UnixEpoch;
-
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
 

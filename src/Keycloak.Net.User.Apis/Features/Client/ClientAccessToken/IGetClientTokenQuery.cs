@@ -5,5 +5,5 @@ namespace Keycloak.Net.User.Apis.Features.Client.ClientAccessToken;
 
 internal interface IGetClientTokenQuery
 {
-    Task<Result<TokenRepresentation?>> GetClientTokenAsync(string tokenEndpointUrl, GetClientTokenRequest client, HttpClient httpClient, CancellationToken cancellationToken = default);
+    Task<Result<TokenRepresentation?>> GetClientTokenAsync(string url, GetClientTokenRequest client, HttpClient httpClient, CancellationToken cancellationToken = default);
 }

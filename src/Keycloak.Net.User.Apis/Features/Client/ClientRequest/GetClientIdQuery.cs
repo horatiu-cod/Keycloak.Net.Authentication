@@ -1,14 +1,8 @@
-﻿using Keycloak.Net.User.Apis.Common;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Net;
-using System.Text.Json.Nodes;
-
-namespace Keycloak.Net.User.Apis.Features.Client.ClientRequest;
+﻿namespace Keycloak.Net.User.Apis.Features.Client.ClientRequest;
 
 internal class GetClientIdQuery : IGetClientIdQuery
 {
-    public async Task<Result<GetClientIdResponse?>> GetClientAsync(string url, string ClientId, HttpClient httpClient, CancellationToken cancellationToken = default)
+    public async Task<Result<GetClientIdResponse?>> GetClientIdAsync(string url, string ClientId, HttpClient httpClient, CancellationToken cancellationToken = default)
     {
         try
         {

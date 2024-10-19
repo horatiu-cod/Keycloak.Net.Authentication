@@ -1,40 +1,36 @@
-﻿using Keycloak.Net.User.Apis.Common;
-using Keycloak.Net.User.Apis.Features.Client.ClientAccessToken;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text.Json.Nodes;
+﻿namespace Keycloak.Net.User.Apis.Features.User.ResetPassword;
 
-namespace Keycloak.Net.User.Apis.Features.User.ResetPassword;
-
-internal class ResetPasswordCommand : IResetPasswordCommand
+internal class ResetPasswordCommand(IGetClientTokenQuery getClientTokenQuery, IHttpClientFactory httpClientFactory, IGetUserIdQuery userQuery, IOptionsMonitor<Server> server, IOptionsMonitor<AdminClient> adminClient) : IResetPasswordCommand
 {
-    private readonly IGetClientTokenQuery _getClientTokenQuery;
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IGetClientTokenQuery _getClientTokenQuery = getClientTokenQuery;
+    private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+    private readonly IGetUserIdQuery _userIdQuery = userQuery;
+    private readonly Server _server = server.CurrentValue;
+    private readonly AdminClient _adminClient = adminClient.CurrentValue;
 
-    public ResetPasswordCommand(IGetClientTokenQuery getClientTokenQuery, IHttpClientFactory httpClientFactory)
-    {
-        _getClientTokenQuery = getClientTokenQuery;
-        _httpClientFactory = httpClientFactory;
-    }
-
-    public async Task<Result> ResetPasswordAsync(string baseAddress, string realmName, string clientId, string clientSecret, string userId, string password, CancellationToken cancellationToken)
+    public async Task<Result> Handler(string username, string password, CancellationToken cancellationToken = default)
     {
         var httpClient = _httpClientFactory.CreateClient("kapi");
-        var tokenUrl = BaseUrl.TokenUrl(baseAddress, realmName);
-        var adminUrl = BaseUrl.AdminUrl(baseAddress, realmName);
-        var client = new GetClientTokenRequest(clientId, clientSecret);
+        var tokenUrl = BaseUrl.TokenUrl(_server.BaseAddress, _server.RealmName);
+        var adminUrl = BaseUrl.AdminUrl(_server.BaseAddress, _server.RealmName);
+        var client = new GetClientTokenRequest(_adminClient.ClientId, _adminClient.ClientSecret);
 
-        var tokenResponse = await _getClientTokenQuery.GetClientTokenAsync(tokenUrl, client, httpClient);
+        var tokenResponse = await _getClientTokenQuery.GetClientTokenAsync(tokenUrl, client, httpClient, cancellationToken);
         if (!tokenResponse.IsSuccess)
             return Result.Fail(tokenResponse.StatusCode, tokenResponse.Error);
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.Content?.AccessToken);
-
-        var passwordRequest = new ResetPasswordRequest(password);
+        var userResponse = await _userIdQuery.GetUserIdAsync(adminUrl, username, httpClient, cancellationToken);
+        if (!userResponse.IsSuccess)
+            return Result.Fail(userResponse.StatusCode, userResponse.Error);
+        var credentials = new Credentials(password);
+        //var passwordRequest = new ResetPasswordRequest
+        //{
+        //    Credentials  = [credentials],
+        //};
         try
         {
-            var response = await httpClient.PutAsJsonAsync<ResetPasswordRequest>($"{adminUrl}/users/{userId}/reset-password", passwordRequest, cancellationToken);
+            var response = await httpClient.PutAsJsonAsync($"{adminUrl}/users/{userResponse.Content}/reset-password", credentials, cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadFromJsonAsync<JsonObject>(cancellationToken);

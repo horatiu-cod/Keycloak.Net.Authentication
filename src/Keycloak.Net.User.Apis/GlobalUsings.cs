@@ -1,0 +1,24 @@
+﻿global using Keycloak.Net.User.Apis.Common;
+global using Keycloak.Net.User.Apis.Configuration;
+global using Keycloak.Net.User.Apis.Features.Client.ClientAccessToken;
+global using Keycloak.Net.User.Apis.Features.Client.ClientRequest;
+global using Keycloak.Net.User.Apis.Features.Role;
+global using Keycloak.Net.User.Apis.Features.Role.ClientRole;
+global using Keycloak.Net.User.Apis.Features.Role.UserRole;
+global using Keycloak.Net.User.Apis.Features.User.Get;
+global using Microsoft.Extensions.Options;
+global using System.Net;
+global using System.Net.Http.Headers;
+global using System.Net.Http.Json;
+global using System.Text.Json.Nodes;
+global using Keycloak.Net.User.Apis.Features.Role.RealmRole;
+global using Keycloak.Net.User.Apis.Features.User.AssignRole;
+global using Keycloak.Net.User.Apis.Features.User.Delete;
+global using Keycloak.Net.User.Apis.Features.User.Login;
+global using Keycloak.Net.User.Apis.Features.User.Logout;
+global using Keycloak.Net.User.Apis.Features.User.RefreshToken;
+global using Keycloak.Net.User.Apis.Features.User.Register;
+global using Keycloak.Net.User.Apis.Features.User.ResetPassword;
+global using Keycloak.Net.User.Apis.Features.User.Update;
+global using Microsoft.Extensions.DependencyInjection;
+

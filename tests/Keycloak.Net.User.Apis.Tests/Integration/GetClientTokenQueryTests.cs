@@ -2,44 +2,67 @@
 using System.Net;
 using FluentAssertions;
 using Keycloak.Net.User.Apis.Common;
+using Keycloak.Net.User.Apis.Tests.Integration.Abstraction;
+using FluentAssertions.Execution;
 
 namespace Keycloak.Net.User.Apis.Tests.Integration;
 
 [Collection(nameof(KeycloakCollection))]
-public class GetClientTokenQueryTests(KeycloakFixture keycloakFixture)
+public class GetClientTokenQueryTests(KeycloakFixture keycloakFixture) : BaseIntegrationTest(keycloakFixture)
 {
-    private readonly IGetClientTokenQuery _clientTokenRequest = new GetClientTokenQuery();
-    readonly string url = BaseUrl.TokenUrl(keycloakFixture.BaseAddress?? string.Empty, "oidc");
-    readonly HttpClient HttpClient = new();  
-
     [Fact]
-    public async Task GetClientTokenAsync_WhenValidClientCredentials_ShouldReturnResultOK()
+    public async Task GetClientTokenAsync_WhenConfidentialClientWitValidClientCredentials_ShouldReturnResultOK()
     {
         //Arrange
-        var clientId = "management";
-        var clientSecret = "2bpVgqGkUwUuagkJZ1DLK5Ncb3fkO1ri";
-        var client = new GetClientTokenRequest(clientId, clientSecret);
+        string url = BaseUrl.TokenUrl(_baseAddress, _realmName);
+        var httpClient = _httpClientFactory.CreateClient();
+        var client = new GetClientTokenRequest(_clientId, _clientSecret);
 
         //Act
-        var response = await _clientTokenRequest.GetClientTokenAsync(url, client, HttpClient);
+        var response = await _getClientTokenQuery.GetClientTokenAsync(url, client, httpClient);
 
         //Assert
+        using(new AssertionScope()){
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Content.Should().NotBeNull();
+            response.Content.Should().NotBeNull();
+        }
     }
     [Fact]
-    public async Task GetClientTokenAsync_WhenNotValidClientCredentials_ShouldReturnResultForbidden()
+    public async Task GetClientTokenAsync_WhenConfidentialClientWithNotValidClientCredentials_ShouldReturnResultForbidden()
     {
         //Arrange
-        var clientId = "management";
+        string url = BaseUrl.TokenUrl(_baseAddress, _realmName);
+        var httpClient = _httpClientFactory.CreateClient();
+
         var clientSecret = "2bpVgqGkUwUuagkJZ1DLK5Ncb3fkO1r";
-        var client = new GetClientTokenRequest(clientId, clientSecret);
+        var client = new GetClientTokenRequest(_clientId, clientSecret);
 
         //Act
-        var response = await _clientTokenRequest.GetClientTokenAsync(url, client, HttpClient);
+        var response = await _getClientTokenQuery.GetClientTokenAsync(url, client, httpClient);
 
         //Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        response.Content.Should().BeNull();
+        using (new AssertionScope()){
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            response.Content.Should().BeNull();
+        }
+    }
+    [Fact]
+    public async Task GetClientTokenAsync_WhenPublicClientWitValidClientName_ShouldReturnResultOK()
+    {
+        string url = BaseUrl.TokenUrl(_baseAddress, _realmName);
+        var httpClient = _httpClientFactory.CreateClient();
+
+        var clientSecret = string.Empty;
+        var client = new GetClientTokenRequest(_clientId, clientSecret);
+
+        //Act
+        var response = await _getClientTokenQuery.GetClientTokenAsync(url, client, httpClient);
+
+        //Assert
+        using (new AssertionScope())
+        {
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            response.Content.Should().BeNull();
+        }
     }
 }

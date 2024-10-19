@@ -1,6 +1,5 @@
 ﻿using Keycloak.Net.Authentication.Mapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace Keycloak.Net.Authentication.Configuration;

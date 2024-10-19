@@ -33,13 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Integration\localhostcert.pem">
+    <None Update="Integration\Import\oidc.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Integration\localhostkey.pem">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Integration\oidc.json">
+    <None Update="Integration\Import\oidc_new.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
