@@ -2,6 +2,7 @@
 using Keycloak.Net.Authorization.Common;
 using Keycloak.Net.Authorization.Configuration;
 using Microsoft.Extensions.Options;
+using Polly.Registry;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
@@ -13,12 +14,14 @@ internal class PermissionRequest : IPermissionRequest
     private readonly IOptions<JwtBearerValidationOptions> _jwtOptions;
     private readonly IOptions<ClientConfiguration> _options;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ResiliencePipelineProvider<string> _pipelineProvider;
 
-    public PermissionRequest(IOptions<JwtBearerValidationOptions> jwtOptions, IOptions<ClientConfiguration> options, IHttpClientFactory httpClientFactory)
+    public PermissionRequest(IOptions<JwtBearerValidationOptions> jwtOptions, IOptions<ClientConfiguration> options, IHttpClientFactory httpClientFactory, ResiliencePipelineProvider<string> pipelineProvider)
     {
         _jwtOptions = jwtOptions;
         _options = options;
         _httpClientFactory = httpClientFactory;
+        _pipelineProvider = pipelineProvider;
     }
 
     public async Task<Result<string>> VerifyPermissionAccessAsync(string accessToken, string resource, string scope, string? client = default, CancellationToken cancellationToken = default)
@@ -29,7 +32,9 @@ internal class PermissionRequest : IPermissionRequest
         var requestBody = FormUrlEncodedContentBuilder.PermissionRequestBody(clientId, resource, scope);
         var url = $"{_jwtOptions.Value.Authority}/protocol/openid-connect/token";
 
-        var response = await httpClient.PostAsync(url, requestBody, cancellationToken);
+        var pipeline = _pipelineProvider.GetPipeline("default");
+        var response = await pipeline.ExecuteAsync(async cancelationToken =>  await httpClient.PostAsync(url, requestBody, cancellationToken), cancellationToken);
+
         var content = await response.Content.ReadFromJsonAsync<JsonObject>(cancellationToken);
         if (content != null)
         {

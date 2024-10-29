@@ -8,8 +8,6 @@ internal readonly record struct Result(bool IsSuccess, string? Error, HttpStatus
     public static Result Success(HttpStatusCode? StatusCode) => new(true, null, StatusCode);
     public static Result Fail(string? error) => new(false, error, null);
     public static Result Fail(string? error, HttpStatusCode? StatusCode) => new(false, error, StatusCode);
-    public static Result Fail(HttpStatusCode? StatusCode, string error) => new(false, error, StatusCode);
-
 }
 
 internal record struct Result<TData>(TData? Content, bool IsSuccess, HttpStatusCode? StatusCode, string? Error)

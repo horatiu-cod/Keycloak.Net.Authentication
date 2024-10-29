@@ -14,8 +14,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Configuration.EnableSubstitutions();
 
 builder.Services
-        .AddKeyCloakAuthentication()
-        .AddKeyCloakJwtBearerOptions("Keycloak")
+        .AddKeycloakAuthentication()
+        .AddKeycloakJwtBearerOptions("Keycloak")
         .AddUma("ResourceClient", configure =>
         {
             configure.AddPolicy("email_verified", configure =>
@@ -52,49 +52,49 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-
+#region Authentication
 app.MapGet("api/authenticate", () =>
     Results.Ok($"{HttpStatusCode.OK} authenticated"))
     .RequireAuthorization();
-
+ 
 app.MapGet("api/custompolicy", () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized"))
+    Results.Ok($"{HttpStatusCode.OK} authenticated"))
     .RequireAuthorization("email_verified");
 
 app.MapGet("api/attribute",[Authorize(Roles = "admin-role")] () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized"));
+    Results.Ok($"{HttpStatusCode.OK} authenticated"));
 
 app.MapGet("api/role", () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized"))
+    Results.Ok($"{HttpStatusCode.OK} authenticated"))
     .RequireAuthorization("role");
 
 app.MapGet("api/auth", () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized"))
-    .RequireAuthorization("auth").ResourceClient("frontend");
+    Results.Ok($"{HttpStatusCode.OK} authenticated"))
+    .RequireAuthorization("auth");
 
 app.MapGet("api/name", () =>
-    Results.Ok($"{HttpStatusCode.OK} authorized"))
+    Results.Ok($"{HttpStatusCode.OK} authenticated"))
     .RequireAuthorization("name");
+#endregion
 
+#region Authorization
+// Get the ResourceClient from appsettings.json
 app.MapGet("api/uma1", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireUmaAuthorization(resource: "workspace", scope: "write");
 
-app.MapGet("api/uma2", [Permission("workspace", "read", Roles = "admin-role")] () =>
+// Testing authorization based on ResourceClient roles
+app.MapGet("api/uma2", [Permission("workspace", "read", Roles = "write-access")] () =>
     Results.Ok($"{HttpStatusCode.OK} authorized")).ResourceClient("backend");
 
+// Testing authorization based ResourceClient Permissions/Policies
 app.MapGet("api/uma3", () =>
     Results.Ok($"{HttpStatusCode.OK} authorized"))
     .RequireAuthorization("urn:workspace:write").ResourceClient("backend");
-
+#endregion
 app.MapGet("redirect", (string session_state, string code) =>
 {
     Results.Ok($"{code} {session_state}");
 });
-
-//app.MapPost("api/register", () =>
-//{
-//    Results.Ok("Registered");
-//});
 
 app.Run();

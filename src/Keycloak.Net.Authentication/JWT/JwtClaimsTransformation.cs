@@ -87,6 +87,7 @@ internal class JwtClaimsTransformation : IClaimsTransformation
             return JwtOptions.TokenValidationParameters.ValidAudiences.FirstOrDefault()!;
         return string.Empty;
     }
+    
     private string GetIssuer()
     {
         if (!string.IsNullOrEmpty(JwtOptions.Authority))

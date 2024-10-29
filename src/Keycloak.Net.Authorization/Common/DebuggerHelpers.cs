@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Keycloak.Net.Authorization.Common;
 
-internal class DebuggerHelpers
+internal static class DebuggerHelpers
 {
     public static string GetDebugText(string key1, object? value1, bool includeNullValues = true, string? prefix = null)
     {

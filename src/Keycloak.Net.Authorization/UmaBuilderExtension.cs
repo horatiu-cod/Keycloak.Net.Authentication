@@ -1,8 +1,8 @@
-﻿using Keycloak.Net.Authorization.AudienceAccess;
-using Keycloak.Net.Authorization.Configuration;
+﻿using Keycloak.Net.Authorization.Configuration;
 using Keycloak.Net.Authorization.PermissionAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
 
 namespace Keycloak.Net.Authorization;
 
@@ -10,12 +10,7 @@ public static class UmaBuilderExtension
 {
     public static IServiceCollection AddUma (this IServiceCollection services, Action<ClientConfiguration> options, Action<AuthorizationOptions>? configure = default)
     {
-        services.AddHttpClient("uma");
-        services.AddScoped<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
-
-        services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
-        services.AddScoped<IPermissionRequest, PermissionRequest>();
+        services.AddUmaInternal();
 
         var message = $"Validation failed for {nameof(ClientConfiguration.ClientId)}";
 
@@ -36,12 +31,7 @@ public static class UmaBuilderExtension
     }
     public static IServiceCollection AddUma(this IServiceCollection services, string sectionName, Action<AuthorizationOptions>? configure = default)
     {
-        services.AddHttpClient("uma");
-        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
-
-        services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
-        services.AddScoped<IPermissionRequest, PermissionRequest>();
+        services.AddUmaInternal();
 
         string message = $"Validation failed for {nameof(ClientConfiguration.ClientId)}";
 
@@ -62,12 +52,7 @@ public static class UmaBuilderExtension
     }
     public static IServiceCollection AddUma(this IServiceCollection services, Action<AuthorizationOptions>? configure = default)
     {
-        services.AddHttpClient("uma");
-        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
-
-        services.AddScoped<IAudienceAccessRequest, AudienceAccessRequest>();
-        services.AddScoped<IPermissionRequest, PermissionRequest>();
+        services.AddUmaInternal();
 
         if (configure != null)
         {
@@ -75,5 +60,29 @@ public static class UmaBuilderExtension
 
         }
         return services.AddAuthorization();
+    }
+
+    private static void AddUmaInternal(this IServiceCollection services)
+    {
+        services.AddHttpClient("uma");
+
+        services.AddResiliencePipeline("default", x =>
+        {
+            x.AddRetry(new Polly.Retry.RetryStrategyOptions
+            {
+                ShouldHandle = new PredicateBuilder().Handle<Exception>(),
+                Delay = TimeSpan.FromSeconds(2),
+                MaxRetryAttempts = 2,
+                BackoffType = DelayBackoffType.Exponential,
+                UseJitter = true,
+            });
+            x.AddTimeout(TimeSpan.FromSeconds(10));
+        });
+
+
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+        services.AddScoped<IPermissionRequest, PermissionRequest>();
     }
 }

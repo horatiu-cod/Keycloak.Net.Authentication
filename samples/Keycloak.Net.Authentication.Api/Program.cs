@@ -8,11 +8,11 @@ builder.Services.AddSwaggerGen();
 builder.Configuration.EnableSubstitutions();
 
 builder.Services
-    .AddKeyCloakAuthentication()
-    //.AddKeyCloakJwtBearerOptions("appsettings_section_name")
+    .AddKeycloakAuthentication()
+    //.AddKeycloakJwtBearerOptions("appsettings_section_name")
 
 
-    //.AddKeyCloakJwtBearerOptions("appsettings_section_name", o =>
+    //.AddKeycloakJwtBearerOptions("appsettings_section_name", o =>
     //{
     //    o.Authority = "https://localhost:8843/realms/Test";
     //    //o.Audience = "maui-client";
@@ -20,7 +20,7 @@ builder.Services
 
     //    o.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(30);
     //})
-    .AddKeyCloakJwtBearerOptions(c =>
+    .AddKeycloakJwtBearerOptions(c =>
     {
         c.Authority = "https://localhost:8843/realms/Test";
         c.ValidAudience = "maui-client";

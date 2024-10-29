@@ -8,11 +8,11 @@ namespace Keycloak.Net.Authentication.JWT;
 
 internal class KeycloakClaimsTransformation : IClaimsTransformation
 {
-    private IOptions<JwtBearerValidationOptions> JwtOptions { get; }
+    private JwtBearerValidationOptions JwtOptions { get; }
 
     public KeycloakClaimsTransformation(IOptions<JwtBearerValidationOptions> jwtOptions)
     {
-        JwtOptions = jwtOptions;
+        JwtOptions = jwtOptions.Value;
     }
     /// <summary>
     /// Map and transform the keycloak jwt realm and client "roles" claim to identity "role" claim
@@ -65,7 +65,7 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
     private void MapNameClaim(ClaimsIdentity? claimsIdentity)
     {
         if (JwtOptions is not null && claimsIdentity is not null)
-            if (claimsIdentity.TryGetClaim(c => c.Type == JwtOptions.Value.NameClaim, out var claimToSet))
+            if (claimsIdentity.TryGetClaim(c => c.Type == Constants.NameClaimType, out var claimToSet))
             {
                 var nameClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
                 claimsIdentity.TryRemoveClaim(nameClaim);
@@ -77,28 +77,27 @@ internal class KeycloakClaimsTransformation : IClaimsTransformation
     }
     private string GetAudience()
     {
-        if (!string.IsNullOrEmpty(JwtOptions.Value.Audience))
-            return JwtOptions.Value.Audience!;
-        if (!string.IsNullOrEmpty(JwtOptions.Value.ValidAudience))
-            return JwtOptions.Value.ValidAudience!;
-        if (JwtOptions.Value.ValidAudiences is null)
+        if (!string.IsNullOrEmpty(JwtOptions.Audience))
+            return JwtOptions.Audience!;
+        if (!string.IsNullOrEmpty(JwtOptions.ValidAudience))
+            return JwtOptions.ValidAudience!;
+        if (JwtOptions.ValidAudiences is null)
             return string.Empty;
-        if (JwtOptions.Value.ValidAudiences.Any())
-            return JwtOptions.Value.ValidAudiences.FirstOrDefault()!;
+        if (JwtOptions.ValidAudiences.Any())
+            return JwtOptions.ValidAudiences.FirstOrDefault()!;
         return string.Empty;
     }
     private string GetIssuer()
     {
-        if (!string.IsNullOrEmpty(JwtOptions.Value.Authority))
-            return JwtOptions.Value.Authority!;
-        if (!string.IsNullOrEmpty(JwtOptions.Value.ValidIssuer))
-            return JwtOptions.Value.ValidIssuer!;
-        if (JwtOptions.Value.ValidIssuers is null)
+        if (!string.IsNullOrEmpty(JwtOptions.Authority))
+            return JwtOptions.Authority!;
+        if (!string.IsNullOrEmpty(JwtOptions.ValidIssuer))
+            return JwtOptions.ValidIssuer!;
+        if (JwtOptions.ValidIssuers is null)
             return string.Empty;
-        if (JwtOptions.Value.ValidIssuers.Any())
-            return JwtOptions.Value.ValidIssuers.FirstOrDefault()!;
+        if (JwtOptions.ValidIssuers.Any())
+            return JwtOptions.ValidIssuers.FirstOrDefault()!;
         return string.Empty;
 
     }
-
 }

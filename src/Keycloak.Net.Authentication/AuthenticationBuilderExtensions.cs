@@ -11,16 +11,14 @@ namespace Keycloak.Net.Authentication;
 public static class AuthenticationBuilderExtensions
 {
     /// <summary>
-    /// Configure and register <see cref=" ConfigureAuthenticateSchemeOptions"/>. Set the schemes to JwtBearerDefaults.AuthenticationScheme.
     /// <para>
     /// Adds AddAuthentication to ServiceCollection.
     /// </para>
     /// </summary>
     /// <param name="services"></param>
     /// <returns>The <see cref="AuthenticationBuilder"/> so additional calls can be chained.</returns>
-    public static AuthenticationBuilder AddKeyCloakAuthentication(this IServiceCollection services)
+    public static AuthenticationBuilder AddKeycloakAuthentication(this IServiceCollection services)
     {
-        //services.AddSingleton<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticateSchemeOptions>()
         return services.AddAuthentication("keycloak");
     }
 
@@ -29,20 +27,11 @@ public static class AuthenticationBuilderExtensions
     /// Register Action JwtBearerValidationOptions <paramref name="authConfiguration"/> to configure options.
     /// <para/>
     /// Register the <see cref="AddJwtBearerOptions"/> 
-    /// <code>
-    /// builder.Services
-    ///     .AddKeyCloakAuthentication()
-    ///     .AddKeyCloakJwtBearerOptions(c =>
-    ///      {
-    ///         c.Authority = "KeycloakRealmUrl";
-    ///         c.Audience = "audience";
-    ///      })
-    /// </code>
     /// </summary>
     /// <param name="builder"></param>
     /// <param name="authConfiguration"></param>
     /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained. A reference to <paramref name="builder"/> after the operation has completed</returns>
-    public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerValidationOptions> authConfiguration)
+    public static IServiceCollection AddKeycloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerValidationOptions> authConfiguration)
     {
         IdentityModelEventSource.ShowPII = true;
         var message = $"Validation failed for {nameof(JwtBearerValidationOptions)} members";
@@ -64,61 +53,12 @@ public static class AuthenticationBuilderExtensions
     /// Bind <see cref="JwtBearerValidationOptions"/> to settings <paramref name="authConfiguration"/> to configure options.
     /// <para/>
     /// Register the <see cref="AddJwtBearerOptions"/> 
-    /// <code>
-    /// Example of implementation
-    ///  builder.Services
-    ///     .AddKeyCloakAuthentication()
-    ///     .AddKeyCloakJwtBearerOptions("appsettings_section_name")
-    /// </code>
-    /// Optional: configure <see cref="JwtBearerOptions"/>
-    /// <code>
-    ///  builder.Services
-    ///     .AddKeyCloakAuthentication()
-    ///     .AddKeyCloakJwtBearerOptions("appsettings_section_name", (JwtBearerOptions)options =>
-    ///       {
-    ///         // if set will override the settings values
-    ///         options.Audience = "new_audience";
-    ///         options.TokenValidationParameters.ValidAudience = "new_valid_audience";
-    ///         .....
-    ///       })
-    ///  
-    /// Example of appsettings.json 
-    /// {
-    /// "KeycloakUrl": "FROM_USER_SECRET",
-    /// "RealmName": "FROM_USER_SECRET",
-    /// 
-    ///  "appsettings_section_name": {
-    ///      "Authority": "{KeycloakUrl}{RealmName}",
-    ///      "Audience": "audience"
-    ///   }
-    /// }
-    /// Or
-    /// {
-    /// "KeycloakUrl": "FROM_USER_SECRET",
-    /// "RealmName": "FROM_USER_SECRET",
-    /// 
-    ///  "appsettings_section_name": {
-    ///      "Authority": "{KeycloakUrl}{RealmName}",
-    ///      "ValidAudience": "audience"
-    ///   }
-    /// }
-    /// Or
-    /// {
-    /// "KeycloakUrl": "FROM_USER_SECRET",
-    /// "RealmName": "FROM_USER_SECRET",
-    /// 
-    ///  "appsettings_section_name": {
-    ///      "Authority": "{KeycloakUrl}{RealmName}",
-    ///      "ValidAudiences": ["audience"]
-    ///   }
-    /// }
-    /// </code>
     /// </summary>
     /// <param name="builder"></param>
     /// <param name="sectionName"></param>
     /// <param name="options"></param>
     /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained. A reference to <paramref name="builder"/> after the operation has completed</returns>
-    public static IServiceCollection AddKeyCloakJwtBearerOptions(this AuthenticationBuilder builder, string sectionName, Action<JwtBearerOptions>? options = default)
+    public static IServiceCollection AddKeycloakJwtBearerOptions(this AuthenticationBuilder builder, string sectionName, Action<JwtBearerOptions>? options = default)
     {
         IdentityModelEventSource.ShowPII = true;
         var message = $"Validation failed for {sectionName} members";
@@ -140,20 +80,6 @@ public static class AuthenticationBuilderExtensions
     /// Register <see cref="KeycloakClaimsTransformation"/> and <see cref="ConfigureJwtBearerValidationOptions"/>.
     /// <para></para>
     /// Pass the <paramref name="options"/> to AddJwtBearer(<paramref name="options"/>)
-    /// <code>
-    /// Example of implementation
-    ///  builder.Services
-    ///     .AddKeyCloakAuthentication()
-    ///     .AddJwtBearerOptions((JwtBearerOptions)options =>
-    ///       {
-    ///         options.Authority = "KeycloakRealmUrl";
-    ///         .....
-    ///         options.TokenValidationParameters = new TokenValidationParameters
-    ///         { 
-    ///         ValidAudience = "valid_audience";
-    ///         .....
-    ///       })
-    /// </code>
     /// </summary>
     /// <param name="builder">AuthenticationBuilder</param>
     /// <param name="options"></param>
@@ -165,7 +91,7 @@ public static class AuthenticationBuilderExtensions
 
         return builder.Services;
     }
-    public static void AddOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
+    private static void AddOptions(this AuthenticationBuilder builder, Action<JwtBearerOptions> options)
     {
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>,ConfigureJwtBearerValidationOptions>();
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
@@ -187,7 +113,7 @@ public static class AuthenticationBuilderExtensions
             return true;
         if (JwtOptions.ValidAudiences is null)
             return false;
-        if (JwtOptions.ValidAudiences.Length != 0)
+        if (JwtOptions.ValidAudiences.Any())
             return true;
         return false;
     }
