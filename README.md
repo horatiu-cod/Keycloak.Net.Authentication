@@ -150,8 +150,6 @@ builder.Services
     });
 new code 👆
 .....
-👇new code 
-app.UseUma();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -167,9 +165,6 @@ builder.Services
   .AddUma("Client_Section_Name);
 new code 👆
 .....
-
-👇new code 
-app.UseUma();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -232,9 +227,3 @@ app.MapGet("api/example", () =>
     .RequireAuthorization("Permission:<<resource>>,<<scope>>");
 
 ```
-
-## How it works
-
-The `UseUMA` middleware exchange the JWT of the request with a RPT received from Keycloak auth server after validating the realm access permission.
-The RPT contains the permission granted by the auth server, and is used to autorize access of the resources.
-
