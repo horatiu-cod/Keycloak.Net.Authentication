@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <Title>Keycloak.Net.Authorization</Title>
     <Authors>Horatiu Cod</Authors>
     <Company>52plus</Company>
@@ -19,19 +19,8 @@
     <PackageProjectUrl>https://horatiu-cod.github.io/Keycloak.Net.Authentication/</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes></PackageReleaseNotes>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="AudienceAccess\**" />
-    <EmbeddedResource Remove="AudienceAccess\**" />
-    <None Remove="AudienceAccess\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="UmaMiddlewareBuilder.cs" />
-  </ItemGroup>
-
-
 
   <ItemGroup>
     <ProjectReference Include="..\Keycloak.Net.Authentication\Keycloak.Net.Authentication.csproj" />

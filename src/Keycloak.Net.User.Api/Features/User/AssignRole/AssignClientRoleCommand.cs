@@ -1,14 +1,4 @@
-﻿using Keycloak.Net.User.Api.Common;
-using Keycloak.Net.User.Api.Configuration;
-using Keycloak.Net.User.Api.Features.Client.ClientAccessToken;
-using Keycloak.Net.User.Api.Features.Client.ClientRequest;
-using Keycloak.Net.User.Api.Features.Role;
-using Keycloak.Net.User.Api.Features.Role.ClientRole;
-using Keycloak.Net.User.Api.Features.Role.UserRole;
-using Keycloak.Net.User.Api.Features.User.Get;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System.Net.Http;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Keycloak.Net.User.Api.Features.User.AssignRole;
 

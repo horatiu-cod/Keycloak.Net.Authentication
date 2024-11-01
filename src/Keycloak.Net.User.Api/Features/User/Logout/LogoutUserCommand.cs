@@ -1,11 +1,4 @@
-﻿using Keycloak.Net.User.Api.Common;
-using Keycloak.Net.User.Api.Configuration;
-using Microsoft.Extensions.Options;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json.Nodes;
-
-namespace Keycloak.Net.User.Api.Features.User.Logout;
+﻿namespace Keycloak.Net.User.Api.Features.User.Logout;
 
 internal class LogoutUserCommand(IHttpClientFactory httpClientFactory, IOptionsMonitor<Server> server) : ILogoutUserCommand
 {
@@ -63,5 +56,4 @@ internal class LogoutUserCommand(IHttpClientFactory httpClientFactory, IOptionsM
             return Result.Fail(HttpStatusCode.InternalServerError, $"Something went wrong //br{ex.Message}");
         }
     }
-
 }
