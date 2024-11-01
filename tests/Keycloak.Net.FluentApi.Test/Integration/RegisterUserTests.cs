@@ -1,9 +1,6 @@
-﻿using Keycloak.Net.Authentication.Test.Integration.Abstraction;
-using Keycloak.Net.FluentApi;
+﻿namespace Keycloak.Net.FluentApi.Test.Integration;
 
-namespace Keycloak.Net.Authentication.Test.Integration.FluentApiTests;
-
-public class RegisterEndPointTest : IClassFixture<ApiFactory>
+public class RegisterUserTests
 {
     private const string _url = "https://localhost:8843/realms/oidc/";
     private const string _authClientId = "public";
@@ -80,5 +77,4 @@ public class RegisterEndPointTest : IClassFixture<ApiFactory>
         Assert.True(res);
         Assert.True(response.StatusCode == System.Net.HttpStatusCode.Created);
     }
-
 }
