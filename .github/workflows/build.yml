@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Add Certs
       run: |
-        echo $CERT | base64 --decode > cert.crt | sudo tee -a /etc/ca-certificates.conf
+        
         cd /usr/local/share/ca-certificates
         echo $CERT | base64 --decode > cert.crt
         sudo update-ca-certificates
