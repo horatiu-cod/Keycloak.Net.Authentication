@@ -24,7 +24,7 @@ internal class ClientRoleRequest : IClientRoleRequest
         }
         catch (Exception ex)
         {
-            return Result<string>.Fail($"{(int)HttpStatusCode.InternalServerError}: {ex.Message} exception from GetClientRoleAsync");
+            return Result<string>.Fail(HttpStatusCode.InternalServerError, $"{(int)HttpStatusCode.InternalServerError}: {ex.Message} exception from GetClientRoleAsync");
         }
     }
 }

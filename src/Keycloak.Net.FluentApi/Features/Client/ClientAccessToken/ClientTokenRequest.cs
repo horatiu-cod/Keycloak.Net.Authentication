@@ -29,7 +29,7 @@ internal class ClientTokenRequest : IClientTokenRequest
                     var rpt = (string?)content["access_token"];
                     return Result<string?>.Success(rpt, response.StatusCode);
                 }
-                return Result<string>.Fail($"Access token not found from GetClientTokenAsync");
+                return Result<string?>.Fail(HttpStatusCode.NotFound,$"Access token not found from GetClientTokenAsync");
             }
         }
         catch (Exception ex)

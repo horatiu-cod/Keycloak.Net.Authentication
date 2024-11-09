@@ -17,10 +17,11 @@ internal static class DependencyInjection
         services.AddScoped<IClientRequest, ClientRequest>();
         services.AddScoped<IClientRoleRequest, ClientRoleRequest>();
         services.AddScoped<IRealmRoleRequest, RealmRoleRequest>();
-        services.AddScoped<IRegisterUserRequest, RegisterUserRequest>();
+        services.AddScoped<IRegisterUserCommand, RegisterUserCommand>();
         services.AddScoped<IUserClientRoleRequest, UserClientRoleRequest>();
         services.AddScoped<IUserRealmRoleRequest, UserRealmRoleRequest>();
         services.AddScoped<IUserRequest, UserRequest>();
+        services.AddScoped<IRegisterUser, RegisterUser>();
 
         return services;
     }

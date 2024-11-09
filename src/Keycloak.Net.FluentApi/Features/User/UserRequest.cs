@@ -30,7 +30,7 @@ internal class UserRequest : IUserRequest
         }
         catch (Exception ex)
         {
-            return Result<string>.Fail($"{ex.Message} from GetUserAsync");
+            return Result<string>.Fail(HttpStatusCode.InternalServerError,$"{ex.Message} from GetUserAsync");
         }
     }
 

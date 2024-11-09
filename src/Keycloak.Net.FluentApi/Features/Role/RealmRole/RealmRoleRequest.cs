@@ -25,7 +25,7 @@ internal class RealmRoleRequest : IRealmRoleRequest
         }
         catch (Exception ex)
         {
-            return Result<string>.Fail($"{(int)HttpStatusCode.InternalServerError}: {ex.Message} exception from GetRealmRoleAsync");
+            return Result<string>.Fail(HttpStatusCode.InternalServerError, $"{(int)HttpStatusCode.InternalServerError}: {ex.Message} exception from GetRealmRoleAsync");
         }
     }
 }

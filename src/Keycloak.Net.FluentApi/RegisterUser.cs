@@ -1,42 +1,45 @@
 ﻿using Keycloak.Net.FluentApi.Common;
 using Keycloak.Net.FluentApi.Features.User.RegisterUser;
+using Keycloak.Net.FluentApi.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Keycloak.Net.FluentApi;
-public sealed class RegisterUser : IUserName, IUserPassword, IAuthServerUrl, IAuthClientId, IAuthClientSecret, IClientId, IRealmRole, IClientRole
+public sealed class RegisterUser : IRegisterUser
 {
-    private string? _url;
-    private string? _uri;
-    private string? _authClientId;
-    private string? _authClientSecret;
-    private string? _username;
-    private string? _password;
-    private string[]? _realmRoles;
-    private string[]? _clientRoles;
-    private string? _clientId;
-    private readonly IRegisterUserRequest _request;
+    private readonly string _url;
+    private readonly string _uri;
+    private string _clientId = string.Empty;
+    private string _clientSecret = string.Empty;
+    private string _username = string.Empty;
+    private string _password = string.Empty;
+    private string _email = string.Empty;
+    private string _firstName = string.Empty;
+    private string _lastName = string.Empty;
+    private readonly IRegisterUserCommand _request;
     private CancellationToken _cancellationToken;
-
     private const string adminApi = "admin/realms";
 
-    private RegisterUser(string url)
+    private RegisterUser(string url, CancellationToken cancellationToken = default)
     {
+        IServiceCollection services = new ServiceCollection();
+        var scope = services.BuildServiceProvider().CreateScope();
         _uri = url;
         var sb = new StringBuilder(url);
         _url = sb.Replace("realms", adminApi).ToString();
-        _request = new RegisterUserRequest();
-        _cancellationToken = new CancellationToken();
+        _request = scope.ServiceProvider.GetRequiredService<IRegisterUserCommand>();
+        _cancellationToken = cancellationToken;
     }
-    public static IAuthServerUrl Realm(string url) => new RegisterUser(url);
+    public static IServerUrl RealmUrl(string url, CancellationToken cancellationToken = default) => new RegisterUser(url, cancellationToken);
 
-    public IAuthClientId AuthClientId(string authClientId)
+    public IAuthClientId ClientId(string clientId)
     {
-        _authClientId = authClientId;
+        _clientId = clientId;
         return this;
     }
 
-    public IAuthClientSecret AuthClientSecret(string authClientSecret)
+    public IAuthClientSecret ClientSecret(string clientSecret)
     {
-        _authClientSecret = authClientSecret;
+        _clientSecret = clientSecret;
         return this;
     }
 
@@ -51,84 +54,61 @@ public sealed class RegisterUser : IUserName, IUserPassword, IAuthServerUrl, IAu
         _password = password;
         return this;
     }
-
-    public IRealmRole RealmRole(params string[] realmRole)
+    public IUserEmail UserEmail(string email)
     {
-        _realmRoles = realmRole;
+        _email = email;
         return this;
     }
 
-    public IClientRole ClientRole(params string[] clientRole)
+    public IUserFirstName UserFirstName(string firstName)
     {
-        _clientRoles = clientRole;
+        _firstName = firstName;
         return this;
     }
 
-    public IClientId ForClient(string clientId)
+    public IUserLastName UserLastName(string lastName)
     {
-        _clientId = clientId;
+        _lastName = lastName;
         return this;
     }
+    //public IRealmRole RealmRole(params string[] realmRole)
+    //{
+    //    _realmRoles = realmRole;
+    //    return this;
+    //}
+
+    //public IClientRole ClientRole(params string[] clientRole)
+    //{
+    //    _clientRoles = clientRole;
+    //    return this;
+    //}
+
+    //public IClientId ForClient(string clientId)
+    //{
+    //    _clientId = clientId;
+    //    return this;
+    //}
 
     public Result Register()
     {
-        using var httpClient = new HttpClient();
-        if (_realmRoles is not null && _realmRoles.Any())
-        {
-            var res = _request.RegisterUserWithRealmRole(_url, _uri, _authClientId, _authClientSecret, _username, _password, _realmRoles, httpClient, _cancellationToken);
-            return res.Result;
-        }
-        else if (_clientRoles is not null && _clientRoles.Any())
-        {
-            var res = _request.RegisterUserWithClientRole(_url, _uri ,_authClientId, _authClientSecret, _username, _password, _realmRoles, _clientId, httpClient, _cancellationToken);
-            return res.Result;
-        }
-        else
-        {
-            var res = _request.RegisterUserWithoutRole(_url, _uri ,_authClientId, _authClientSecret, _username, _password, httpClient, _cancellationToken);
-            return res.Result;
+     
+        var response = _request.RegisterUser(_url, _uri, _clientId, _clientSecret, _username, _password, _email, _firstName, _lastName, _cancellationToken);
+        return response.Result;
 
-        }
     }
 }
-public interface IAuthServerUrl
-{
-    IAuthClientId AuthClientId(string authClientId);
-}
 
-public interface IAuthClientId
-{
-    IAuthClientSecret AuthClientSecret(string authClientSecret);
-}
+//public interface IRealmRole
+//{
+//    Result Register();
+//}
 
-public interface IAuthClientSecret
-{
-    IUserName UserName(string username);
-}
+//public interface IClientRole
+//{
+//    IClientId ForClient(string clientId);
+//}
 
-public interface IUserName
-{
-    IUserPassword UserPassword(string password);
-}
-
-public interface IUserPassword
-{
-    IRealmRole RealmRole(params string[] realmRole);
-    IClientRole ClientRole(params string[] clientRole);
-    Result Register();
-}
-
-public interface IRealmRole
-{
-    Result Register();
-}
-
-public interface IClientRole
-{
-    IClientId ForClient(string clientId);
-}
-
-public interface IClientId
-{
-    Result Register();
-}
+//public interface IClientId
+//{
+//    Result Register();
+//}
