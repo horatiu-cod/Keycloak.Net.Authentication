@@ -10,14 +10,17 @@ namespace Keycloak.Net.Authentication.Test.Integration.Abstraction;
 
 public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
 {
-    public string? BaseAddress { get; set; } = "http://localhost:8181";
+    public string? BaseAddress { get; set; } = "https://localhost:8443";
 
 
     private readonly KeycloakContainer _container = new KeycloakBuilder()
         .WithImage("keycloak/keycloak:24.0")
-        .WithPortBinding(8181, 8080)
+        .WithPortBinding(8443, 8443)
         .WithResourceMapping("./Integration/import/oidc.json", "/opt/keycloak/data/import")
+        .WithResourceMapping("./Integration/certs", "/opt/keycloak/certs")
         .WithCommand("--import-realm")
+        .WithEnvironment("KC_HTTPS_CERTIFICATE_FILE", "/opt/keycloak/certs/cert.pem")
+        .WithEnvironment("KC_HTTPS_CERTIFICATE_KEY_FILE", "/opt/keycloak/certs/key.key")
         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8080))
         .Build();
 
@@ -27,7 +30,7 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         {
             services.AddOptions<JwtBearerValidationOptions>().Configure(options =>
             {
-                options.Authority = "http://localhost:8181/realms/oidc";
+                options.Authority = "https://localhost:8443/realms/oidc";
                 options.Audience = "frontend";
                 options.RequireHttpsMetadata = false;
             });
