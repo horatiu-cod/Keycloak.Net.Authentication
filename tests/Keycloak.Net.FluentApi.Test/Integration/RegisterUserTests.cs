@@ -3,9 +3,8 @@
 public class RegisterUserTests
 {
     private const string _url = "https://localhost:8843/realms/oidc/";
-    private const string _authClientId = "public";
-    private const string _authClientSecret = "Jj4hCpRdezqvSVDjxXmNRWZ5CTRsg14p";
-    private const string _clientId = "";
+    private const string _clientId = "public";
+    private const string _clientSecret = "Jj4hCpRdezqvSVDjxXmNRWZ5CTRsg14p";
 
     //[Fact]
     public void RegisterUser_RegisterUserWithoutRole_ReturnCreated()
@@ -13,68 +12,25 @@ public class RegisterUserTests
         //Arrange
         var username = "username";
         var password = "password";
+        var email = "email";
+        var firstName = "";
+        var lastName = "";
 
         //Act
         var response = RegisterUser
-            .Realm(_url)
-            .AuthClientId(_authClientId)
-            .AuthClientSecret(_authClientSecret)
+            .RealmUrl(_url)
+            .ClientId(_clientId)
+            .ClientSecret(_clientSecret)
             .UserName(username)
             .UserPassword(password)
+            .UserEmail(email)
+            .UserFirstName(firstName)
+            .UserLastName(lastName)
             .Register();
 
         //Assert
-        var res = response.IsSuccess;
-        Assert.True(res);
+        Assert.True(response.IsSuccess);
         Assert.True(response.StatusCode == System.Net.HttpStatusCode.Created);
     }
 
-    //[Fact]
-    public void RegisterUser_RegisterUserWithRealmRole_ReturnCreated()
-    {
-        //Arrange
-        var username = "username";
-        var password = "password";
-        var role = "Admin";
-
-        //Act
-        var response = RegisterUser
-            .Realm(_url)
-            .AuthClientId(_authClientId)
-            .AuthClientSecret(_authClientSecret)
-            .UserName(username)
-            .UserPassword(password)
-            .RealmRole(role)
-            .Register();
-
-        //Assert
-        var res = response.IsSuccess;
-        Assert.True(res);
-        Assert.True(response.StatusCode == System.Net.HttpStatusCode.Created);
-    }
-
-    //[Fact]
-    public void RegisterUser_RegisterUserWithClientRole_ReturnCreated()
-    {
-        //Arrange
-        var username = "username";
-        var password = "password";
-        var role = "user";
-
-        //Act
-        var response = RegisterUser
-            .Realm(_url)
-            .AuthClientId(_authClientId)
-            .AuthClientSecret(_authClientSecret)
-            .UserName(username)
-            .UserPassword(password)
-            .ClientRole(role)
-            .ForClient(_clientId)
-            .Register();
-
-        //Assert
-        var res = response.IsSuccess;
-        Assert.True(res);
-        Assert.True(response.StatusCode == System.Net.HttpStatusCode.Created);
-    }
 }

@@ -16,27 +16,25 @@ public class KeycloakFixture : IAsyncLifetime
     public readonly string clientId = "management";
     public readonly string clientSecret = "2bpVgqGkUwUuagkJZ1DLK5Ncb3fkO1ri";
     public readonly string realmName = "oidc";
-    public string BaseAddress { get; private set; } = string.Empty;
+    public string BaseAddress { get; private set; } = "https://localhost:8843";
 
     private readonly KeycloakContainer _container = new KeycloakBuilder()
         .WithImage("keycloak/keycloak:24.0")
-        .WithExposedPort(8443)
-        //.WithPortBinding(8181,8080)
+        //.WithExposedPort(8443)
+        .WithPortBinding(8843,8443)
         .WithEnvironment("KC_HTTP_ENABLED", "false")
         .WithResourceMapping("./Integration/Import/oidc.json", "/opt/keycloak/data/import")
         .WithCommand("--import-realm")
-        //.WithResourceMapping("./Integration/localhostcert.pem", @"/opt/keycloak/certs")
-        //.WithResourceMapping("./Integration/localhostkey.pem", @"/opt/keycloak/certs")
-        //.WithReuse(true)
-        //.WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/localhostcert.pem")
-        //.WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/localhostkey.pem")
+        .WithResourceMapping("./Integration/Certs", @"/opt/keycloak/certs")
+        .WithEnvironment(@"KC_HTTPS_CERTIFICATE_FILE", @"/opt/keycloak/certs/cert.pem")
+        .WithEnvironment(@"KC_HTTPS_CERTIFICATE_KEY_FILE", @"/opt/keycloak/certs/key.key")
         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(8080))
         .Build();
 
     public async Task InitializeAsync()
     {
         await _container.StartAsync();
-        BaseAddress = _container.GetBaseAddress();
+        //BaseAddress = _container.GetBaseAddress();
         HttpClient = await GetTokenAsync();
     }
 
@@ -58,5 +56,4 @@ public class KeycloakFixture : IAsyncLifetime
         }
         return HttpClient;
     }
-
 }
