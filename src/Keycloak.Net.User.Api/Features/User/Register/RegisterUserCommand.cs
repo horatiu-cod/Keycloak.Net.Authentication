@@ -1,8 +1,4 @@
-﻿using Keycloak.Net.User.Api.Common;
-using Keycloak.Net.User.Api.Configuration;
-using Keycloak.Net.User.Api.Features.Client.ClientAccessToken;
-
-namespace Keycloak.Net.User.Api.Features.User.Register;
+﻿namespace Keycloak.Net.User.Api.Features.User.Register;
 
 internal class RegisterUserCommand(IGetClientTokenQuery getClientTokenQuery, IHttpClientFactory httpClientFactory, IOptionsMonitor<Server> server, IOptionsMonitor<AdminClient> adminClient) : IRegisterUserCommand
 {

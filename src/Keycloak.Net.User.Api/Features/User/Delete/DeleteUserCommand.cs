@@ -1,9 +1,4 @@
-﻿using Keycloak.Net.User.Api.Common;
-using Keycloak.Net.User.Api.Configuration;
-using Keycloak.Net.User.Api.Features.Client.ClientAccessToken;
-using Keycloak.Net.User.Api.Features.User.Get;
-
-namespace Keycloak.Net.User.Api.Features.User.Delete;
+﻿namespace Keycloak.Net.User.Api.Features.User.Delete;
 
 internal class DeleteUserCommand(IGetClientTokenQuery getClientTokenQuery, IHttpClientFactory httpClientFactory, IGetUserIdQuery userQuery, IOptionsMonitor<Server> server, IOptionsMonitor<AdminClient> adminClient) : IDeleteUserCommand
 {

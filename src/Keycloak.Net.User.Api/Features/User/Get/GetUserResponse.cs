@@ -1,5 +1,4 @@
-﻿using Keycloak.Net.User.Api.Common;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Keycloak.Net.User.Api.Features.User.Get;
 

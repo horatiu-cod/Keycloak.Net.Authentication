@@ -1,12 +1,4 @@
-﻿using Keycloak.Net.User.Api.Common;
-using Keycloak.Net.User.Api.Configuration;
-using Keycloak.Net.User.Api.Features.Token;
-using Microsoft.Extensions.Options;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json.Nodes;
-
-namespace Keycloak.Net.User.Api.Features.User.RefreshToken;
+﻿namespace Keycloak.Net.User.Api.Features.User.RefreshToken;
 
 internal class UserRefreshTokenQuery(IHttpClientFactory httpClientFactory, IOptionsMonitor<Server> server) : IUserRefreshTokenQuery
 {
