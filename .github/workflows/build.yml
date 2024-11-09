@@ -41,8 +41,8 @@ jobs:
     - name: Retrieve certs files
       run: |
          cd ./tests/Keycloak.Net.Authentication.Test/Integration/Certs/
-         echo $LOCAL_CERT | base64 --decode > localhostcert.pem     
-         echo $LOCAL_KEY | base64 --decode > localhostkey.pem 
+         echo $LOCAL_CERT | base64 --decode > cert.pem     
+         echo $LOCAL_KEY | base64 --decode > key.key 
          ls
       continue-on-error: false
     - name: Make dir Certs
@@ -60,8 +60,8 @@ jobs:
     - name: Retrieve certs files
       run: |
          cd ./tests/Keycloak.Net.User.Api.Tests/Integration/Certs/
-         echo $LOCAL_CERT | base64 --decode > localhostcert.pem     
-         echo $LOCAL_KEY | base64 --decode > localhostkey.pem 
+         echo $LOCAL_CERT | base64 --decode > cert.pem     
+         echo $LOCAL_KEY | base64 --decode > key.key 
          ls
       continue-on-error: false
 #    - name: Install Docker
