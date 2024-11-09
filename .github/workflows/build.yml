@@ -22,9 +22,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Add Certs
       run: |
-        
-        cd /usr/local/share/ca-certificates
-        echo $CERT | base64 --decode > cert.crt
+        echo $CERT | base64 --decode > cert.crt | sudo tee -a /etc/ca-certificates.conf
         sudo update-ca-certificates
         echo "Added and trusted certificate"
       continue-on-error: false
