@@ -23,7 +23,7 @@ jobs:
     - name: Add Certs
       run: |
         echo $CERT | base64 --decode > cert.crt | sudo tee -a /etc/ca-certificates.conf
-        sudo cd /usr/local/share/ca-certificates
+        cd /usr/local/share/ca-certificates
         echo $CERT | base64 --decode > cert.crt | sudo cp cert.crt /usr/local/share/ca-certificates
         sudo update-ca-certificates
         echo "Added and trusted certificate"
