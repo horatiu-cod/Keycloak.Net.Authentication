@@ -399,3 +399,4 @@ FodyWeavers.xsd
 *.sln.iml
 /tests/UnitTest/Keycloak.Net.Authentication.Test/IntegrationTests
 *.pem
+*.key
