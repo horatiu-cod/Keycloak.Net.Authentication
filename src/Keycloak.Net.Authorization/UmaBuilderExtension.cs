@@ -66,7 +66,7 @@ public static class UmaBuilderExtension
     {
         services.AddHttpClient("uma");
 
-        services.AddResiliencePipeline("default", x =>
+        services.AddResiliencePipeline("keycloak", x =>
         {
             x.AddRetry(new Polly.Retry.RetryStrategyOptions
             {

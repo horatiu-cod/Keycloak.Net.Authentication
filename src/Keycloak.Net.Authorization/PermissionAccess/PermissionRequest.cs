@@ -30,25 +30,38 @@ internal class PermissionRequest : IPermissionRequest
         var httpClient = _httpClientFactory.CreateClient("uma");
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var requestBody = FormUrlEncodedContentBuilder.PermissionRequestBody(clientId, resource, scope);
-        var url = $"{_jwtOptions.Value.Authority}/protocol/openid-connect/token";
+        var url = $"{(_jwtOptions.Value.Authority!.EndsWith('/')? _jwtOptions.Value.Authority.TrimEnd('/') : _jwtOptions.Value.Authority)}/protocol/openid-connect/token";
 
-        var pipeline = _pipelineProvider.GetPipeline("default");
-        var response = await pipeline.ExecuteAsync(async cancelationToken =>  await httpClient.PostAsync(url, requestBody, cancellationToken), cancellationToken);
 
-        var content = await response.Content.ReadFromJsonAsync<JsonObject>(cancellationToken);
-        if (content != null)
+        var pipeline = _pipelineProvider.GetPipeline("keycloak");
+
+        try
         {
-            if (response.IsSuccessStatusCode)
+            var response = await pipeline.ExecuteAsync(async cancelationToken => await httpClient.PostAsync(url, requestBody, cancellationToken), cancellationToken);
+
+            var content = await response.Content.ReadFromJsonAsync<JsonObject>(cancellationToken);
+            if (content != null)
             {
-                var rpt = (string?)content["access_token"];
-                return Result<string>.Success(rpt, response.StatusCode);
+                if (response.IsSuccessStatusCode)
+                {
+                    var rpt = (string?)content["access_token"];
+                    return Result<string>.Success(rpt, response.StatusCode);
+                }
+                else
+                {
+                    var error = (string?)content["error_description"] ?? (string?)content["error"];
+                    return Result<string>.Fail(response.StatusCode, error);
+                }
             }
-            else
+            else 
             {
-                var error = (string?)content["error_description"];
-                return Result<string>.Fail(response.StatusCode, error);
+                return Result<string>.Fail(System.Net.HttpStatusCode.NotFound, "RPT cannot be found");
             }
         }
-        return Result<string>.Fail(System.Net.HttpStatusCode.InternalServerError, "Internal ServerError");
+        catch (Exception)
+        {
+            return Result<string>.Fail(System.Net.HttpStatusCode.InternalServerError, "Something went wrong");
+            throw;
+        }
     }
 }
