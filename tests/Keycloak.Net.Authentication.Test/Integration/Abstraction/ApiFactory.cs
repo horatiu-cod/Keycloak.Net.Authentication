@@ -17,7 +17,7 @@ public class ApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
         .WithImage("keycloak/keycloak:24.0")
         .WithPortBinding(8443, 8443)
         .WithResourceMapping("./Integration/import/oidc.json", "/opt/keycloak/data/import")
-        .WithResourceMapping("./Integration/certs", "/opt/keycloak/certs")
+        .WithResourceMapping("./Integration/Certs", "/opt/keycloak/certs")
         .WithCommand("--import-realm")
         .WithEnvironment("KC_HTTPS_CERTIFICATE_FILE", "/opt/keycloak/certs/cert.pem")
         .WithEnvironment("KC_HTTPS_CERTIFICATE_KEY_FILE", "/opt/keycloak/certs/key.key")
