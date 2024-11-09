@@ -17,45 +17,67 @@ public static class AuthenticationBuilderExtensions
     /// </summary>
     /// <param name="services"></param>
     /// <returns>The <see cref="AuthenticationBuilder"/> so additional calls can be chained.</returns>
+    [Obsolete("Depreciated")]
     public static AuthenticationBuilder AddKeycloakAuthentication(this IServiceCollection services)
     {
         return services.AddAuthentication("keycloak");
     }
 
+    public static AuthenticationBuilder AddKeycloakAuthentication(this AuthenticationBuilder builder, Action<JwtBearerValidationOptions> options)
+    {
+        builder.Services.AddAuthentication("keycloak");
+        IdentityModelEventSource.ShowPII = true;
+        var message = $"Validation failed for {nameof(JwtBearerValidationOptions)} members";
+
+        builder.Services.AddOptionsWithValidateOnStart<JwtBearerValidationOptions>().Validate(jwtBearerValidationOptions =>
+        {
+            if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority) || string.IsNullOrEmpty(jwtBearerValidationOptions.ValidIssuer) || jwtBearerValidationOptions.ValidIssuers?.Length == 0)
+            {
+                message = "Authority/Issuer not valid";
+                return false;
+            }
+            return ValidateAudience(jwtBearerValidationOptions, out message);
+        }, message).Configure(options);
+        builder.AddOptions();
+
+        return builder;
+    }
+
+
     /// <summary>
     /// Adds <see cref="JwtBearerValidationOptions"/> options service.
-    /// Register Action JwtBearerValidationOptions <paramref name="authConfiguration"/> to configure options.
+    /// Register Action JwtBearerValidationOptions <paramref name="options"/> to configure options.
     /// <para/>
     /// Register the <see cref="AddJwtBearerOptions"/> 
     /// </summary>
     /// <param name="builder"></param>
-    /// <param name="authConfiguration"></param>
+    /// <param name="options"></param>
     /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained. A reference to <paramref name="builder"/> after the operation has completed</returns>
-    public static IServiceCollection AddKeycloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerValidationOptions> authConfiguration)
+    public static IServiceCollection AddKeycloakJwtBearerOptions(this AuthenticationBuilder builder, Action<JwtBearerValidationOptions> options)
     {
         IdentityModelEventSource.ShowPII = true;
         var message = $"Validation failed for {nameof(JwtBearerValidationOptions)} members";
 
         builder.Services.AddOptionsWithValidateOnStart<JwtBearerValidationOptions>().Validate(jwtBearerValidationOptions =>
         {
-            if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority))
+            if (string.IsNullOrEmpty(jwtBearerValidationOptions.Authority) || string.IsNullOrEmpty(jwtBearerValidationOptions.ValidIssuer) || jwtBearerValidationOptions.ValidIssuers?.Length == 0)
             {
                 return false;
             }
-            return ValidateAudience(jwtBearerValidationOptions);
-        }, message).Configure(authConfiguration);
+            return ValidateAudience(jwtBearerValidationOptions, out message);
+        }, message).Configure(options);
         builder.AddOptions();
 
         return builder.Services;
     }
     /// <summary>
     /// Adds <see cref="JwtBearerValidationOptions"/> options service.
-    /// Bind <see cref="JwtBearerValidationOptions"/> to settings <paramref name="authConfiguration"/> to configure options.
     /// <para/>
-    /// Register the <see cref="AddJwtBearerOptions"/> 
+    /// Bind <see cref="JwtBearerValidationOptions"/> to appsettings.json <paramref name="sectionName"/>. Perform validation on start. 
+    /// <para/>
     /// </summary>
     /// <param name="builder"></param>
-    /// <param name="sectionName"></param>
+    /// <param name="sectionName">"appSettings.json section</param>
     /// <param name="options"></param>
     /// <returns>The <see cref="IServiceCollection"/> so additional calls can be chained. A reference to <paramref name="builder"/> after the operation has completed</returns>
     public static IServiceCollection AddKeycloakJwtBearerOptions(this AuthenticationBuilder builder, string sectionName, Action<JwtBearerOptions>? options = default)
@@ -69,7 +91,7 @@ public static class AuthenticationBuilderExtensions
                 {
                     return false;
                 }
-                return ValidateAudience(jwtBearerValidationOptions);
+                return ValidateAudience(jwtBearerValidationOptions, out message);
             },message);
         if (options != null)
             builder.AddOptions(options);
@@ -101,21 +123,26 @@ public static class AuthenticationBuilderExtensions
 
     private static void AddOptions(this AuthenticationBuilder builder)
     {
+        //builder.Services.AddScoped<KeycloakClaimsTransformation>();
+        var scope = builder.Services.BuildServiceProvider().CreateScope();
+        //builder.Services.AddScoped<IClaimsTransformation>(_ =>scope.ServiceProvider.GetRequiredService<KeycloakClaimsTransformation>());
+        //builder.Services.AddScoped<IClaimsTransformation, KeycloakClaimsTransformation>();
         builder.Services.AddTransient<IClaimsTransformation, KeycloakClaimsTransformation>();
+
+
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerValidationOptions>();
         builder.AddJwtBearer("keycloak");
     }
-    private static bool ValidateAudience(JwtBearerValidationOptions JwtOptions)
+    private static bool ValidateAudience(JwtBearerValidationOptions JwtOptions, out string message)
     {
+        message = string.Empty;
         if (!string.IsNullOrEmpty(JwtOptions.Audience))
             return true;
         if (!string.IsNullOrEmpty(JwtOptions.ValidAudience))
             return true;
-        if (JwtOptions.ValidAudiences is null)
-            return false;
-        if (JwtOptions.ValidAudiences.Any())
+        if (JwtOptions.ValidAudiences is not null && JwtOptions.ValidAudiences.Length > 0)
             return true;
+        message = "Audience not valid";
         return false;
     }
-
 }

@@ -8,7 +8,7 @@ namespace Keycloak.Net.Authentication.JWT;
 
 internal class JwtClaimsTransformation : IClaimsTransformation
 {
-    private readonly JwtBearerOptions JwtOptions = new JwtBearerOptions();
+    private readonly JwtBearerOptions JwtOptions = new();
 
     public JwtClaimsTransformation(Action<JwtBearerOptions> jwtOptions)
     {
