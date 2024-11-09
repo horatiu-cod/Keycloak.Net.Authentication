@@ -21,4 +21,6 @@ global using Keycloak.Net.User.Api.Features.User.Register;
 global using Keycloak.Net.User.Api.Features.User.ResetPassword;
 global using Keycloak.Net.User.Api.Features.User.Update;
 global using Microsoft.Extensions.DependencyInjection;
+global using Keycloak.Net.User.Api.Features.Token;
+
 
