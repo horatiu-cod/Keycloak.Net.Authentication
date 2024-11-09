@@ -24,6 +24,7 @@ jobs:
       run: |
         echo $CERT | base64 --decode > cert.crt | sudo tee -a /etc/ca-certificates.conf
         cd /usr/local/share/ca-certificates
+        echo " in ca-certificate folder"
         echo $CERT | base64 --decode > cert.crt | sudo cp cert.crt /usr/local/share/ca-certificates
         sudo update-ca-certificates
         echo "Added and trusted certificate"
