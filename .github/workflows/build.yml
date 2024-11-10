@@ -22,49 +22,35 @@ jobs:
     - uses: actions/checkout@v4
     - name: Add Certs
       run: |
-        echo $CERT | base64 --decode > cert.crt | sudo tee -a /etc/ca-certificates.conf
-        echo " in ca-certificate folder"
         sudo echo $CERT | base64 --decode > cert.crt | sudo cp cert.crt /usr/local/share/ca-certificates
         sudo update-ca-certificates
-        echo "Added and trusted certificate"
+        echo "Added and trusted dev certificate"
       continue-on-error: false
     - name: Make dir Certs
       run: |
         cd ./tests/Keycloak.Net.Authentication.Test/Integration/
         mkdir Certs 
-        echo "certs folder created"
-        ls
-      continue-on-error: false
-    - name: List Certs
-      run: |
-        cd ./tests/Keycloak.Net.Authentication.Test/Integration/Certs/
-        ls
+        echo "certs folder created for Keycloak.Net.Authentication.Test"
       continue-on-error: false
     - name: Retrieve certs files
       run: |
          cd ./tests/Keycloak.Net.Authentication.Test/Integration/Certs/
          echo $LOCAL_CERT | base64 --decode > cert.pem     
          echo $LOCAL_KEY | base64 --decode > key.key 
-         ls
+         echo "Added certs to Keycloak.Net.Authentication.Test"
       continue-on-error: false
     - name: Make dir Certs
       run: |
         cd ./tests/Keycloak.Net.User.Api.Tests/Integration/
         mkdir Certs 
-        echo "certs folder created"
-        ls
-      continue-on-error: false
-    - name: List Certs
-      run: |
-        cd ./tests/Keycloak.Net.User.Api.Tests/Integration/Certs/
-        ls
+        echo "certs folder created for Keycloak.Net.User.Api.Tests"
       continue-on-error: false
     - name: Retrieve certs files
       run: |
          cd ./tests/Keycloak.Net.User.Api.Tests/Integration/Certs/
          echo $LOCAL_CERT | base64 --decode > cert.pem     
          echo $LOCAL_KEY | base64 --decode > key.key 
-         ls
+         echo "Added certs to Keycloak.Net.User.Api.Tests"
       continue-on-error: false
 #    - name: Install Docker
 #      run: |
